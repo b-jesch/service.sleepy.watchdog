@@ -2,7 +2,7 @@
 <addon id="service.sleepy.watchdog"
        name="sleepy Watchdog"
        version="0.1.1"
-       provider-name="BJ1 and _nico, thanks to M. Schlosser">
+       provider-name="BJ1 and _nico, thanks to Michael Schlosser">
   <extension point="xbmc.service"
              library="default.py" start="[login|startup]" />
   <extension point="xbmc.python.script" 
@@ -11,14 +11,14 @@
     <platform>all</platform>
     <summary lang="en">sleepy Watchdog</summary>
     <summary lang="de">sleepy Watchdog</summary>
-    <description lang="en">This Idle Timer management performs defined actions after an adjusted amount of inactivity time.</description>
-    <description lang="de">Dieser Timer führt vorher definierte Aktionen nach einer einstellbaren Inaktivitätszeit aus.</description>
-    <disclaimer lang="de">Benutzung auf eigene Gefahr.</disclaimer>
-    <disclaimer lang="en">Use at your own risk.</disclaimer>
+    <description lang="en">This Idle Timer management performs defined actions after an adjusted amount of inactivity time. Those actions are stop playing Audio, Video or TV for example or some actions to execute shutdown variations like suspend, reboot poweroff or hibernate.</description>
+    <description lang="de">Dieser Timer führt vorher definierte Aktionen nach einer einstellbaren Inaktivitätszeit aus. Die Aktionen können zum Beispiel das Stoppen von Audio, Video oder TV-Streams sein, aber auch das Herunterfahren des Systems in verschiedenen Modi (Suspend, Reboot, PowerOff, Bereitschaft) wird angeboten.</description>
+    <disclaimer lang="de">Benutzung auf eigene Gefahr. Dieser Dienst könnte mit anderen Diensten kollidieren.</disclaimer>
+    <disclaimer lang="en">Use at your own risk. This service could conflict to other services.</disclaimer>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum></forum>
-    <website></website>
-    <email></email>
-    <source></source>
+    <forum>http://www.kodinerds.net/index.php/Thread/43876-RELEASE-Sleepy-WatchDog-Wenn-alles-vor-der-Glotze-schl%C3%A4ft/</forum>
+    <website>http://vdr4bj1.no-ip.org</website>
+    <email>birger.jesch@gmail.com</email>
+    <source>https://github.com/b-jesch/service.sleepy.watchdog</source>
   </extension>
 </addon>

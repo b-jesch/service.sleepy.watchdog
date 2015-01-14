@@ -31,7 +31,7 @@ class SleepyWatchdog(object):
         self.maxIdleTime = None
         self.action = None
         self.actionPerformed = False
-        self.canceled = False
+        self.actionCanceled = False
         self.showPopup = None
         self.notificationTime = None
         self.PopUp = xbmcgui.DialogProgressBG()
@@ -76,7 +76,7 @@ class SleepyWatchdog(object):
     def start(self):
 
         while not xbmc.abortRequested:
-            self.canceled = False
+            self.actionCanceled = False
             # Check if GlobalIdle longer than maxIdle
             if xbmc.getGlobalIdleTime() > (self.maxIdleTime*60 - int(self.notifyUser)*self.notificationTime):
                 _currentIdleTime = xbmc.getGlobalIdleTime()
@@ -93,7 +93,7 @@ class SleepyWatchdog(object):
                         _percent = int(_bar * 100 / self.notificationTime)
                         self.PopUp.update(_percent, __LS__(32100), __LS__(32115) % (__LS__(32130 + self.action), self.notificationTime - _bar))
                         if _currentIdleTime > xbmc.getGlobalIdleTime():
-                            self.canceled = True
+                            self.actionCanceled = True
                             # self.PopUp.close()
                             notifyLog('user activity detected, pending action canceled')
                             break
@@ -102,7 +102,7 @@ class SleepyWatchdog(object):
                     # if self.PopUp.isFinished():
                     self.PopUp.close()
 
-                    if not self.canceled:
+                    if not self.actionCanceled:
 
                         self.actionPerformed = True
                         {
