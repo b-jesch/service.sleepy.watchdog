@@ -1,4 +1,6 @@
 import os
+import sys
+import traceback
 import re
 import xbmc, xbmcgui, xbmcaddon
 
@@ -10,6 +12,16 @@ __LS__ = __addon__.getLocalizedString
 
 __iconDefault__ = xbmc.translatePath(os.path.join(__path__, 'resources', 'media', 'pawprint.png'))
 
+
+def traceError(err, exc_tb):
+    while exc_tb:
+        tb = traceback.format_tb(exc_tb)
+        notifyLog('%s' % err, xbmc.LOGERROR)
+        notifyLog('in module: %s' % sys.argv[0].strip() or '<not defined>', xbmc.LOGERROR)
+        notifyLog('at line:   %s' % traceback.tb_lineno(exc_tb), xbmc.LOGERROR)
+        notifyLog('in file:   %s' % tb[0].split(",")[0].strip()[6:-1],xbmc.LOGERROR)
+        exc_tb = exc_tb.tb_next
+
 def notifyLog(message, level=xbmc.LOGNOTICE):
     xbmc.log('%s: %s' % (__addonname__, message.encode('utf-8')), level)
 
@@ -18,57 +30,102 @@ class SleepyWatchdog(object):
     def __init__(self):
         self.maxIdleTime = None
         self.action = None
+        self.actionPerformed = False
+        self.canceled = False
         self.showPopup = None
         self.notificationTime = None
-        self.PopUp = xbmcgui.DialogProgress()
+        self.PopUp = xbmcgui.DialogProgressBG()
         self.Player = xbmc.Player()
+        self.execBuiltin = xbmc.executebuiltin
 
         self.getWDSettings()
 
     def getWDSettings(self):
-        self.maxIdleTime = int(__addon__.getSetting('maxIdleTime'))
-        self.action = __addon__.getSetting('action')
+        self.maxIdleTime = int(re.match('\d+', __addon__.getSetting('maxIdleTime')).group())
+        #
+        # ONLY TESTING PURPOSES !
+        # self.maxIdleTime = 1
+        #
+        self.action = int(__addon__.getSetting('action'))
         self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
 
     # user defined actions
 
     def stopVideoAudioTV(self):
+        notifyLog('stop playing media')
         if self.Player.isPlaying():
             self.Player.stop()
 
+    def systemReboot(self):
+        notifyLog('init system reboot')
+        xbmc.restart()
+
+    def systemShutdown(self):
+        notifyLog('init system shutdown')
+        xbmc.shutdown()
+
+    def systemHibernate(self):
+        notifyLog('init system hibernate')
+        self.execBuiltin('Hibernate')
+
+    def systemSuspend(self):
+        notifyLog('init system suspend')
+        self.execBuiltin('Suspend')
 
     def start(self):
-        while(not xbmc.abortRequested):
 
+        while not xbmc.abortRequested:
+            self.canceled = False
             # Check if GlobalIdle longer than maxIdle
-            if xbmc.getGlobalIdleTime() > (self.maxIdleTime - int(self.notifyUser)*self.notificationTime):
+            if xbmc.getGlobalIdleTime() > (self.maxIdleTime*60 - int(self.notifyUser)*self.notificationTime):
+                _currentIdleTime = xbmc.getGlobalIdleTime()
+                notifyLog('max idle time reached, ready to perform some action')
                 # Check if notification is allowed
                 if self.notifyUser:
                     _bar = 0
-                    self.PopUp.create(__LS__(32100), 'laufendes Video wird in %s Sekunden gestoppt.' % self.notificationTime)
-                    self.Popup.update(_bar)
-                # synchronize progressbar
-                while _bar < self.notificationTime and not self.PopUp.iscanceled():
-                    _bar += 1
-                    _percent = int(_bar * 100 / self.notificationTime)
-                    self.PopUp.update(_percent, 'laufendes Video wird in %s Sekunden gestoppt.' % (self.notificationTime - _bar))
-                    xbmc.sleep(1000)
+                    notifyLog('init notification shutdown')
+                    self.PopUp.create(__LS__(32100), __LS__(32115) % (__LS__(32130 + self.action), self.notificationTime))
+                    self.PopUp.update(_bar)
+                    # synchronize progressbar
+                    while _bar < self.notificationTime:
+                        _bar += 1
+                        _percent = int(_bar * 100 / self.notificationTime)
+                        self.PopUp.update(_percent, __LS__(32100), __LS__(32115) % (__LS__(32130 + self.action), self.notificationTime - _bar))
+                        if _currentIdleTime > xbmc.getGlobalIdleTime():
+                            self.canceled = True
+                            # self.PopUp.close()
+                            notifyLog('user activity detected, pending action canceled')
+                            break
+                        xbmc.sleep(1000)
 
-                # Popup schliessen
-                self.PopUp.close()
-                if not self.Popup.iscanceled():
-                    pass
-                    #
-                    # ToDo: implement user defined actions here
-                    #
+                    # if self.PopUp.isFinished():
+                    self.PopUp.close()
 
-            xbmc.sleep(60000)
+                    if not self.canceled:
+
+                        self.actionPerformed = True
+                        {
+                        0: self.stopVideoAudioTV,
+                        1: self.systemReboot,
+                        2: self.systemShutdown,
+                        3: self.systemHibernate,
+                        4: self.systemSuspend
+                        }.get(self.action)()
+                        #
+                        # ToDo: implement more user defined actions here
+                        #
+                        break
+                    #
+            xbmc.sleep(30000)
+            notifyLog('watchdog detect idle status since %s secs' % xbmc.getGlobalIdleTime())
+            #
+        notifyLog('action performed, execution finished')
 
 # MAIN #
 try:
     WatchDog = SleepyWatchdog()
+    notifyLog('kicks in')
     WatchDog.start()
 except Exception, e:
-    notifyLog('%s' %e, xbmc.LOGERROR)
-del WatchDog
+    traceError(e, sys.exc_traceback)

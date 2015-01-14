@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <strings>
     <string id="32100">Sleepy WatchDog</string>
+    <string id="32115">Perform '%s' in %s seconds...</string>
+    <!-- setting strings -->
     <string id="32120">max Idle Time</string>
     <string id="32121">Action to execute</string>
     <string id="32122">Show notification before perform action</string>
+    <string id="32123">Duration of notification</string>
     <!-- defined actions -->
     <string id="32130">Stop playing media</string>
-    <string id="32131">Reboot system</string>
-    <string id="32132">Shutdown system</string>
-    <string id="32133">Hibernate system</string>
+    <string id="32131">Reboot</string>
+    <string id="32132">Shutdown</string>
+    <string id="32133">Hibernate</string>
+    <string id="32134">Suspend</string>
 </strings>
