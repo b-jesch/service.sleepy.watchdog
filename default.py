@@ -57,7 +57,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.getWDSettings()
 
     def getWDSettings(self):
-        self.maxIdleTime = int(re.match('\d+', __addon__.getSetting('maxIdleTime')).group())
+        self.maxIdleTime = int(re.match('\d+', __addon__.getSetting('maxIdleTime')).group())*60
         #
         # ONLY TESTING PURPOSES !
         # self.maxIdleTime = 1
@@ -65,6 +65,9 @@ class SleepyWatchdog(XBMCMonitor):
         self.action = int(__addon__.getSetting('action'))
         self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
+        self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
+
+        if self.testConfig: self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
 
     # user defined actions
 
@@ -100,9 +103,13 @@ class SleepyWatchdog(XBMCMonitor):
             notifyLog('calculated idle time: %s secs' % _currentIdleTime)
 
             # Check if GlobalIdle longer than maxIdle
-            if _currentIdleTime > (self.maxIdleTime*60 - int(self.notifyUser)*self.notificationTime):
+            if _currentIdleTime > (self.maxIdleTime - int(self.notifyUser)*self.notificationTime):
 
                 notifyLog('max idle time reached, ready to perform some action')
+
+                # Reset test status (This works not properly!)
+                __addon__.setSetting('testConfig', 'false')
+
                 # Check if notification is allowed
                 if self.notifyUser:
                     _bar = 0
@@ -139,7 +146,7 @@ class SleepyWatchdog(XBMCMonitor):
                         #
                         break
                     #
-            xbmc.sleep(30000)
+            xbmc.sleep(10000)
             if self.SettingsChanged:
                 notifyLog('settings changed, update configuration')
                 self.getWDSettings()

@@ -6,4 +6,6 @@
     <setting id="showPopup" type="bool" label="32122" default="true" />
     <setting id="notificationTime" type="labelenum" label="32123" enable="eq(-1,true)"
              values="15 sec|30 sec|45 sec|60 sec|75 sec|90 sec|105 sec|120 sec|135 sec|150 sec|165 sec|180 sec" default="60 sec" />
+    <setting type="sep" />
+    <setting id="testConfig" type="bool" label="32124" default="false" />
 </settings>
