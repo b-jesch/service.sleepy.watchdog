@@ -25,7 +25,22 @@ def traceError(err, exc_tb):
 def notifyLog(message, level=xbmc.LOGNOTICE):
     xbmc.log('%s: %s' % (__addonname__, message.encode('utf-8')), level)
 
-class SleepyWatchdog(object):
+class XBMCMonitor(xbmc.Monitor):
+
+    def __init__(self, *args, **kwargs):
+        xbmc.Monitor.__init__(self)
+        self.SettingsChanged = False
+
+    def onSettingsChanged(self):
+        self.SettingsChanged = True
+
+    def onScreensaverActivated(self):
+        self.ScreensaverActive = True
+
+    def onScreensaverDeactivated(self):
+        self.ScreensaverActive = False
+
+class SleepyWatchdog(XBMCMonitor):
 
     def __init__(self):
         self.maxIdleTime = None
@@ -38,6 +53,7 @@ class SleepyWatchdog(object):
         self.Player = xbmc.Player()
         self.execBuiltin = xbmc.executebuiltin
 
+        XBMCMonitor.__init__(self)
         self.getWDSettings()
 
     def getWDSettings(self):
@@ -75,11 +91,17 @@ class SleepyWatchdog(object):
 
     def start(self):
 
+        _currentIdleTime = 0
         while not xbmc.abortRequested:
             self.actionCanceled = False
+            if _currentIdleTime > xbmc.getGlobalIdleTime():
+                notifyLog('user activity detected, reset idle time')
+            _currentIdleTime = xbmc.getGlobalIdleTime()
+            notifyLog('calculated idle time: %s secs' % _currentIdleTime)
+
             # Check if GlobalIdle longer than maxIdle
-            if xbmc.getGlobalIdleTime() > (self.maxIdleTime*60 - int(self.notifyUser)*self.notificationTime):
-                _currentIdleTime = xbmc.getGlobalIdleTime()
+            if _currentIdleTime > (self.maxIdleTime*60 - int(self.notifyUser)*self.notificationTime):
+
                 notifyLog('max idle time reached, ready to perform some action')
                 # Check if notification is allowed
                 if self.notifyUser:
@@ -118,14 +140,18 @@ class SleepyWatchdog(object):
                         break
                     #
             xbmc.sleep(30000)
-            notifyLog('watchdog detect idle status since %s secs' % xbmc.getGlobalIdleTime())
+            if self.SettingsChanged:
+                notifyLog('settings changed, update configuration')
+                self.getWDSettings()
+                self.SettingsChanged = False
             #
         notifyLog('action performed, execution finished')
 
 # MAIN #
+WatchDog = SleepyWatchdog()
 try:
-    WatchDog = SleepyWatchdog()
-    notifyLog('kicks in')
+    notifyLog('Sleepy Watchdog kicks in')
     WatchDog.start()
 except Exception, e:
     traceError(e, sys.exc_traceback)
+del WatchDog
