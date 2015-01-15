@@ -17,7 +17,7 @@ def traceError(err, exc_tb):
     while exc_tb:
         tb = traceback.format_tb(exc_tb)
         notifyLog('%s' % err, xbmc.LOGERROR)
-        notifyLog('in module: %s' % sys.argv[0].strip() or '<not defined>', xbmc.LOGERROR)
+        notifyLog('in module: %s' % (sys.argv[0].strip() or '<not defined>'), xbmc.LOGERROR)
         notifyLog('at line:   %s' % traceback.tb_lineno(exc_tb), xbmc.LOGERROR)
         notifyLog('in file:   %s' % tb[0].split(",")[0].strip()[6:-1],xbmc.LOGERROR)
         exc_tb = exc_tb.tb_next

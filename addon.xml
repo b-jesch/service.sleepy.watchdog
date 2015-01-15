@@ -2,7 +2,7 @@
 <addon id="service.sleepy.watchdog"
        name="Sleepy Watchdog"
        version="0.1.1"
-       provider-name="BJ1 and _nico, thanks to Michael Schlosser">
+       provider-name="BJ1 and _nico, thanks to Martin Schlosser">
   <extension point="xbmc.service"
              library="default.py" start="[login|startup]" />
   <extension point="xbmc.python.script" 
