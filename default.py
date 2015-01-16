@@ -123,14 +123,11 @@ class SleepyWatchdog(XBMCMonitor):
                         self.PopUp.update(_percent, __LS__(32100), __LS__(32115) % (__LS__(32130 + self.action), self.notificationTime - _bar))
                         if _currentIdleTime > xbmc.getGlobalIdleTime():
                             self.actionCanceled = True
-                            # self.PopUp.close()
                             notifyLog('user activity detected, pending action canceled')
                             break
                         xbmc.sleep(1000)
 
-                    # if self.PopUp.isFinished():
                     self.PopUp.close()
-
                     if not self.actionCanceled:
 
                         self.actionPerformed = True
