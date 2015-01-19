@@ -95,12 +95,14 @@ class SleepyWatchdog(XBMCMonitor):
     def start(self):
 
         _currentIdleTime = 0
+        _msgCnt = 0
         while not xbmc.abortRequested:
             self.actionCanceled = False
             if _currentIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
+                _msgCnt = 0
             _currentIdleTime = xbmc.getGlobalIdleTime()
-            notifyLog('calculated idle time: %s secs' % _currentIdleTime)
+            if _msgCnt % 12 == 0: notifyLog('calculated idle time: %s secs' % _currentIdleTime)
 
             # Check if GlobalIdle longer than maxIdle
             if _currentIdleTime > (self.maxIdleTime - int(self.notifyUser)*self.notificationTime):
@@ -144,6 +146,7 @@ class SleepyWatchdog(XBMCMonitor):
                         break
                     #
             xbmc.sleep(10000)
+            _msgCnt += 1
             if self.SettingsChanged:
                 notifyLog('settings changed, update configuration')
                 self.getWDSettings()
