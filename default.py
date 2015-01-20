@@ -116,13 +116,13 @@ class SleepyWatchdog(XBMCMonitor):
                 if self.notifyUser:
                     _bar = 0
                     notifyLog('init notification shutdown')
-                    self.PopUp.create(__LS__(32100), __LS__(32115) % (__LS__(32130 + self.action), self.notificationTime))
+                    self.PopUp.create(__LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime))
                     self.PopUp.update(_bar)
                     # synchronize progressbar
                     while _bar < self.notificationTime:
                         _bar += 1
                         _percent = int(_bar * 100 / self.notificationTime)
-                        self.PopUp.update(_percent, __LS__(32100), __LS__(32115) % (__LS__(32130 + self.action), self.notificationTime - _bar))
+                        self.PopUp.update(_percent, __LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime - _bar))
                         if _currentIdleTime > xbmc.getGlobalIdleTime():
                             self.actionCanceled = True
                             notifyLog('user activity detected, pending action canceled')
@@ -134,14 +134,15 @@ class SleepyWatchdog(XBMCMonitor):
 
                         self.actionPerformed = True
                         {
-                        0: self.stopVideoAudioTV,
-                        1: self.systemReboot,
-                        2: self.systemShutdown,
-                        3: self.systemHibernate,
-                        4: self.systemSuspend
+                        32130: self.stopVideoAudioTV,
+                        32131: self.systemReboot,
+                        32132: self.systemShutdown,
+                        32133: self.systemHibernate,
+                        32134: self.systemSuspend
                         }.get(self.action)()
                         #
                         # ToDo: implement more user defined actions here
+                        #       Action numbers are defined in settings.xml/strings.xml
                         #
                         break
                     #
