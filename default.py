@@ -2,6 +2,7 @@ import os
 import sys
 import traceback
 import re
+import time
 import xbmc, xbmcgui, xbmcaddon
 
 __addon__ = xbmcaddon.Addon()
@@ -101,8 +102,10 @@ class SleepyWatchdog(XBMCMonitor):
             if _currentIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
                 _msgCnt = 0
+
             _currentIdleTime = xbmc.getGlobalIdleTime()
-            if _msgCnt % 12 == 0: notifyLog('calculated idle time: %s secs' % _currentIdleTime)
+            if _msgCnt % 10 == 0: notifyLog('calculated idle time ca. %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
+            _msgCnt += 1
 
             # Check if GlobalIdle longer than maxIdle
             if _currentIdleTime > (self.maxIdleTime - int(self.notifyUser)*self.notificationTime):
@@ -146,20 +149,23 @@ class SleepyWatchdog(XBMCMonitor):
                         #
                         break
                     #
-            xbmc.sleep(10000)
-            _msgCnt += 1
+
+            _loop = 0
+            while not xbmc.abortRequested and _loop < 60:
+                xbmc.sleep(1000)
+                _loop += 1
+
             if self.SettingsChanged:
                 notifyLog('settings changed, update configuration')
                 self.getWDSettings()
                 self.SettingsChanged = False
-            #
-        notifyLog('action performed, execution finished')
 
 # MAIN #
 WatchDog = SleepyWatchdog()
+notifyLog('Sleepy Watchdog kicks in')
 try:
-    notifyLog('Sleepy Watchdog kicks in')
     WatchDog.start()
 except Exception, e:
     traceError(e, sys.exc_traceback)
 del WatchDog
+notifyLog('Sleepy Watchdog kicks off')
