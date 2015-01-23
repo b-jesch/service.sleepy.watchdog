@@ -1,1 +1,1 @@
-Idle Timer management for performing actions after an amount of inactivity time for use in xbmc/kodi
+Idle Timer management that performs actions after an amount of inactivity time of user for xbmc/kodi
