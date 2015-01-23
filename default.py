@@ -63,7 +63,7 @@ class SleepyWatchdog(XBMCMonitor):
         # ONLY TESTING PURPOSES !
         # self.maxIdleTime = 1
         #
-        self.action = int(__addon__.getSetting('action'))
+        self.action = int(__addon__.getSetting('action')) + 32130
         self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
@@ -104,7 +104,7 @@ class SleepyWatchdog(XBMCMonitor):
                 _msgCnt = 0
 
             _currentIdleTime = xbmc.getGlobalIdleTime()
-            if _msgCnt % 10 == 0: notifyLog('calculated idle time ca. %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
+            if _msgCnt % 10 == 0: notifyLog('idle time %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
             _msgCnt += 1
 
             # Check if GlobalIdle longer than maxIdle
@@ -118,7 +118,7 @@ class SleepyWatchdog(XBMCMonitor):
                 # Check if notification is allowed
                 if self.notifyUser:
                     _bar = 0
-                    notifyLog('init notification shutdown')
+                    notifyLog('init notification countdown')
                     self.PopUp.create(__LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime))
                     self.PopUp.update(_bar)
                     # synchronize progressbar
@@ -155,10 +155,11 @@ class SleepyWatchdog(XBMCMonitor):
                 xbmc.sleep(1000)
                 _loop += 1
 
-            if self.SettingsChanged:
-                notifyLog('settings changed, update configuration')
-                self.getWDSettings()
-                self.SettingsChanged = False
+                if self.SettingsChanged:
+                    notifyLog('settings changed, update configuration')
+                    self.getWDSettings()
+                    self.SettingsChanged = False
+                    break
 
 # MAIN #
 WatchDog = SleepyWatchdog()
