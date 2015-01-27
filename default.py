@@ -13,6 +13,8 @@ __LS__ = __addon__.getLocalizedString
 
 __iconDefault__ = xbmc.translatePath(os.path.join(__path__, 'resources', 'media', 'pawprint.png'))
 
+LANGOFFSET = 32130
+
 
 def traceError(err, exc_tb):
     while exc_tb:
@@ -63,7 +65,7 @@ class SleepyWatchdog(XBMCMonitor):
         # ONLY TESTING PURPOSES !
         # self.maxIdleTime = 1
         #
-        self.action = int(__addon__.getSetting('action')) + 32130
+        self.action = int(__addon__.getSetting('action')) + LANGOFFSET
         self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
@@ -146,6 +148,7 @@ class SleepyWatchdog(XBMCMonitor):
                         #
                         # ToDo: implement more user defined actions here
                         #       Action numbers are defined in settings.xml/strings.xml
+                        #       also see LANGOFFSET
                         #
                         break
                     #
