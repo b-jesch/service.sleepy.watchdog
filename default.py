@@ -70,7 +70,11 @@ class SleepyWatchdog(XBMCMonitor):
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
 
-        if self.testConfig: self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
+        if self.testConfig:
+            self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
+            self.testIsRunning = True
+        else:
+            self.testIsRunning = False
 
     # user defined actions
 
@@ -114,7 +118,7 @@ class SleepyWatchdog(XBMCMonitor):
 
                 notifyLog('max idle time reached, ready to perform some action')
 
-                # Reset test status (This works not properly!)
+                # Reset test status
                 __addon__.setSetting('testConfig', 'false')
 
                 # Check if notification is allowed
@@ -150,7 +154,10 @@ class SleepyWatchdog(XBMCMonitor):
                         #       Action numbers are defined in settings.xml/strings.xml
                         #       also see LANGOFFSET
                         #
-                        break
+                        if self.testIsRunning:
+                            notifyLog('while running in test mode, watchdog will be still alive')
+                        else:
+                            break
                     #
 
             _loop = 0
