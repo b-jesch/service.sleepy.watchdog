@@ -155,7 +155,7 @@ class SleepyWatchdog(XBMCMonitor):
                         #       also see LANGOFFSET
                         #
                         if self.testIsRunning:
-                            notifyLog('while running in test mode, watchdog will be still alive')
+                            notifyLog('watchdog was running in test mode and remains alive')
                         else:
                             break
                     #
