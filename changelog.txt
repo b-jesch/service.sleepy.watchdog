@@ -3,3 +3,6 @@
 
 0.1.2
 - German language file added, some code enhancements
+
+0.1.3
+- CEC command added (turns TV off)

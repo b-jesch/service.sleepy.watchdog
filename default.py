@@ -1,5 +1,6 @@
 import os
 import sys
+import subprocess
 import traceback
 import re
 import time
@@ -69,6 +70,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
+        self.sendCEC = True if __addon__.getSetting('sendCEC').upper() == 'TRUE' else False
 
         if self.testConfig:
             self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
@@ -98,6 +100,11 @@ class SleepyWatchdog(XBMCMonitor):
     def systemSuspend(self):
         notifyLog('init system suspend')
         self.execBuiltin('Suspend')
+
+    def sendCecCommand(self):
+        if not self.sendCEC: return
+        cec = subprocess.Popen('echo \"standby 0\" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
+        for retstr in cec: notifyLog(str(retstr).strip())
 
     def start(self):
 
@@ -142,6 +149,8 @@ class SleepyWatchdog(XBMCMonitor):
                     if not self.actionCanceled:
 
                         self.actionPerformed = True
+
+                        self.sendCecCommand()
                         {
                         32130: self.stopVideoAudioTV,
                         32131: self.systemReboot,

@@ -8,6 +8,7 @@
     <string id="32122">Benachrichtige Nutzer, bevor eine Aktion ausgeführt wird</string>
     <string id="32123">Benachrichtigungsdauer</string>
     <string id="32124">aktuelle Einstellungen testen (bitte 1 Minute warten)</string>
+    <string id="32125">TV ausschalten (CEC)</string>
     <!-- defined actions -->
     <string id="32130">Abspielen stoppen</string>
     <string id="32131">System neu starten</string>
