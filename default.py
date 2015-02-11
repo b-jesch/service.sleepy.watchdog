@@ -117,7 +117,7 @@ class SleepyWatchdog(XBMCMonitor):
                 _msgCnt = 0
 
             _currentIdleTime = xbmc.getGlobalIdleTime()
-            if _msgCnt % 10 == 0: notifyLog('idle time %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
+            if _msgCnt % 10 == 0 and not self.testIsRunning: notifyLog('idle time %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
             _msgCnt += 1
 
             # Check if GlobalIdle longer than maxIdle
