@@ -180,6 +180,7 @@ class SleepyWatchdog(XBMCMonitor):
                     self.SettingsChanged = False
                     break
 
+                if self.testIsRunning: break
 # MAIN #
 WatchDog = SleepyWatchdog()
 notifyLog('Sleepy Watchdog kicks in')
