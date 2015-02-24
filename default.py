@@ -103,6 +103,7 @@ class SleepyWatchdog(XBMCMonitor):
 
     def sendCecCommand(self):
         if not self.sendCEC: return
+        notifyLog('send standby command via CEC')
         cec = subprocess.Popen('echo \"standby 0\" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
         for retstr in cec: notifyLog(str(retstr).strip())
 
