@@ -16,7 +16,6 @@ __iconDefault__ = xbmc.translatePath(os.path.join(__path__, 'resources', 'media'
 
 LANGOFFSET = 32130
 
-
 def traceError(err, exc_tb):
     while exc_tb:
         tb = traceback.format_tb(exc_tb)
