@@ -9,8 +9,8 @@
 	     library="default.py" />
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary lang="en">sleepy Watchdog</summary>
-    <summary lang="de">sleepy Watchdog</summary>
+    <summary lang="en">Sleepy Watchdog - he's watching while You sleep</summary>
+    <summary lang="de">Sleepy Watchdog - er passt auf, während Du schläfst</summary>
     <description lang="en">This Idle Timer management performs defined actions after an adjusted amount of inactivity time. Those actions are stop playing Audio, Video or TV for example or some actions to execute shutdown variations like suspend, reboot poweroff or hibernate.</description>
     <description lang="de">Dieser Timer führt vorher definierte Aktionen nach einer einstellbaren Inaktivitätszeit aus. Die Aktionen können zum Beispiel das Stoppen von Audio, Video oder TV-Streams sein, aber auch das Herunterfahren des Systems in verschiedenen Modi (Suspend, Reboot, PowerOff, Bereitschaft) wird angeboten.</description>
     <disclaimer lang="de">Benutzung auf eigene Gefahr. Dieser Dienst könnte mit anderen Diensten (z.B. Aufnahmedienste) kollidieren.</disclaimer>

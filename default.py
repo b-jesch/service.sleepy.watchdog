@@ -27,7 +27,7 @@ def traceError(err, exc_tb):
         exc_tb = exc_tb.tb_next
 
 def notifyLog(message, level=xbmc.LOGNOTICE):
-    xbmc.log('%s: %s' % (__addonname__, message.encode('utf-8')), level)
+    xbmc.log('[%s] %s' % (__addonname__, message.encode('utf-8')), level)
 
 class XBMCMonitor(xbmc.Monitor):
 
@@ -174,6 +174,7 @@ class SleepyWatchdog(XBMCMonitor):
             while not xbmc.abortRequested and _loop < 60:
                 xbmc.sleep(1000)
                 _loop += 1
+                _currentIdleTime += 1
 
                 if self.SettingsChanged:
                     notifyLog('settings changed, update configuration')
@@ -182,6 +183,8 @@ class SleepyWatchdog(XBMCMonitor):
                     break
 
                 if self.testIsRunning: break
+                if _currentIdleTime > xbmc.getGlobalIdleTime(): break
+
 # MAIN #
 WatchDog = SleepyWatchdog()
 notifyLog('Sleepy Watchdog kicks in')
