@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
     <setting id="maxIdleTime" type="labelenum" label="32120"
-             values="15 min|30 min|45 min|60 min|75 min|90 min|105 min|120 min|150 min|180 min|210 min|240 min|300 min|360 min|420 min|480 min|540 min|600 min" default="120 min" />
+             values="15 min|30 min|45 min|60 min|75 min|90 min|105 min|120 min|150 min|180 min|210 min|240 min|300 min|360 min|420 min|480 min|540 min|600 min|660 min|720 min|780 min|840 min|900 min" default="120 min" />
     <setting id="action" type="enum" label="32121" lvalues="32130|32131|32132|32133|32134" default="0" />
     <setting id="sendCEC" type="bool" label="32125" default="false" />
     <setting id="showPopup" type="bool" label="32122" default="true" />
