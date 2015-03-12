@@ -115,8 +115,9 @@ class SleepyWatchdog(XBMCMonitor):
         try:
             while not xbmc.abortRequested:
                 self.actionCanceled = False
-                if _currentIdleTime > xbmc.getGlobalIdleTime():
+                if _currentIdleTime > xbmc.getGlobalIdleTime() + 60:
                     self.notifyLog('user activity detected, reset idle time')
+                if _currentIdleTime > xbmc.getGlobalIdleTime():
                     _msgCnt = 0
 
                 if _msgCnt % 10 == 0 and _currentIdleTime > 60 and not self.testIsRunning: self.notifyLog('idle time %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
@@ -172,8 +173,8 @@ class SleepyWatchdog(XBMCMonitor):
                                 break
                         #
 
-                _loop = 0
-                while not xbmc.abortRequested and _loop < 60:
+                _loop = 1
+                while not xbmc.abortRequested:
                     xbmc.sleep(1000)
                     _loop += 1
                     _currentIdleTime += 1
@@ -184,8 +185,7 @@ class SleepyWatchdog(XBMCMonitor):
                         self.SettingsChanged = False
                         break
 
-                    if self.testIsRunning: break
-                    if _currentIdleTime > xbmc.getGlobalIdleTime(): break
+                    if self.testIsRunning or _currentIdleTime > xbmc.getGlobalIdleTime() or _loop > 60: break
 
             self.notifyLog('Sleepy Watchdog kicks off')
         except Exception, e:
