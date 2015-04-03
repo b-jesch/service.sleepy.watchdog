@@ -40,7 +40,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.actionCanceled = False
         self.showPopup = None
         self.notificationTime = None
-        self.PopUp = xbmcgui.DialogProgressBG()
+        self.PopUp = xbmcgui.DialogProgress()
         self.Player = xbmc.Player()
         self.execBuiltin = xbmc.executebuiltin
 
@@ -143,9 +143,8 @@ class SleepyWatchdog(XBMCMonitor):
                             _bar += 1
                             _percent = int(_bar * 100 / self.notificationTime)
                             self.PopUp.update(_percent, __LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime - _bar))
-                            if _currentIdleTime > xbmc.getGlobalIdleTime():
+                            if self.PopUp.iscanceled():
                                 self.actionCanceled = True
-                                self.notifyLog('user activity detected, pending action canceled')
                                 break
                             xbmc.sleep(1000)
 

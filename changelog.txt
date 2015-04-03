@@ -6,3 +6,6 @@
 
 0.1.3
 - CEC command added (turns TV off)
+
+0.1.4
+- Use DialogProgress instead of DialogProgressBG as this wasn't shown in fullscreen mode

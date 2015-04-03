@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <strings>
     <string id="32100">Sleepy WatchDog</string>
-    <string id="32115">Perform '%s' in %s seconds...</string>
+    <string id="32115">Perform action '%s' in %s seconds...</string>
     <!-- setting strings -->
     <string id="32120">max Idle Time</string>
     <string id="32121">Action to execute</string>
