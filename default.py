@@ -149,6 +149,8 @@ class SleepyWatchdog(XBMCMonitor):
                             xbmc.sleep(1000)
 
                         self.PopUp.close()
+                        xbmc.sleep(500)
+                        #
                         if not self.actionCanceled:
 
                             self.actionPerformed = True
