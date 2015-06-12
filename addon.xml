@@ -21,9 +21,4 @@
     <email>birger.jesch@gmail.com</email>
     <source>https://github.com/b-jesch/service.sleepy.watchdog</source>
   </extension>
-  <extension point="xbmc.addon.repository" name="SaXBMC Addon Repo">
-    <info compressed="true">https://raw.githubusercontent.com/b-jesch/SaXBMC/master/addons.xml</info>
-    <checksum>https://raw.githubusercontent.com/b-jesch/SaXBMC/master/addons.xml.md5</checksum>
-    <datadir zip="true">https://raw.githubusercontent.com/b-jesch/SaXBMC/master/zip/</datadir>
-  </extension>
 </addon>
