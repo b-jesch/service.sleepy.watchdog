@@ -14,6 +14,9 @@ __LS__ = __addon__.getLocalizedString
 
 __iconDefault__ = xbmc.translatePath(os.path.join(__path__, 'resources', 'media', 'pawprint.png'))
 
+__datapath__ = xbmc.translatePath('special://temp')
+CTLFILE = os.path.join(__datapath__, 'service.tvh.manager.ctl')
+
 LANGOFFSET = 32130
 
 class XBMCMonitor(xbmc.Monitor):
@@ -132,6 +135,13 @@ class SleepyWatchdog(XBMCMonitor):
                     # Reset test status
                     __addon__.setSetting('testConfig', 'false')
 
+                    # Check if service.tvh.manager is active (service.tvh.manager.ctl exists)
+                    # If so, exiting without action
+
+                    if os.path.isfile(CTLFILE):
+                        self.notifyLog('there is another addon in active state, exiting without action')
+                        break
+
                     # Check if notification is allowed
                     if self.notifyUser:
                         _bar = 0
@@ -151,28 +161,28 @@ class SleepyWatchdog(XBMCMonitor):
                         self.PopUp.close()
                         xbmc.sleep(500)
                         #
-                        if not self.actionCanceled:
+                    if not self.actionCanceled:
 
-                            self.actionPerformed = True
+                        self.actionPerformed = True
 
-                            self.sendCecCommand()
-                            {
-                            32130: self.stopVideoAudioTV,
-                            32131: self.systemReboot,
-                            32132: self.systemShutdown,
-                            32133: self.systemHibernate,
-                            32134: self.systemSuspend
-                            }.get(self.action)()
-                            #
-                            # ToDo: implement more user defined actions here
-                            #       Action numbers are defined in settings.xml/strings.xml
-                            #       also see LANGOFFSET
-                            #
-                            if self.testIsRunning:
-                                self.notifyLog('watchdog was running in test mode and remains alive')
-                            else:
-                                break
+                        self.sendCecCommand()
+                        {
+                        32130: self.stopVideoAudioTV,
+                        32131: self.systemReboot,
+                        32132: self.systemShutdown,
+                        32133: self.systemHibernate,
+                        32134: self.systemSuspend
+                        }.get(self.action)()
                         #
+                        # ToDo: implement more user defined actions here
+                        #       Action numbers are defined in settings.xml/strings.xml
+                        #       also see LANGOFFSET
+                        #
+                        if self.testIsRunning:
+                            self.notifyLog('watchdog was running in test mode and remains alive')
+                        else:
+                            break
+                    #
 
                 _loop = 1
                 while not xbmc.abortRequested:
