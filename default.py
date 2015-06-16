@@ -139,7 +139,7 @@ class SleepyWatchdog(XBMCMonitor):
                     # If so, exiting without action
 
                     if os.path.isfile(CTLFILE):
-                        self.notifyLog('there is another addon in active state, exiting without action')
+                        self.notifyLog('there\'s an addon in active state, exiting')
                         break
 
                     # Check if notification is allowed
