@@ -1,3 +1,6 @@
+[B]0.1.7[/B]
+- New action added. Watchdog can start other addons too.
+
 [B]0.1.6[/B]
 - mechanism for interoperability between addons implemented. TVH Powermanagement
   now creates an addon-id.ctl file that signals an active state of the addon.

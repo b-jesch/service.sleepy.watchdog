@@ -9,10 +9,12 @@
     <string id="32123">Duration of notification</string>
     <string id="32124">Test current settings (just wait 1 minute)</string>
     <string id="32125">Turn off TV (CEC)</string>
+    <string id="32126">Addon ID</string>
     <!-- defined actions -->
     <string id="32130">Stop playing media</string>
     <string id="32131">Reboot</string>
     <string id="32132">Shutdown</string>
     <string id="32133">Hibernate</string>
     <string id="32134">Suspend</string>
+    <string id="32135">Run Addon</string>
 </strings>

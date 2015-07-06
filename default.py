@@ -74,6 +74,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
         self.sendCEC = True if __addon__.getSetting('sendCEC').upper() == 'TRUE' else False
+        self.addon_id = __addon__.getSetting('addon_id')
 
         if self.testConfig:
             self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
@@ -109,6 +110,11 @@ class SleepyWatchdog(XBMCMonitor):
         self.notifyLog('send standby command via CEC')
         cec = subprocess.Popen('echo \"standby 0\" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
         for retstr in cec: self.notifyLog(str(retstr).strip())
+
+    def runAddon(self):
+        if xbmc.getCondVisibility('System.HasAddon(%s)' % (self.addon_id)):
+            self.notifyLog('run addon \'%s\'' % (self.addon_id))
+            self.execBuiltin('RunAddon(%s)' % (self.addon_id))
 
     def start(self):
 
@@ -171,7 +177,8 @@ class SleepyWatchdog(XBMCMonitor):
                         32131: self.systemReboot,
                         32132: self.systemShutdown,
                         32133: self.systemHibernate,
-                        32134: self.systemSuspend
+                        32134: self.systemSuspend,
+                        32135: self.runAddon
                         }.get(self.action)()
                         #
                         # ToDo: implement more user defined actions here
