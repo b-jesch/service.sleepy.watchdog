@@ -14,9 +14,6 @@ __LS__ = __addon__.getLocalizedString
 
 __iconDefault__ = xbmc.translatePath(os.path.join(__path__, 'resources', 'media', 'pawprint.png'))
 
-__datapath__ = xbmc.translatePath('special://temp')
-CTLFILE = os.path.join(__datapath__, 'service.tvh.manager.ctl')
-
 LANGOFFSET = 32130
 
 class XBMCMonitor(xbmc.Monitor):
@@ -65,10 +62,6 @@ class SleepyWatchdog(XBMCMonitor):
 
     def getWDSettings(self):
         self.maxIdleTime = int(re.match('\d+', __addon__.getSetting('maxIdleTime')).group())*60
-        #
-        # ONLY TESTING PURPOSES !
-        # self.maxIdleTime = 1
-        #
         self.action = int(__addon__.getSetting('action')) + LANGOFFSET
         self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
@@ -115,6 +108,8 @@ class SleepyWatchdog(XBMCMonitor):
         if xbmc.getCondVisibility('System.HasAddon(%s)' % (self.addon_id)):
             self.notifyLog('run addon \'%s\'' % (self.addon_id))
             self.execBuiltin('RunAddon(%s)' % (self.addon_id))
+        else:
+            self.notifyLog('could not run nonexistent addon \'%s\'' % (self.addon_id), level=xbmc.LOGERROR)
 
     def start(self):
 
@@ -140,13 +135,6 @@ class SleepyWatchdog(XBMCMonitor):
 
                     # Reset test status
                     __addon__.setSetting('testConfig', 'false')
-
-                    # Check if service.tvh.manager is active (service.tvh.manager.ctl exists)
-                    # If so, exiting without action
-
-                    if os.path.isfile(CTLFILE):
-                        self.notifyLog('there\'s an addon in active state, exiting')
-                        break
 
                     # Check if notification is allowed
                     if self.notifyUser:

@@ -1,8 +1,12 @@
+[B]0.1.8[/B]
+- Unused code removed. Also addon-id.ctl is no longer needed (see V.0.1.6) because
+  Sleepy Watchdog can now handle addons himself.
+
 [B]0.1.7[/B]
-- New action added. Watchdog can start other addons too.
+- New action added. Watchdog can now start other addons too.
 
 [B]0.1.6[/B]
-- mechanism for interoperability between addons implemented. TVH Powermanagement
+- Mechanism for interoperability between addons implemented. TVH Powermanagement
   now creates an addon-id.ctl file that signals an active state of the addon.
   Watchdog kicks off without any action in this case.
 
