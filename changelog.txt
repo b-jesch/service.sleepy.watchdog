@@ -1,5 +1,5 @@
 [B]0.1.9[/B]
-- Option added. Jumps into main menu optionally when stop playing video/audio is selected
+- Option added. Jumps into main menu optionally when stop playing video/audio is selected.
 
 [B]0.1.8[/B]
 - Unused code removed. Also addon-id.ctl is no longer needed (see V.0.1.6) because
