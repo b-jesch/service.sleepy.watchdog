@@ -10,6 +10,7 @@
     <string id="32124">Test current settings (just wait 1 minute)</string>
     <string id="32125">Turn off TV (CEC)</string>
     <string id="32126">Addon ID</string>
+    <string id="32127">Jump into Main Menu</string>
     <!-- defined actions -->
     <string id="32130">Stop playing media</string>
     <string id="32131">Reboot</string>

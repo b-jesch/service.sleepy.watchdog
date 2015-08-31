@@ -67,6 +67,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
         self.sendCEC = True if __addon__.getSetting('sendCEC').upper() == 'TRUE' else False
+        self.jumpMainMenu = True if __addon__.getSetting('mainmenu').upper() == 'TRUE' else False
         self.addon_id = __addon__.getSetting('addon_id')
 
         if self.testConfig:
@@ -81,6 +82,10 @@ class SleepyWatchdog(XBMCMonitor):
         self.notifyLog('stop playing media')
         if self.Player.isPlaying():
             self.Player.stop()
+        if self.jumpMainMenu:
+            xbmc.sleep(500)
+            self.notifyLog('jump to main menu')
+            self.execBuiltin('ActivateWindow(home)')
 
     def systemReboot(self):
         self.notifyLog('init system reboot')
