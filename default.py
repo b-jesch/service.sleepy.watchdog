@@ -68,6 +68,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
         self.sendCEC = True if __addon__.getSetting('sendCEC').upper() == 'TRUE' else False
         self.jumpMainMenu = True if __addon__.getSetting('mainmenu').upper() == 'TRUE' else False
+        self.keepAlive = True if __addon__.getSetting('keepalive').upper() == 'TRUE' else False
         self.addon_id = __addon__.getSetting('addon_id')
 
         if self.testConfig:
@@ -79,13 +80,13 @@ class SleepyWatchdog(XBMCMonitor):
     # user defined actions
 
     def stopVideoAudioTV(self):
-        self.notifyLog('stop playing media')
         if self.Player.isPlaying():
+            self.notifyLog('media is playing, stopping it')
             self.Player.stop()
-        if self.jumpMainMenu:
-            xbmc.sleep(500)
-            self.notifyLog('jump to main menu')
-            self.execBuiltin('ActivateWindow(home)')
+            if self.jumpMainMenu:
+                xbmc.sleep(500)
+                self.notifyLog('jump to main menu')
+                self.execBuiltin('ActivateWindow(home)')
 
     def systemReboot(self):
         self.notifyLog('init system reboot')
@@ -119,6 +120,7 @@ class SleepyWatchdog(XBMCMonitor):
     def start(self):
 
         _currentIdleTime = 0
+        _maxIdleTime = self.maxIdleTime
         _msgCnt = 0
         self.notifyLog('Sleepy Watchdog kicks in')
         try:
@@ -134,7 +136,7 @@ class SleepyWatchdog(XBMCMonitor):
                 _msgCnt += 1
 
                 # Check if GlobalIdle longer than maxIdle
-                if _currentIdleTime > (self.maxIdleTime - int(self.notifyUser)*self.notificationTime):
+                if _currentIdleTime > (_maxIdleTime - int(self.notifyUser)*self.notificationTime):
 
                     self.notifyLog('max idle time reached, ready to perform some action')
 
@@ -144,7 +146,7 @@ class SleepyWatchdog(XBMCMonitor):
                     # Check if notification is allowed
                     if self.notifyUser:
                         _bar = 0
-                        self.notifyLog('init notification countdown')
+                        self.notifyLog('init notification countdown for action no. %s' % (self.action))
                         self.PopUp.create(__LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime))
                         self.PopUp.update(_bar)
                         # synchronize progressbar
@@ -181,7 +183,11 @@ class SleepyWatchdog(XBMCMonitor):
                         if self.testIsRunning:
                             self.notifyLog('watchdog was running in test mode and remains alive')
                         else:
-                            break
+                            if self.keepAlive:
+                                self.notifyLog('update idletime for next cycle')
+                                _maxIdleTime += self.maxIdleTime
+                            else:
+                                break
                     #
 
                 _loop = 1

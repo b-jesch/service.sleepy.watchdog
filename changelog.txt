@@ -1,3 +1,6 @@
+[B]0.1.10[/B]
+- Option for keeping Watchdog alive when stop playing video/audio is selected
+
 [B]0.1.9[/B]
 - Option added. Jumps into main menu optionally when stop playing video/audio is selected.
 

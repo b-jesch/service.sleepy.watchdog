@@ -9,8 +9,9 @@
     <string id="32123">Benachrichtigungsdauer</string>
     <string id="32124">aktuelle Einstellungen testen (bitte 1 Minute warten)</string>
     <string id="32125">TV ausschalten (CEC)</string>
-    <string id="32126">Addon ID</string>
+    <string id="32126">Addon ID [,Parameter]</string>
     <string id="32127">ins Hauptmenü wechseln</string>
+    <string id="32128">WatchDog weiterhin ausführen</string>
     <!-- defined actions -->
     <string id="32130">Abspielen stoppen</string>
     <string id="32131">System neu starten</string>
