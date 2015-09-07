@@ -70,6 +70,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.jumpMainMenu = True if __addon__.getSetting('mainmenu').upper() == 'TRUE' else False
         self.keepAlive = True if __addon__.getSetting('keepalive').upper() == 'TRUE' else False
         self.addon_id = __addon__.getSetting('addon_id')
+        self.SettingsChanged = False
 
         if self.testConfig:
             self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
@@ -124,10 +125,12 @@ class SleepyWatchdog(XBMCMonitor):
         _msgCnt = 0
         self.notifyLog('Sleepy Watchdog kicks in')
         try:
-            while not xbmc.abortRequested:
+            while not xbmc.abortRequested or xbmc.Monitor.waitForAbort():
                 self.actionCanceled = False
-                if _currentIdleTime > xbmc.getGlobalIdleTime() + 60:
-                    self.notifyLog('user activity detected, reset idle time')
+                if _currentIdleTime > xbmc.getGlobalIdleTime() + 60 or self.SettingsChanged:
+                    self.notifyLog('user activity detected or settings changed, reset idle time')
+                    self.getWDSettings()
+                    _maxIdleTime = self.maxIdleTime
                 if _currentIdleTime > xbmc.getGlobalIdleTime():
                     _msgCnt = 0
 
@@ -184,14 +187,14 @@ class SleepyWatchdog(XBMCMonitor):
                             self.notifyLog('watchdog was running in test mode and remains alive')
                         else:
                             if self.keepAlive:
-                                self.notifyLog('update idletime for next cycle')
+                                self.notifyLog('keeping watchdog alive, update idletime for next cycle')
                                 _maxIdleTime += self.maxIdleTime
                             else:
                                 break
                     #
 
                 _loop = 1
-                while not xbmc.abortRequested:
+                while not xbmc.abortRequested or xbmc.Monitor.waitForAbort():
                     xbmc.sleep(1000)
                     _loop += 1
                     _currentIdleTime += 1
@@ -199,7 +202,6 @@ class SleepyWatchdog(XBMCMonitor):
                     if self.SettingsChanged:
                         self.notifyLog('settings changed, update configuration')
                         self.getWDSettings()
-                        self.SettingsChanged = False
                         break
 
                     if self.testIsRunning or _currentIdleTime > xbmc.getGlobalIdleTime() or _loop > 60: break
