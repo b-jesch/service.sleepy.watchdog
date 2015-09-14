@@ -89,6 +89,10 @@ class SleepyWatchdog(XBMCMonitor):
                 self.notifyLog('jump to main menu')
                 self.execBuiltin('ActivateWindow(home)')
 
+    def quit(self):
+        self.notifyLog('quit kodi')
+        self.execBuiltin('Quit')
+
     def systemReboot(self):
         self.notifyLog('init system reboot')
         xbmc.restart()
@@ -176,7 +180,8 @@ class SleepyWatchdog(XBMCMonitor):
                         32132: self.systemShutdown,
                         32133: self.systemHibernate,
                         32134: self.systemSuspend,
-                        32135: self.runAddon
+                        32135: self.runAddon,
+                        32136: self.quit
                         }.get(self.action)()
                         #
                         # ToDo: implement more user defined actions here

@@ -1,3 +1,6 @@
+[B]0.1.12[/B]
+- Option for exiting Kodi added
+
 [B]0.1.11[/B]
 - Code adjustments
 
