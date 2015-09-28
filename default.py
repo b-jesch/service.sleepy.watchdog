@@ -116,11 +116,11 @@ class SleepyWatchdog(XBMCMonitor):
         for retstr in cec: self.notifyLog(str(retstr).strip())
 
     def runAddon(self):
-        if xbmc.getCondVisibility('System.HasAddon(%s)' % (self.addon_id)):
+        if xbmc.getCondVisibility('System.HasAddon(%s)' % (self.addon_id.split(',')[0])):
             self.notifyLog('run addon \'%s\'' % (self.addon_id))
             self.execBuiltin('RunAddon(%s)' % (self.addon_id))
         else:
-            self.notifyLog('could not run nonexistent addon \'%s\'' % (self.addon_id), level=xbmc.LOGERROR)
+            self.notifyLog('could not run nonexistent addon \'%s\'' % (self.addon_id.split(',')[0]), level=xbmc.LOGERROR)
 
     def start(self):
 
