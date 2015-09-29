@@ -1,0 +1,102 @@
+# XBMC Media Center language file
+# Addon Name: Sleepy Watchdog
+# Addon id: service.sleepy.watchdog
+# Addon version: 0.1.14
+# Addon Provider: Birger Jesch, thanks to Martin Schlosser
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2015-09-29 07:42+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Sleepy Watchdog - he's watching while You sleep"
+msgstr "Sleepy Watchdog - er passt auf, während Du schläfst"
+
+msgctxt "Addon Description"
+msgid "This Idle Timer management performs defined actions after an adjusted amount of inactivity time. Those actions are stop playing Audio, Video or TV for example or some actions to execute shutdown variations like suspend, reboot poweroff or hibernate."
+msgstr "Dieser Timer führt vorher definierte Aktionen nach einer einstellbaren Inaktivitätszeit aus. Die Aktionen können zum Beispiel das Stoppen von Audio, Video oder TV-Streams sein, aber auch das Herunterfahren des Systems in verschiedenen Modi (Suspend, Reboot, PowerOff, Bereitschaft) wird angeboten."
+
+msgctxt "Addon Disclaimer"
+msgid "Use at your own risk. This service could conflict to other services (e.g recording services)."
+msgstr "Benutzung auf eigene Gefahr. Dieser Dienst könnte mit anderen Diensten (z.B. Aufnahmedienste) kollidieren."
+
+msgctxt "#32100"
+msgid "Sleepy WatchDog"
+msgstr "Sleepy WatchDog"
+
+msgctxt "#32115"
+msgid "Perform action '%s' in %s seconds..."
+msgstr "Die Aktion '%s' wird in %s Sekunden ausgeführt..."
+
+msgctxt "#32120"
+msgid "max Idle Time"
+msgstr "maximale Inaktivität"
+
+msgctxt "#32121"
+msgid "Action to execute"
+msgstr "auszuführende Aktion"
+
+msgctxt "#32122"
+msgid "Show notification before perform action"
+msgstr "Benachrichtige Nutzer, bevor eine Aktion ausgeführt wird"
+
+msgctxt "#32123"
+msgid "Duration of notification"
+msgstr "Benachrichtigungsdauer"
+
+msgctxt "#32124"
+msgid "Test current settings (just wait 1 minute)"
+msgstr "aktuelle Einstellungen testen (bitte 1 Minute warten)"
+
+msgctxt "#32125"
+msgid "Turn off TV (CEC)"
+msgstr "TV ausschalten (CEC)"
+
+msgctxt "#32126"
+msgid "Addon ID [,parameter]"
+msgstr "Addon ID [,Parameter]"
+
+msgctxt "#32127"
+msgid "Jump into Main Menu"
+msgstr "ins Hauptmenü wechseln"
+
+msgctxt "#32128"
+msgid "Keep WatchDog alive"
+msgstr "WatchDog weiterhin ausführen"
+
+msgctxt "#32130"
+msgid "Stop playing media"
+msgstr "Abspielen stoppen"
+
+msgctxt "#32131"
+msgid "Reboot"
+msgstr "System neu starten"
+
+msgctxt "#32132"
+msgid "Shutdown"
+msgstr "System ausschalten"
+
+msgctxt "#32133"
+msgid "Hibernate"
+msgstr "System in Ruhezustand versetzen"
+
+msgctxt "#32134"
+msgid "Suspend"
+msgstr "System in Bereitschaft versetzen"
+
+msgctxt "#32135"
+msgid "Run Addon"
+msgstr "Addon starten"
+
+msgctxt "#32136"
+msgid "Exit Kodi"
+msgstr "Kodi beenden"
