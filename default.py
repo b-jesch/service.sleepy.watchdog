@@ -25,18 +25,11 @@ class XBMCMonitor(xbmc.Monitor):
     def onSettingsChanged(self):
         self.SettingsChanged = True
 
-    def onScreensaverActivated(self):
-        self.ScreensaverActive = True
-
-    def onScreensaverDeactivated(self):
-        self.ScreensaverActive = False
-
 class SleepyWatchdog(XBMCMonitor):
 
     def __init__(self):
         self.maxIdleTime = None
         self.action = None
-        self.actionPerformed = False
         self.actionCanceled = False
         self.showPopup = None
         self.notificationTime = None
@@ -72,12 +65,11 @@ class SleepyWatchdog(XBMCMonitor):
         self.addon_id = __addon__.getSetting('addon_id')
         self.SettingsChanged = False
 
+        self.notifyLog('settings reloaded')
+
         if self.testConfig:
             self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
-            self.testIsRunning = True
-        else:
-            self.testIsRunning = False
-
+            self.notifyLog('running in test mode for %s secs' % self.maxIdleTime)
     # user defined actions
 
     def stopVideoAudioTV(self):
@@ -131,14 +123,19 @@ class SleepyWatchdog(XBMCMonitor):
         try:
             while not xbmc.Monitor.abortRequested(self):
                 self.actionCanceled = False
-                if _currentIdleTime > xbmc.getGlobalIdleTime() + 60 or self.SettingsChanged:
+                '''
+                if _currentIdleTime > xbmc.getGlobalIdleTime() + 120 or self.SettingsChanged:
                     self.notifyLog('user activity detected or settings changed, reset idle time')
                     self.getWDSettings()
-                    _maxIdleTime = self.maxIdleTime
+                '''
                 if _currentIdleTime > xbmc.getGlobalIdleTime():
+                    self.notifyLog('user activity detected, reset idle time')
                     _msgCnt = 0
+                    _maxIdleTime = self.maxIdleTime
 
-                if _msgCnt % 10 == 0 and _currentIdleTime > 60 and not self.testIsRunning: self.notifyLog('idle time %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
+                if _msgCnt % 10 == 0 and _currentIdleTime > 60 and not self.testConfig:
+                    self.notifyLog('idle time %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
+
                 _currentIdleTime = xbmc.getGlobalIdleTime()
                 _msgCnt += 1
 
@@ -146,9 +143,6 @@ class SleepyWatchdog(XBMCMonitor):
                 if _currentIdleTime > (_maxIdleTime - int(self.notifyUser)*self.notificationTime):
 
                     self.notifyLog('max idle time reached, ready to perform some action')
-
-                    # Reset test status
-                    __addon__.setSetting('testConfig', 'false')
 
                     # Check if notification is allowed
                     if self.notifyUser:
@@ -171,8 +165,6 @@ class SleepyWatchdog(XBMCMonitor):
                         #
                     if not self.actionCanceled:
 
-                        self.actionPerformed = True
-
                         self.sendCecCommand()
                         {
                         32130: self.stopVideoAudioTV,
@@ -188,14 +180,18 @@ class SleepyWatchdog(XBMCMonitor):
                         #       Action numbers are defined in settings.xml/strings.xml
                         #       also see LANGOFFSET
                         #
-                        if self.testIsRunning:
-                            self.notifyLog('watchdog was running in test mode and remains alive')
+                        if self.testConfig:
+                            self.notifyLog('watchdog was running in test mode, keep it alive')
                         else:
                             if self.keepAlive:
-                                self.notifyLog('keeping watchdog alive, update idletime for next cycle')
+                                self.notifyLog('keep watchdog alive, update idletime for next cycle')
                                 _maxIdleTime += self.maxIdleTime
                             else:
                                 break
+
+                    # Reset test status
+                    if self.testConfig:
+                        __addon__.setSetting('testConfig', 'false')
                     #
 
                 _loop = 1
@@ -205,11 +201,12 @@ class SleepyWatchdog(XBMCMonitor):
                     _currentIdleTime += 1
 
                     if self.SettingsChanged:
-                        self.notifyLog('settings changed, update configuration')
+                        self.notifyLog('settings changed')
                         self.getWDSettings()
+                        _maxIdleTime = self.maxIdleTime
                         break
 
-                    if self.testIsRunning or _currentIdleTime > xbmc.getGlobalIdleTime() or _loop > 60: break
+                    if self.testConfig or _currentIdleTime > xbmc.getGlobalIdleTime() or _loop > 60: break
 
             self.notifyLog('Sleepy Watchdog kicks off')
         except Exception, e:
