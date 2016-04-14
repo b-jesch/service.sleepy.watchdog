@@ -34,17 +34,41 @@ msgctxt "#32100"
 msgid "Sleepy WatchDog"
 msgstr ""
 
-#empty strings from id 32101 to 32114
+msgctxt "#32110"
+msgid "Activity frame"
+msgstr ""
+
+msgctxt "#32111"
+msgid "always active"
+msgstr ""
+
+msgctxt "#32112"
+msgid "only in time frame"
+msgstr ""
+
+msgctxt "#32113"
+msgid "from"
+msgstr ""
+
+msgctxt "#32114"
+msgid "until"
+msgstr ""
 
 msgctxt "#32115"
 msgid "Perform action '%s' in %s seconds..."
 msgstr ""
 
+# Messages
+
+msgctxt "#32116"
+msgid "The activity settings of the time frame or setting of idle time are not suitable. Sleepy Watchdog will never be activated. Please correct them."
+msgstr ""
+
 #setting strings
-#empty strings from id 32116 to 32119
+#empty strings from id 32117 to 32119
 
 msgctxt "#32120"
-msgid "max Idle Time"
+msgid "max. Duration of idle time"
 msgstr ""
 
 msgctxt "#32121"
@@ -108,4 +132,100 @@ msgstr ""
 
 msgctxt "#32136"
 msgid "Exit Kodi"
+msgstr ""
+
+msgctxt "#32150"
+msgid "00:00 o'clock"
+msgstr ""
+
+msgctxt "#32151"
+msgid "01:00 o'clock"
+msgstr ""
+
+msgctxt "#32152"
+msgid "02:00 o'clock"
+msgstr ""
+
+msgctxt "#32153"
+msgid "03:00 o'clock"
+msgstr ""
+
+msgctxt "#32154"
+msgid "04:00 o'clock"
+msgstr ""
+
+msgctxt "#32155"
+msgid "05:00 o'clock"
+msgstr ""
+
+msgctxt "#32156"
+msgid "06:00 o'clock"
+msgstr ""
+
+msgctxt "#32157"
+msgid "07:00 o'clock"
+msgstr ""
+
+msgctxt "#32158"
+msgid "08:00 o'clock"
+msgstr ""
+
+msgctxt "#32159"
+msgid "09:00 o'clock"
+msgstr ""
+
+msgctxt "#32160"
+msgid "10:00 o'clock"
+msgstr ""
+
+msgctxt "#32161"
+msgid "11:00 o'clock"
+msgstr ""
+
+msgctxt "#32162"
+msgid "12:00 o'clock"
+msgstr ""
+
+msgctxt "#32163"
+msgid "13:00 o'clock"
+msgstr ""
+
+msgctxt "#32164"
+msgid "14:00 o'clock"
+msgstr ""
+
+msgctxt "#32165"
+msgid "15:00 o'clock"
+msgstr ""
+
+msgctxt "#32166"
+msgid "16:00 o'clock"
+msgstr ""
+
+msgctxt "#32167"
+msgid "17:00 o'clock"
+msgstr ""
+
+msgctxt "#32168"
+msgid "18:00 o'clock"
+msgstr ""
+
+msgctxt "#32169"
+msgid "19:00 o'clock"
+msgstr ""
+
+msgctxt "#32170"
+msgid "20:00 o'clock"
+msgstr ""
+
+msgctxt "#32171"
+msgid "21:00 o'clock"
+msgstr ""
+
+msgctxt "#32172"
+msgid "22:00 o'clock"
+msgstr ""
+
+msgctxt "#32173"
+msgid "23:00 o'clock"
 msgstr ""
