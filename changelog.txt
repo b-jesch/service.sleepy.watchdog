@@ -1,5 +1,13 @@
 CHANGELOG
 
+0.1.19
+- Ukrainian language added
+- Messaging switched from progress dialog to an intermitted notification as some skins
+  shows the progress dialog too obtrusive.
+
+0.1.16 - 18
+- Minor bugfixes
+
 0.1.15
 - Activation of watchdog to a given time frame implemented
 
@@ -8,7 +16,7 @@ CHANGELOG
 - Language XML Files changed to Transifex .po
 
 0.1.13
-- Minor Bugfixes
+- Minor bugfixes
 
 0.1.12
 - Option for exiting Kodi added

@@ -12,7 +12,8 @@ __path__ = __addon__.getAddonInfo('path')
 __version__ = __addon__.getAddonInfo('version')
 __LS__ = __addon__.getLocalizedString
 
-__iconDefault__ = xbmc.translatePath(os.path.join(__path__, 'resources', 'media', 'pawprint.png'))
+__iconDefault__ = os.path.join(xbmc.translatePath(__path__), 'resources', 'media', 'pawprint.png')
+__iconError__ = os.path.join(xbmc.translatePath(__path__), 'resources', 'media', 'pawprint_red.png')
 
 LANGOFFSET = 32130
 
@@ -25,8 +26,11 @@ def traceError(err, exc_tb):
         notifyLog('in file:   %s' % tb[0].split(",")[0].strip()[6:-1],xbmc.LOGERROR)
         exc_tb = exc_tb.tb_next
 
-def notifyLog(message, level=xbmc.LOGNOTICE):
+def notifyLog(message, level=xbmc.LOGDEBUG):
     xbmc.log('[%s] %s' % (__addonname__, message.encode('utf-8')), level)
+
+def notifyUser(message, icon=__iconDefault__, time=3000):
+    xbmcgui.Dialog().notification(__LS__(32100), message.encode('utf-8'), icon, time)
 
 class XBMCMonitor(xbmc.Monitor):
 
@@ -38,27 +42,26 @@ class XBMCMonitor(xbmc.Monitor):
         self.SettingsChanged = True
 
     def onNotification(self, sender, method, data):
-        notifyLog('', level=xbmc.LOGDEBUG)
-        notifyLog('Notification triggered', level=xbmc.LOGDEBUG)
-        notifyLog('sender: %s' % (sender), level=xbmc.LOGDEBUG)
-        notifyLog('method: %s' % (method), level=xbmc.LOGDEBUG)
-        notifyLog('data:   %s' % (data), level=xbmc.LOGDEBUG)
-        notifyLog('', level=xbmc.LOGDEBUG)
+        notifyLog('Notification triggered')
+        notifyLog('sender: %s' % (sender))
+        notifyLog('method: %s' % (method))
+        notifyLog('data:   %s' % (data))
 
 class SleepyWatchdog(XBMCMonitor):
 
     def __init__(self):
 
         self.currframe = 0
-        self.PopUp = xbmcgui.DialogProgress()
-        self.DialogOk = xbmcgui.Dialog()
-        self.Player = xbmc.Player()
-        self.execBuiltin = xbmc.executebuiltin
 
         XBMCMonitor.__init__(self)
         self.getWDSettings()
 
     def getWDSettings(self):
+
+        self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
+        self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
+        self.sendCEC = True if __addon__.getSetting('sendCEC').upper() == 'TRUE' else False
+
         self.timeframe = False if __addon__.getSetting('timeframe') == '0' else True
 
         self.act_start = int(datetime.timedelta(hours=int(__addon__.getSetting('start'))).total_seconds())
@@ -67,36 +70,55 @@ class SleepyWatchdog(XBMCMonitor):
 
         self.maxIdleTime = int(re.match('\d+', __addon__.getSetting('maxIdleTime')).group())*60
         self.action = int(__addon__.getSetting('action')) + LANGOFFSET
-        self.notifyUser = True if __addon__.getSetting('showPopup').upper() == 'TRUE' else False
-        self.notificationTime = int(re.match('\d+', __addon__.getSetting('notificationTime')).group())
-        self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
-        self.sendCEC = True if __addon__.getSetting('sendCEC').upper() == 'TRUE' else False
         self.jumpMainMenu = True if __addon__.getSetting('mainmenu').upper() == 'TRUE' else False
         self.keepAlive = True if __addon__.getSetting('keepalive').upper() == 'TRUE' else False
         self.addon_id = __addon__.getSetting('addon_id')
 
-        if self.act_stop - self.act_start <= self.maxIdleTime: self.DialogOk.ok(__LS__(32100), __LS__(32116))
+
+        """
+        # get alternate timeframe settings
+
+        self.use_alternate_frame = True if (__addon__.getSetting('enableAltAction').upper() == 'TRUE' and self.timeframe) else False
+        self.alternate_maxIdleTime = int(re.match('\d+', __addon__.getSetting('altMaxIdleTime')).group())*60
+        self.alternate_action = int(__addon__.getSetting('altAction')) + LANGOFFSET
+        self.alternate_jumpMainMenu = True if __addon__.getSetting('altMainmenu').upper() == 'TRUE' else False
+        self.alternate_keepAlive = True if __addon__.getSetting('altKeepalive').upper() == 'TRUE' else False
+        self.alternate_addon_id = __addon__.getSetting('altAddon_id')
+        """
+
+        self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
+
+        if (self.act_stop - self.act_start) <= self.maxIdleTime: xbmcgui.Dialog().ok(__LS__(32100), __LS__(32116))
+        # if (86400 - self.act_stop + self.act_start) <= self.alternate_maxIdleTime: xbmcgui.Dialog().ok(__LS__(32100), __LS__(32117))
 
         self.SettingsChanged = False
 
-        notifyLog('settings (re)loaded...', level=xbmc.LOGDEBUG)
-        notifyLog('Timeframe:                %s' % (self.timeframe), level=xbmc.LOGDEBUG)
-        notifyLog('Activity start:           %s' % (self.act_start), level=xbmc.LOGDEBUG)
-        notifyLog('Activity stop:            %s' % (self.act_stop), level=xbmc.LOGDEBUG)
-        notifyLog('max. Idletime:            %s' % (self.maxIdleTime), level=xbmc.LOGDEBUG)
-        notifyLog('Action:                   %s' % (self.action), level=xbmc.LOGDEBUG)
-        notifyLog('notify user:              %s' % (self.notifyUser), level=xbmc.LOGDEBUG)
-        notifyLog('Duration of notification: %s' % (self.notificationTime), level=xbmc.LOGDEBUG)
-        notifyLog('Test run:                 %s' % (self.testConfig), level=xbmc.LOGDEBUG)
-        notifyLog('send CEC:                 %s' % (self.sendCEC), level=xbmc.LOGDEBUG)
-        notifyLog('Jump to main menue:       %s' % (self.jumpMainMenu), level=xbmc.LOGDEBUG)
-        notifyLog('keep alive:               %s' % (self.keepAlive), level=xbmc.LOGDEBUG)
-        notifyLog('run addon:                %s' % (self.addon_id), level=xbmc.LOGDEBUG)
-        notifyLog('', level=xbmc.LOGDEBUG)
+        notifyLog('settings (re)loaded...')
+        notifyLog('notify user:              %s' % (self.notifyUser))
+        notifyLog('Duration of notification: %s' % (self.notificationTime))
+        notifyLog('send CEC:                 %s' % (self.sendCEC))
+        notifyLog('Time frame:               %s' % (self.timeframe))
+        notifyLog('Activity start:           %s' % (self.act_start))
+        notifyLog('Activity stop:            %s' % (self.act_stop))
+        notifyLog('max. idle time:           %s' % (self.maxIdleTime))
+        notifyLog('Action:                   %s' % (self.action))
+        notifyLog('Jump to main menue:       %s' % (self.jumpMainMenu))
+        notifyLog('keep alive:               %s' % (self.keepAlive))
+        notifyLog('run addon:                %s' % (self.addon_id))
+
+        """
+        notifyLog('use alternate time frame: %s' % (self.use_alternate_frame))
+        notifyLog('alt. max. idle time:      %s' % (self.alternate_maxIdleTime))
+        notifyLog('alternate action:         %s' % (self.alternate_action))
+        notifyLog('Jump to main menu:        %s' % (self.alternate_jumpMainMenu))
+        notifyLog('keep alive:               %s' % (self.alternate_keepAlive))
+        notifyLog('run addon:                %s' % (self.alternate_addon_id))
+        notifyLog('Test run:                 %s' % (self.testConfig))
+        """
 
         if self.testConfig:
             self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
-            notifyLog('running in test mode for %s secs' % (self.maxIdleTime), level=xbmc.LOGDEBUG)
+            notifyLog('running in test mode for %s secs' % (self.maxIdleTime))
 
     def activeTimeFrame(self, debug=False):
 
@@ -107,24 +129,24 @@ class SleepyWatchdog(XBMCMonitor):
         if _currframe < self.currframe: _currframe += 86400
         self.currframe = _currframe
 
-        if debug: notifyLog('checking time frames: start: %s - current: %s - end: %s' % (self.act_start, self.currframe, self.act_stop), level=xbmc.LOGDEBUG)
+        if debug: notifyLog('checking time frames: start: %s - current: %s - end: %s' % (self.act_start, self.currframe, self.act_stop))
         if self.act_start <= self.currframe <= self.act_stop: return True
         return False
 
     # user defined actions
 
     def stopVideoAudioTV(self):
-        if self.Player.isPlaying():
+        if xbmc.Player().isPlaying():
             notifyLog('media is playing, stopping it')
-            self.Player.stop()
+            xbmc.Player().stop()
             if self.jumpMainMenu:
                 xbmc.sleep(500)
                 notifyLog('jump to main menu')
-                self.execBuiltin('ActivateWindow(home)')
+                xbmc.executebuiltin('ActivateWindow(home)')
 
     def quit(self):
         notifyLog('quit kodi')
-        self.execBuiltin('Quit')
+        xbmc.executebuiltin('Quit')
 
     def systemReboot(self):
         notifyLog('init system reboot')
@@ -136,22 +158,22 @@ class SleepyWatchdog(XBMCMonitor):
 
     def systemHibernate(self):
         notifyLog('init system hibernate')
-        self.execBuiltin('Hibernate')
+        xbmc.executebuiltin('Hibernate')
 
     def systemSuspend(self):
         notifyLog('init system suspend')
-        self.execBuiltin('Suspend')
+        xbmc.executebuiltin('Suspend')
 
     def sendCecCommand(self):
         if not self.sendCEC: return
         notifyLog('send standby command via CEC')
         cec = subprocess.Popen('echo \"standby 0\" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
-        for retstr in cec: notifyLog(str(retstr).strip(), level=xbmc.LOGDEBUG)
+        for retstr in cec: notifyLog(str(retstr).strip())
 
     def runAddon(self):
         if xbmc.getCondVisibility('System.HasAddon(%s)' % (self.addon_id.split(',')[0])):
             notifyLog('run addon \'%s\'' % (self.addon_id))
-            self.execBuiltin('RunAddon(%s)' % (self.addon_id))
+            xbmc.executebuiltin('RunAddon(%s)' % (self.addon_id))
         else:
             notifyLog('could not run nonexistent addon \'%s\'' % (self.addon_id.split(',')[0]), level=xbmc.LOGERROR)
 
@@ -168,7 +190,7 @@ class SleepyWatchdog(XBMCMonitor):
                 notifyLog('idle time in active time frame: %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
 
             if _currentIdleTime > xbmc.getGlobalIdleTime():
-                notifyLog('user activity detected, reset idle time', level=xbmc.LOGDEBUG)
+                notifyLog('user activity detected, reset idle time')
                 _msgCnt = 0
                 _maxIdleTime = self.maxIdleTime
                 _currentIdleTime = 0
@@ -180,27 +202,39 @@ class SleepyWatchdog(XBMCMonitor):
             if self.activeTimeFrame(debug=True):
                 if _currentIdleTime > (_maxIdleTime - int(self.notifyUser)*self.notificationTime):
 
-                    notifyLog('max idle time reached, ready to perform some action', level=xbmc.LOGDEBUG)
+                    notifyLog('max idle time reached, ready to perform some action')
 
                     # Check if notification is allowed
                     if self.notifyUser:
                         _bar = 0
-                        notifyLog('init notification countdown for action no. %s' % (self.action), level=xbmc.LOGDEBUG)
-                        self.PopUp.create(__LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime))
-                        self.PopUp.update(_bar)
+                        notifyLog('init notification countdown for action no. %s' % (self.action))
+                        """
+                        xbmcgui.DialogProgress().create(__LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime))
+                        xbmcgui.DialogProgress().update(_bar)
                         # synchronize progressbar
                         while _bar < self.notificationTime:
                             _bar += 1
                             _percent = int(_bar * 100 / self.notificationTime)
-                            self.PopUp.update(_percent, __LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime - _bar))
-                            if self.PopUp.iscanceled():
+                            xbmcgui.DialogProgress().update(_percent, __LS__(32115) % (__LS__(self.action), self.notificationTime - _bar))
+                            if xbmcgui.DialogProgress().iscanceled():
                                 self.actionCanceled = True
                                 break
                             xbmc.sleep(1000)
 
-                        self.PopUp.close()
+                        xbmcgui.DialogProgress().close()
                         xbmc.sleep(500)
                         #
+                        """
+                        count = 0
+                        while (self.notificationTime - count > 0):
+                            notifyUser(__LS__(32115) % (__LS__(self.action), self.notificationTime - count))
+                            xbmc.sleep(9000)
+                            count += 9
+                            if _currentIdleTime > xbmc.getGlobalIdleTime():
+                                self.actionCanceled = True
+                                break
+
+
                     if not self.actionCanceled:
 
                         self.sendCecCommand()
@@ -219,20 +253,23 @@ class SleepyWatchdog(XBMCMonitor):
                         #       also see LANGOFFSET
                         #
                         if self.testConfig:
-                            notifyLog('watchdog was running in test mode, keep it alive', level=xbmc.LOGDEBUG)
+                            notifyLog('watchdog was running in test mode, keep it alive')
                         else:
                             if self.keepAlive:
-                                notifyLog('keep watchdog alive, update idletime for next cycle', level=xbmc.LOGDEBUG)
+                                notifyLog('keep watchdog alive, update idletime for next cycle')
                                 _maxIdleTime += self.maxIdleTime
                             else:
                                 break
+                    else:
+                        notifyLog('Countdown canceled by user action')
+                        notifyUser(__LS__(32118), icon=__iconError__)
 
                     # Reset test status
                     if self.testConfig:
                         __addon__.setSetting('testConfig', 'false')
 
             else:
-                notifyLog('no active timeframe yet', level=xbmc.LOGDEBUG)
+                notifyLog('no active timeframe yet')
 
             #
             _loop = 1

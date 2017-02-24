@@ -55,7 +55,7 @@ msgid "until"
 msgstr ""
 
 msgctxt "#32115"
-msgid "Perform action '%s' in %s seconds..."
+msgid "Execute '%s' in %s secs"
 msgstr ""
 
 # Messages
@@ -64,8 +64,16 @@ msgctxt "#32116"
 msgid "The activity settings of the time frame or setting of idle time are not suitable. Sleepy Watchdog will never be activated. Please correct them."
 msgstr ""
 
+msgctxt "#32117"
+msgid "The setting of idle time in the alternate time frame is not suitable. Sleepy Watchdog will never be activated in alternate time frame. Please correct that."
+msgstr ""
+
+msgctxt "#32118"
+msgid "Execution of idle actions aborted"
+msgstr ""
+
 #setting strings
-#empty strings from id 32117 to 32119
+#empty strings from id 32119 to 32119
 
 msgctxt "#32120"
 msgid "max. Duration of idle time"
@@ -76,7 +84,7 @@ msgid "Action to execute"
 msgstr ""
 
 msgctxt "#32122"
-msgid "Show notification before perform action"
+msgid "Show notification on WatchDog activation"
 msgstr ""
 
 msgctxt "#32123"
@@ -84,7 +92,7 @@ msgid "Duration of notification"
 msgstr ""
 
 msgctxt "#32124"
-msgid "Test current settings (just wait 1 minute)"
+msgid "Test settings of active time frame (wait 1 min)"
 msgstr ""
 
 msgctxt "#32125"
@@ -133,6 +141,11 @@ msgstr ""
 msgctxt "#32136"
 msgid "Exit Kodi"
 msgstr ""
+
+#strings of settings outside active timeframe
+
+msgctxt "#32140"
+msgid "Perform actions outside the active time frame too"
 
 msgctxt "#32150"
 msgid "00:00 o'clock"
