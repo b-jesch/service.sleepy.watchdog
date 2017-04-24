@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import sys
 import subprocess
@@ -41,7 +43,9 @@ class XBMCMonitor(xbmc.Monitor):
     def onSettingsChanged(self):
         self.SettingsChanged = True
 
-    def onNotification(self, sender, method, data):
+
+    @classmethod
+    def onNotification(cls, sender, method, data):
         notifyLog('Notification triggered')
         notifyLog('sender: %s' % (sender))
         notifyLog('method: %s' % (method))
@@ -146,30 +150,35 @@ class SleepyWatchdog(XBMCMonitor):
                 notifyLog('jump to main menu')
                 xbmc.executebuiltin('ActivateWindow(home)')
 
-    def quit(self):
+    @classmethod
+    def quit(cls):
         notifyLog('quit kodi')
         xbmc.executebuiltin('Quit')
 
-    def systemReboot(self):
+    @classmethod
+    def systemReboot(cls):
         notifyLog('init system reboot')
         xbmc.restart()
 
-    def systemShutdown(self):
+    @classemthod
+    def systemShutdown(cls):
         notifyLog('init system shutdown')
         xbmc.shutdown()
 
-    def systemHibernate(self):
+    @classmethod
+    def systemHibernate(cls):
         notifyLog('init system hibernate')
         xbmc.executebuiltin('Hibernate')
 
-    def systemSuspend(self):
+    @classmethod
+    def systemSuspend(cls):
         notifyLog('init system suspend')
         xbmc.executebuiltin('Suspend')
 
     def sendCecCommand(self):
         if not self.sendCEC: return
         notifyLog('send standby command via CEC')
-        cec = subprocess.Popen('echo \"standby 0\" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
+        cec = subprocess.Popen('echo "standby 0" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
         for retstr in cec: notifyLog(str(retstr).strip())
 
     def runAddon(self):
