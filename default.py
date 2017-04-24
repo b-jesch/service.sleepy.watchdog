@@ -160,7 +160,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('init system reboot')
         xbmc.restart()
 
-    @classemthod
+    @classmethod
     def systemShutdown(cls):
         notifyLog('init system shutdown')
         xbmc.shutdown()
