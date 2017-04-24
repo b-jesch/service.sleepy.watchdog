@@ -74,7 +74,8 @@ class SleepyWatchdog(XBMCMonitor):
         self.keepAlive = True if __addon__.getSetting('keepalive').upper() == 'TRUE' else False
         self.addon_id = __addon__.getSetting('addon_id')
 
-
+        # following commented code are preparations for actions within an alternate timeframe,
+        # don't shure if I ever implement this...
         """
         # get alternate timeframe settings
 
@@ -89,7 +90,6 @@ class SleepyWatchdog(XBMCMonitor):
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
 
         if (self.act_stop - self.act_start) <= self.maxIdleTime: xbmcgui.Dialog().ok(__LS__(32100), __LS__(32116))
-        # if (86400 - self.act_stop + self.act_start) <= self.alternate_maxIdleTime: xbmcgui.Dialog().ok(__LS__(32100), __LS__(32117))
 
         self.SettingsChanged = False
 
@@ -106,6 +106,8 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('keep alive:               %s' % (self.keepAlive))
         notifyLog('run addon:                %s' % (self.addon_id))
 
+        # following commented code are preparations for actions within an alternate timeframe,
+        # don't shure if I ever implement this...
         """
         notifyLog('use alternate time frame: %s' % (self.use_alternate_frame))
         notifyLog('alt. max. idle time:      %s' % (self.alternate_maxIdleTime))
@@ -206,26 +208,9 @@ class SleepyWatchdog(XBMCMonitor):
 
                     # Check if notification is allowed
                     if self.notifyUser:
-                        _bar = 0
-                        notifyLog('init notification countdown for action no. %s' % (self.action))
-                        """
-                        xbmcgui.DialogProgress().create(__LS__(32100), __LS__(32115) % (__LS__(self.action), self.notificationTime))
-                        xbmcgui.DialogProgress().update(_bar)
-                        # synchronize progressbar
-                        while _bar < self.notificationTime:
-                            _bar += 1
-                            _percent = int(_bar * 100 / self.notificationTime)
-                            xbmcgui.DialogProgress().update(_percent, __LS__(32115) % (__LS__(self.action), self.notificationTime - _bar))
-                            if xbmcgui.DialogProgress().iscanceled():
-                                self.actionCanceled = True
-                                break
-                            xbmc.sleep(1000)
-
-                        xbmcgui.DialogProgress().close()
-                        xbmc.sleep(500)
-                        #
-                        """
                         count = 0
+                        notifyLog('init notification countdown for action no. %s' % (self.action))
+
                         while (self.notificationTime - count > 0):
                             notifyUser(__LS__(32115) % (__LS__(self.action), self.notificationTime - count))
                             xbmc.sleep(9000)
@@ -233,7 +218,6 @@ class SleepyWatchdog(XBMCMonitor):
                             if _currentIdleTime > xbmc.getGlobalIdleTime():
                                 self.actionCanceled = True
                                 break
-
 
                     if not self.actionCanceled:
 

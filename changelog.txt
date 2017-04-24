@@ -1,5 +1,8 @@
 CHANGELOG
 
+0.1.20
+- Ready for Krypton
+
 0.1.19
 - Ukrainian language added
 - Messaging switched from progress dialog to an intermitted notification as some skins
