@@ -3,6 +3,7 @@
 import os
 import sys
 import subprocess
+import platform
 import traceback
 import re
 import time, datetime
@@ -179,7 +180,13 @@ class SleepyWatchdog(XBMCMonitor):
     def sendCecCommand(self):
         if not self.sendCEC: return
         notifyLog('send standby command via CEC')
-        cec = subprocess.Popen('echo "standby 0" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
+        if platform.system() == 'Linux':
+            cec = subprocess.Popen('echo "standby 0" | cec-client -s', stdout=subprocess.PIPE, shell=True).communicate()
+        elif platform.system() == 'Windows':
+            cec = subprocess.Popen('echo standby 0 | cec-client.exe -s', stdout=subprocess.PIPE, shell=True).communicate()
+        else:
+            notifyLog('Couldn\'t determine platform, CEC command not send'), xbmc.LOGERROR)
+            return
         for retstr in cec: notifyLog(str(retstr).strip())
 
     def runAddon(self):
