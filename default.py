@@ -20,15 +20,6 @@ __iconError__ = os.path.join(xbmc.translatePath(__path__), 'resources', 'media',
 
 LANGOFFSET = 32130
 
-def traceError(err, exc_tb):
-    while exc_tb:
-        tb = traceback.format_tb(exc_tb)
-        notifyLog('%s' % err, xbmc.LOGERROR)
-        notifyLog('in module: %s' % (sys.argv[0].strip() or '<not defined>'), xbmc.LOGERROR)
-        notifyLog('at line:   %s' % traceback.tb_lineno(exc_tb), xbmc.LOGERROR)
-        notifyLog('in file:   %s' % tb[0].split(",")[0].strip()[6:-1],xbmc.LOGERROR)
-        exc_tb = exc_tb.tb_next
-
 def notifyLog(message, level=xbmc.LOGDEBUG):
     xbmc.log('[%s] %s' % (__addonname__, message.encode('utf-8')), level)
 
@@ -185,7 +176,7 @@ class SleepyWatchdog(XBMCMonitor):
         elif platform.system() == 'Windows':
             cec = subprocess.Popen('echo standby 0 | cec-client.exe -s', stdout=subprocess.PIPE, shell=True).communicate()
         else:
-            notifyLog('Couldn\'t determine platform, CEC command not send'), xbmc.LOGERROR)
+            notifyLog('Couldn\'t determine platform, CEC command not send', xbmc.LOGERROR)
             return
         for retstr in cec: notifyLog(str(retstr).strip())
 
@@ -297,4 +288,4 @@ if __name__ == '__main__':
         del WatchDog
 
     except Exception, e:
-        traceError(e, sys.exc_traceback)
+        pass
