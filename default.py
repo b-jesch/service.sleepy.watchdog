@@ -94,22 +94,6 @@ class SleepyWatchdog(XBMCMonitor):
             self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
             notifyLog('running in test mode for %s secs' % (self.maxIdleTime))
 
-    def activeTimeFrame(self):
-
-        _status = False
-        if not self.timeframe:
-            _status = True
-        else:
-            _currframe = (datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)).seconds
-            if self.act_start < self.act_stop:
-                if self.act_start <= _currframe < self.act_stop: _status = True
-            else:
-                if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop: _status = True
-        if self.wd_status ^ _status:
-            notifyLog('Watchdog status changed: %s' % ('active' if _status else 'inactive'))
-            self.wd_status = _status
-        return _status
-
     # user defined actions
 
     def stopVideoAudioTV(self):
@@ -169,25 +153,36 @@ class SleepyWatchdog(XBMCMonitor):
 
         _currentIdleTime = 0
         _maxIdleTime = self.maxIdleTime
-        _msgCnt = 0
 
         while not xbmc.Monitor.abortRequested(self):
             self.actionCanceled = False
 
-            if _msgCnt % 10 == 0 and _currentIdleTime > 60 and not self.testConfig:
-                notifyLog('idle time in active time frame: %s' % (str(datetime.timedelta(seconds=_currentIdleTime))))
+            _status = False
+            if not self.timeframe:
+                _status = True
+            else:
+                _currframe = (datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0,
+                                                                                        microsecond=0)).seconds
+                if self.act_start < self.act_stop:
+                    if self.act_start <= _currframe < self.act_stop: _status = True
+                else:
+                    if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop: _status = True
+
+            if self.wd_status ^ _status:
+                notifyLog('Watchdog status changed: %s' % ('active' if _status else 'inactive'))
+                self.wd_status = _status
+
+            if self.wd_status and _currentIdleTime > 60 and not self.testConfig:
+                notifyLog('idle time: %s' % (str(datetime.timedelta(seconds=_currentIdleTime))))
 
             if _currentIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
-                _msgCnt = 0
                 _maxIdleTime = self.maxIdleTime
                 _currentIdleTime = 0
 
-            _msgCnt += 1
-
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
 
-            if self.activeTimeFrame() or self.testConfig:
+            if self.wd_status or self.testConfig:
                 if _currentIdleTime > (_maxIdleTime - int(self.notifyUser)*self.notificationTime):
 
                     notifyLog('max idle time reached, ready to perform some action')
