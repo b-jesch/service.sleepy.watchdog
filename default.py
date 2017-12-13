@@ -4,17 +4,16 @@ import os
 import subprocess
 import platform
 import re
-import time, datetime
+import datetime
 import xbmc, xbmcgui, xbmcaddon
 
 __addon__ = xbmcaddon.Addon()
 __addonname__ = __addon__.getAddonInfo('id')
-__path__ = __addon__.getAddonInfo('path')
-__version__ = __addon__.getAddonInfo('version')
+__path__ = xbmc.translatePath(__addon__.getAddonInfo('path'))
 __LS__ = __addon__.getLocalizedString
 
-__iconDefault__ = os.path.join(xbmc.translatePath(__path__), 'resources', 'media', 'pawprint.png')
-__iconError__ = os.path.join(xbmc.translatePath(__path__), 'resources', 'media', 'pawprint_red.png')
+__iconDefault__ = os.path.join(__path__, 'resources', 'media', 'pawprint.png')
+__iconError__ = os.path.join(__path__, 'resources', 'media', 'pawprint_red.png')
 
 LANGOFFSET = 32130
 
@@ -60,7 +59,6 @@ class SleepyWatchdog(XBMCMonitor):
 
         self.act_start = int(datetime.timedelta(hours=int(__addon__.getSetting('start'))).total_seconds())
         self.act_stop = int(datetime.timedelta(hours=int(__addon__.getSetting('stop'))).total_seconds())
-        if self.act_stop < self.act_start: self.act_stop += 86400
 
         self.maxIdleTime = int(re.match('\d+', __addon__.getSetting('maxIdleTime')).group())*60
         self.action = int(__addon__.getSetting('action')) + LANGOFFSET
@@ -68,22 +66,12 @@ class SleepyWatchdog(XBMCMonitor):
         self.keepAlive = True if __addon__.getSetting('keepalive').upper() == 'TRUE' else False
         self.addon_id = __addon__.getSetting('addon_id')
 
-        # following commented code are preparations for actions within an alternate timeframe,
-        # don't shure if I ever implement this...
-        """
-        # get alternate timeframe settings
-
-        self.use_alternate_frame = True if (__addon__.getSetting('enableAltAction').upper() == 'TRUE' and self.timeframe) else False
-        self.alternate_maxIdleTime = int(re.match('\d+', __addon__.getSetting('altMaxIdleTime')).group())*60
-        self.alternate_action = int(__addon__.getSetting('altAction')) + LANGOFFSET
-        self.alternate_jumpMainMenu = True if __addon__.getSetting('altMainmenu').upper() == 'TRUE' else False
-        self.alternate_keepAlive = True if __addon__.getSetting('altKeepalive').upper() == 'TRUE' else False
-        self.alternate_addon_id = __addon__.getSetting('altAddon_id')
-        """
-
         self.testConfig = True if __addon__.getSetting('testConfig').upper() == 'TRUE' else False
 
-        if (self.act_stop - self.act_start) <= self.maxIdleTime: xbmcgui.Dialog().ok(__LS__(32100), __LS__(32116))
+        if self.act_stop > self.act_start:
+            if (self.act_stop - self.act_start) <= self.maxIdleTime: xbmcgui.Dialog().ok(__LS__(32100), __LS__(32116))
+        else:
+            if (86400 + self.act_stop - self.act_start) <= self.maxIdleTime: xbmcgui.Dialog().ok(__LS__(32100), __LS__(32116))
 
         self.SettingsChanged = False
 
@@ -101,33 +89,22 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('Run addon:                %s' % (self.addon_id))
         notifyLog('Test configuration:       %s' % (self.testConfig))
 
-        # following commented code are preparations for actions within an alternate timeframe,
-        # don't shure if I ever implement this...
-        """
-        notifyLog('use alternate time frame: %s' % (self.use_alternate_frame))
-        notifyLog('alt. max. idle time:      %s' % (self.alternate_maxIdleTime))
-        notifyLog('alternate action:         %s' % (self.alternate_action))
-        notifyLog('Jump to main menu:        %s' % (self.alternate_jumpMainMenu))
-        notifyLog('keep alive:               %s' % (self.alternate_keepAlive))
-        notifyLog('run addon:                %s' % (self.alternate_addon_id))
-        notifyLog('Test run:                 %s' % (self.testConfig))
-        """
-
         if self.testConfig:
             self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
             notifyLog('running in test mode for %s secs' % (self.maxIdleTime))
 
-    def activeTimeFrame(self, log=False):
+    def activeTimeFrame(self):
 
         if not self.timeframe: return True
 
-        _currframe = int((datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds())
+        _currframe = (datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)).seconds
 
-        if _currframe < self.currframe: _currframe += 86400
-        self.currframe = _currframe
+        notifyLog('checking time frames: start-current-end: %s-%s-%s' % (self.act_start, _currframe, self.act_stop))
 
-        if log == True: notifyLog('checking time frames: start-current-end: %s-%s-%s' % (self.act_start, self.currframe, self.act_stop))
-        if self.act_start <= self.currframe <= self.act_stop: return True
+        if self.act_start < self.act_stop:
+            if self.act_start <= _currframe < self.act_stop: return True
+        else:
+            if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop: return True
         return False
 
     # user defined actions
@@ -174,7 +151,7 @@ class SleepyWatchdog(XBMCMonitor):
         elif platform.system() == 'Windows':
             cec = subprocess.Popen('echo standby 0 | cec-client.exe -s', stdout=subprocess.PIPE, shell=True).communicate()
         else:
-            notifyLog('Couldn\'t determine platform, CEC command not send', xbmc.LOGERROR)
+            notifyLog('Platform not supported, don\'t send CEC command', xbmc.LOGERROR)
             return
         for retstr in cec: notifyLog(str(retstr).strip())
 
@@ -195,7 +172,7 @@ class SleepyWatchdog(XBMCMonitor):
             self.actionCanceled = False
 
             if _msgCnt % 10 == 0 and _currentIdleTime > 60 and not self.testConfig:
-                notifyLog('idle time in active time frame: %s' % (time.strftime('%H:%M:%S', time.gmtime(_currentIdleTime))))
+                notifyLog('idle time in active time frame: %s' % (str(datetime.timedelta(seconds=_currentIdleTime))))
 
             if _currentIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
@@ -207,7 +184,7 @@ class SleepyWatchdog(XBMCMonitor):
 
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
 
-            if self.activeTimeFrame(log=True) or self.testConfig:
+            if self.activeTimeFrame() or self.testConfig:
                 if _currentIdleTime > (_maxIdleTime - int(self.notifyUser)*self.notificationTime):
 
                     notifyLog('max idle time reached, ready to perform some action')
@@ -218,7 +195,7 @@ class SleepyWatchdog(XBMCMonitor):
                         notifyLog('init notification countdown for action no. %s' % (self.action))
 
                         while (self.notificationTime - count > 0):
-                            notifyUser(__LS__(32115) % (__LS__(self.action), self.notificationTime - count))
+                            notifyUser(__LS__(32115) % (__LS__(self.action), self.notificationTime - count), time=7000)
                             if xbmc.Monitor.waitForAbort(self, 10): break
                             count += 10
                             if _currentIdleTime > xbmc.getGlobalIdleTime():
@@ -286,4 +263,5 @@ if __name__ == '__main__':
         del WatchDog
 
     except Exception, e:
-        pass
+        notifyLog(e.message, level=xbmc.LOGERROR)
+
