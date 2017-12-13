@@ -45,6 +45,7 @@ class SleepyWatchdog(XBMCMonitor):
     def __init__(self):
 
         self.currframe = 0
+        self.wd_status = False
 
         XBMCMonitor.__init__(self)
         self.getWDSettings()
@@ -95,17 +96,19 @@ class SleepyWatchdog(XBMCMonitor):
 
     def activeTimeFrame(self):
 
-        if not self.timeframe: return True
-
-        _currframe = (datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)).seconds
-
-        notifyLog('checking time frames: start-current-end: %s-%s-%s' % (self.act_start, _currframe, self.act_stop))
-
-        if self.act_start < self.act_stop:
-            if self.act_start <= _currframe < self.act_stop: return True
+        _status = False
+        if not self.timeframe:
+            _status = True
         else:
-            if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop: return True
-        return False
+            _currframe = (datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)).seconds
+            if self.act_start < self.act_stop:
+                if self.act_start <= _currframe < self.act_stop: _status = True
+            else:
+                if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop: _status = True
+        if self.wd_status ^ _status:
+            notifyLog('Watchdog status changed: %s' % ('active' if _status else 'inactive'))
+            self.wd_status = _status
+        return _status
 
     # user defined actions
 
@@ -235,10 +238,6 @@ class SleepyWatchdog(XBMCMonitor):
                     if self.testConfig:
                         __addon__.setSetting('testConfig', 'false')
 
-            else:
-                notifyLog('no active timeframe yet')
-
-            #
             _loop = 0
             while not xbmc.Monitor.waitForAbort(self, 5):
                 _loop += 5
