@@ -234,9 +234,9 @@ class SleepyWatchdog(XBMCMonitor):
                         __addon__.setSetting('testConfig', 'false')
 
             _loop = 0
-            while not xbmc.Monitor.waitForAbort(self, 5):
-                _loop += 5
-                _currentIdleTime += 5
+            while not xbmc.Monitor.waitForAbort(self, 15):
+                _loop += 15
+                _currentIdleTime += 15
 
                 if self.SettingsChanged:
                     notifyLog('settings changed')
