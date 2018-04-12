@@ -146,7 +146,7 @@ msgstr "Kodi beenden"
 
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
-msgstr "Es wurde kein Idle-Timer gesetzt"
+msgstr "Es wurde kein manueller Idle-Timer gesetzt"
 
 #strings of settings outside active timeframe
 
