@@ -72,11 +72,12 @@ msgctxt "#32118"
 msgid "Execution of idle actions aborted"
 msgstr ""
 
-#setting strings
-#empty strings from id 32119 to 32119
+msgctxt "#32119"
+msgid "Idle time before an action is triggered"
+msgstr ""
 
 msgctxt "#32120"
-msgid "max. Duration of idle time"
+msgid "max. duration of idle time"
 msgstr ""
 
 msgctxt "#32121"
@@ -111,8 +112,9 @@ msgctxt "#32128"
 msgid "Keep WatchDog alive"
 msgstr ""
 
-#defined actions
-#empty string with id 32129
+msgctxt "#32129"
+msgid "Perform '%s' in %s'"
+msgstr ""
 
 msgctxt "#32130"
 msgid "Stop playing media"
@@ -142,10 +144,15 @@ msgctxt "#32136"
 msgid "Exit Kodi"
 msgstr ""
 
+msgctxt "#32139"
+msgid "Manual setting of idle timer aborted"
+msgstr ""
+
 #strings of settings outside active timeframe
 
 msgctxt "#32140"
 msgid "Perform actions outside the active time frame too"
+msgstr ""
 
 msgctxt "#32150"
 msgid "00:00 o'clock"
@@ -241,4 +248,96 @@ msgstr ""
 
 msgctxt "#32173"
 msgid "23:00 o'clock"
+msgstr ""
+
+msgctxt "#32180"
+msgid "15 min"
+msgstr ""
+
+msgctxt "#32181"
+msgid "30 min"
+msgstr ""
+
+msgctxt "#32182"
+msgid "45 min"
+msgstr ""
+
+msgctxt "#32183"
+msgid "60 min"
+msgstr ""
+
+msgctxt "#32184"
+msgid "75 min"
+msgstr ""
+
+msgctxt "#32185"
+msgid "90 min"
+msgstr ""
+
+msgctxt "#32186"
+msgid "105 min"
+msgstr ""
+
+msgctxt "#32187"
+msgid "120 min"
+msgstr ""
+
+msgctxt "#32188"
+msgid "150 min"
+msgstr ""
+
+msgctxt "#32189"
+msgid "180 min"
+msgstr ""
+
+msgctxt "#32190"
+msgid "210 min"
+msgstr ""
+
+msgctxt "#32191"
+msgid "240 min"
+msgstr ""
+
+msgctxt "#32192"
+msgid "300 min"
+msgstr ""
+
+msgctxt "#32193"
+msgid "360 min"
+msgstr ""
+
+msgctxt "#32194"
+msgid "420 min"
+msgstr ""
+
+msgctxt "#32195"
+msgid "480 min"
+msgstr ""
+
+msgctxt "#32196"
+msgid "540 min"
+msgstr ""
+
+msgctxt "#32197"
+msgid "600 min"
+msgstr ""
+
+msgctxt "#32198"
+msgid "660 min"
+msgstr ""
+
+msgctxt "#32199"
+msgid "720 min"
+msgstr ""
+
+msgctxt "#32200"
+msgid "780 min"
+msgstr ""
+
+msgctxt "#32201"
+msgid "840 min"
+msgstr ""
+
+msgctxt "#32202"
+msgid "900 min"
 msgstr ""
