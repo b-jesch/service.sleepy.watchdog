@@ -1,16 +1,5 @@
 CHANGELOG
 
-0.1.23
-- Introducing quick manual start of idle timers on adon call
-
-0.1.20
-- Ready for Krypton
-
-0.1.19
-- Ukrainian language added
-- Messaging switched from progress dialog to an intermitted notification as some skins
-  shows the progress dialog too obtrusive.
-
 0.1.16 - 18
 - Minor bugfixes
 

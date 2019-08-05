@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="service.sleepy.watchdog" name="Sleepy Watchdog" version="0.1.23" provider-name="Birger Jesch">
+<addon id="service.sleepy.watchdog" name="Sleepy Watchdog" version="0.1.24" provider-name="Birger Jesch">
   <requires>
     <import addon="xbmc.python" version="2.24.0"/>
   </requires>
   <extension point="xbmc.service" library="service.py" start="[login|startup]" />
-  <extension point="xbmc.python.script" library="default.py" />
-  <provides>executable</provides>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <summary lang="en_GB">Sleepy Watchdog - he's watching while You sleep</summary>
@@ -22,6 +23,17 @@
     <website>http://vdr4bj1.no-ip.org</website>
     <email>birger.jesch@gmail.com</email>
     <source>https://github.com/b-jesch/service.sleepy.watchdog</source>
+    <news>
+0.1.23
+- Introducing quick manual start of idle timers on adon call
+
+0.1.20
+- Ready for Krypton
+
+0.1.19
+- Ukrainian language added
+- Messaging switched from progress dialog to an intermitted notification as some skins shows the progress dialog too obtrusive.
+    </news>
     <assets>
       <icon>resources/media/icon.png</icon>
       <fanart>resources/media/fanart.png</fanart>
