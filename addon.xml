@@ -24,6 +24,9 @@
     <email>birger.jesch@gmail.com</email>
     <source>https://github.com/b-jesch/service.sleepy.watchdog</source>
     <news>
+0.1.24
+- Addon structure modified
+
 0.1.23
 - Introducing quick manual start of idle timers on adon call
 
