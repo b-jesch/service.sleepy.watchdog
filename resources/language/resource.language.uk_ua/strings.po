@@ -343,3 +343,11 @@ msgstr ""
 msgctxt "#32202"
 msgid "900 min"
 msgstr ""
+
+msgctxt "#32210"
+msgid "Reset User idle Time"
+msgstr ""
+
+msgctxt "#32211"
+msgid "User idle Time canceled"
+msgstr ""
