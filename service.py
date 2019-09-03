@@ -233,7 +233,7 @@ class SleepyWatchdog(XBMCMonitor):
                                 break
                     else:
                         notifyLog('Countdown canceled by user action')
-                        notifyUser(LOC(32118), icon=ICON_ERROR)
+                        notifyUser(LOC(32118), icon=ICON_DEFAULT)
 
                     # Reset test status
                     if self.testConfig:
