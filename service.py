@@ -15,6 +15,11 @@ ICON_ERROR = os.path.join(ADDONPATH, 'resources', 'media', 'pawprint_red.png')
 
 LANGOFFSET = 32130
 
+STRING = 0
+BOOL = 1
+NUM = 2
+
+
 def notifyLog(message, level=xbmc.LOGDEBUG):
     xbmc.log('[%s] %s' % (ADDONNAME, message.encode('utf-8')), level)
 
@@ -43,47 +48,55 @@ class SleepyWatchdog(XBMCMonitor):
     def __init__(self):
 
         self.currframe = 0
-        self.wd_status = False
 
         XBMCMonitor.__init__(self)
         self.getWDSettings()
 
+
+    def __strToBool(self, par):
+        return True if par.upper() == 'TRUE' else False
+
+
+    def getAddonSetting(self, setting, sType=STRING, multiplicator=1):
+        if sType == BOOL:
+            return self.__strToBool(ADDON.getSetting(setting))
+        elif sType == NUM:
+            try:
+                return int(re.findall('([0-9]+)', ADDON.getSetting(setting))[0]) * multiplicator
+            except (IndexError, TypeError, AttributeError) as e:
+                notifyLog('Could not get setting type NUM for %s, return with 0' % (setting), xbmc.LOGERROR)
+                notifyLog(str(e.message), xbmc.LOGERROR)
+                return 0
+        else:
+            return ADDON.getSetting(setting)
+
+
     def getWDSettings(self):
 
-        self.mode = ADDON.getSetting('mode')
-        self.notifyUser = True if ADDON.getSetting('showPopup').upper() == 'TRUE' else False
+        self.mode = self.getAddonSetting('mode')
+        self.notifyUser = self.getAddonSetting('showPopup', BOOL)
+        self.notificationTime = self.getAddonSetting('notificationTime', NUM)
+        self.sendCEC = self.getAddonSetting('sendCEC', BOOL)
+        self.timeframe = bool(self.getAddonSetting('timeframe', NUM))
+        self.act_start = int(datetime.timedelta(hours=self.getAddonSetting('start', NUM)).total_seconds())
+        self.act_stop = int(datetime.timedelta(hours=self.getAddonSetting('stop', NUM)).total_seconds())
+        self.maxIdleTime = self.getAddonSetting('maxIdleTime', NUM, 60)
+        self.userIdleTime = self.getAddonSetting('userIdleTime', NUM)
+        self.action = self.getAddonSetting('action', NUM) + LANGOFFSET
+        self.jumpMainMenu = self.getAddonSetting('mainmenu', BOOL)
+        self.keepAlive = self.getAddonSetting('keepalive', BOOL)
+        self.addon_id = self.getAddonSetting('addon_id')
+        self.testConfig = self.getAddonSetting('testConfig', BOOL)
 
-        # self.notificationTime = int(re.match('\d+', ADDON.getSetting('notificationTime')).group())
+        if self.timeframe:
+            _activity_time = self.act_stop - self.act_start
+            if _activity_time < 0: _activity_time += 86400
+            notifyLog('active timeframe: %s secs' % (_activity_time))
 
-        self.notificationTime = int(re.findall('([0-9]+)', ADDON.getSetting('notificationTime'))[0]) \
-            if len(re.findall('([0-9]+)', ADDON.getSetting('notificationTime'))) else 0
-
-        self.sendCEC = True if ADDON.getSetting('sendCEC').upper() == 'TRUE' else False
-
-        self.timeframe = False if ADDON.getSetting('timeframe') == '0' else True
-
-        self.act_start = int(datetime.timedelta(hours=int(ADDON.getSetting('start'))).total_seconds())
-        self.act_stop = int(datetime.timedelta(hours=int(ADDON.getSetting('stop'))).total_seconds())
-
-        # self.maxIdleTime = int(re.match('\d+', ADDON.getSetting('maxIdleTime')).group()) * 60
-        # self.userIdleTime = int(re.match('\d+', ADDON.getSetting('userIdleTime')).group()) * 60
-
-        self.maxIdleTime = int(re.findall('([0-9]+)', ADDON.getSetting('maxIdleTime'))[0]) * 60 \
-            if len(re.findall('([0-9]+)', ADDON.getSetting('maxIdleTime'))) else 0
-        self.userIdleTime = int(re.findall('([0-9]+)', ADDON.getSetting('userIdleTime'))[0]) \
-            if len(re.findall('([0-9]+)', ADDON.getSetting('userIdleTime'))) else 0
-
-        self.action = int(ADDON.getSetting('action')) + LANGOFFSET
-        self.jumpMainMenu = True if ADDON.getSetting('mainmenu').upper() == 'TRUE' else False
-        self.keepAlive = True if ADDON.getSetting('keepalive').upper() == 'TRUE' else False
-        self.addon_id = ADDON.getSetting('addon_id')
-
-        self.testConfig = True if ADDON.getSetting('testConfig').upper() == 'TRUE' else False
-
-        if self.act_stop > self.act_start:
-            if (self.act_stop - self.act_start) <= self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32116))
-        else:
-            if (86400 + self.act_stop - self.act_start) <= self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32116))
+            if self.action == 32131:
+                if _activity_time > self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
+            else:
+                if _activity_time < self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32116))
 
         self.SettingsChanged = False
 
@@ -158,6 +171,7 @@ class SleepyWatchdog(XBMCMonitor):
     def start(self):
 
         _currentIdleTime = 0
+        _wd_status = False
         _maxIdleTime = self.maxIdleTime
 
         while not xbmc.Monitor.abortRequested(self):
@@ -174,11 +188,11 @@ class SleepyWatchdog(XBMCMonitor):
                 else:
                     if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop: _status = True
 
-            if self.wd_status ^ _status:
+            if _wd_status ^ _status:
                 notifyLog('Watchdog status changed: %s' % ('active' if _status else 'inactive'))
-                self.wd_status = _status
+                _wd_status = _status
 
-            if self.wd_status and _currentIdleTime > 60 and not self.testConfig:
+            if _wd_status and _currentIdleTime > 60 and not self.testConfig:
                 notifyLog('idle time: %s' % (str(datetime.timedelta(seconds=_currentIdleTime))))
 
             if _currentIdleTime > xbmc.getGlobalIdleTime():
@@ -188,7 +202,7 @@ class SleepyWatchdog(XBMCMonitor):
 
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
 
-            if self.wd_status or self.testConfig:
+            if _wd_status or self.testConfig:
                 if _currentIdleTime > (_maxIdleTime - int(self.notifyUser)*self.notificationTime):
 
                     notifyLog('max idle time reached, ready to perform some action')
