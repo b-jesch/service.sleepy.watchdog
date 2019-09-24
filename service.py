@@ -198,7 +198,7 @@ class SleepyWatchdog(XBMCMonitor):
                         count = 0
                         notifyLog('init notification countdown for action no. %s' % (self.action))
 
-                        while (self.notificationTime - count > 0):
+                        while (self.notificationTime - count > 0 and self.action > 32130):
                             notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=7000)
                             if xbmc.Monitor.waitForAbort(self, 10): break
                             count += 10
@@ -240,9 +240,9 @@ class SleepyWatchdog(XBMCMonitor):
                         ADDON.setSetting('testConfig', 'false')
 
             _loop = 0
-            while not xbmc.Monitor.waitForAbort(self, 15):
-                _loop += 15
-                _currentIdleTime += 15
+            while not xbmc.Monitor.waitForAbort(self, 30):
+                _loop += 30
+                _currentIdleTime += 30
 
                 if self.SettingsChanged:
                     notifyLog('settings changed')
