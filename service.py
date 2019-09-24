@@ -198,8 +198,9 @@ class SleepyWatchdog(XBMCMonitor):
                         count = 0
                         notifyLog('init notification countdown for action no. %s' % (self.action))
 
-                        while (self.notificationTime - count > 0 and self.action > 32130):
-                            notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=7000)
+                        while (self.notificationTime - count > 0):
+                            if self.action > 32130:
+                                notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=7000)
                             if xbmc.Monitor.waitForAbort(self, 10): break
                             count += 10
                             if _currentIdleTime > xbmc.getGlobalIdleTime():
