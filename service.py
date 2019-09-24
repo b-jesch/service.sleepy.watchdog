@@ -94,7 +94,7 @@ class SleepyWatchdog(XBMCMonitor):
             notifyLog('active timeframe: %s secs' % (_activity_time))
 
             if self.action == 32131:
-                if _activity_time > self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
+                if _activity_time > self.maxIdleTime * 2: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
             else:
                 if _activity_time < self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32116))
 

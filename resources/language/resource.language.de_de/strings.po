@@ -61,7 +61,7 @@ msgstr "Starte Aktion '%s' in %s Sek."
 
 msgctxt "#32116"
 msgid "The activity settings of time frame and idle time are not suitable. Sleepy Watchdog will probably not activated."
-msgstr "Die Einstellungen für den aktiven Zeitrahmen und der Inaktivitätsdauer sind unpassend. Sleepy Watchdog wird möglicherweise nicht aktiviert werden."
+msgstr "Die Einstellungen für den aktiven Zeitrahmen und der Inaktivitätsdauer sind unpassend. Sleepy Watchdog wird möglicherweise nicht aktiv werden."
 
 msgctxt "#32117"
 msgid "The activity settings of time frame and idle time are not suitable. The selected action '%s' may be executed multiple times within the timeframe."
