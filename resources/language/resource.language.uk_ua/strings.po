@@ -150,6 +150,194 @@ msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
 msgstr ""
 
+msgctxt "#32150"
+msgid "00:00 o'clock"
+msgstr "00:00 годин"
+
+msgctxt "#32151"
+msgid "01:00 o'clock"
+msgstr "01:00 годин"
+
+msgctxt "#32152"
+msgid "02:00 o'clock"
+msgstr "02:00 годин"
+
+msgctxt "#32153"
+msgid "03:00 o'clock"
+msgstr "03:00 годин"
+
+msgctxt "#32154"
+msgid "04:00 o'clock"
+msgstr "04:00 годин"
+
+msgctxt "#32155"
+msgid "05:00 o'clock"
+msgstr "05:00 годин"
+
+msgctxt "#32156"
+msgid "06:00 o'clock"
+msgstr "06:00 годин"
+
+msgctxt "#32157"
+msgid "07:00 o'clock"
+msgstr "07:00 годин"
+
+msgctxt "#32158"
+msgid "08:00 o'clock"
+msgstr "08:00 годин"
+
+msgctxt "#32159"
+msgid "09:00 o'clock"
+msgstr "09:00 годин"
+
+msgctxt "#32160"
+msgid "10:00 o'clock"
+msgstr "10:00 годин"
+
+msgctxt "#32161"
+msgid "11:00 o'clock"
+msgstr "11:00 годин"
+
+msgctxt "#32162"
+msgid "12:00 o'clock"
+msgstr "12:00 годин"
+
+msgctxt "#32163"
+msgid "13:00 o'clock"
+msgstr "13:00 годин"
+
+msgctxt "#32164"
+msgid "14:00 o'clock"
+msgstr "14:00 годин"
+
+msgctxt "#32165"
+msgid "15:00 o'clock"
+msgstr "15:00 годин"
+
+msgctxt "#32166"
+msgid "16:00 o'clock"
+msgstr "16:00 годин"
+
+msgctxt "#32167"
+msgid "17:00 o'clock"
+msgstr "17:00 годин"
+
+msgctxt "#32168"
+msgid "18:00 o'clock"
+msgstr "18:00 годин"
+
+msgctxt "#32169"
+msgid "19:00 o'clock"
+msgstr "19:00 годин"
+
+msgctxt "#32170"
+msgid "20:00 o'clock"
+msgstr "20:00 годин"
+
+msgctxt "#32171"
+msgid "21:00 o'clock"
+msgstr "21:00 годин"
+
+msgctxt "#32172"
+msgid "22:00 o'clock"
+msgstr "22:00 годин"
+
+msgctxt "#32173"
+msgid "23:00 o'clock"
+msgstr "23:00 годин"
+
+msgctxt "#32180"
+msgid "15 min"
+msgstr ""
+
+msgctxt "#32181"
+msgid "30 min"
+msgstr ""
+
+msgctxt "#32182"
+msgid "45 min"
+msgstr ""
+
+msgctxt "#32183"
+msgid "60 min"
+msgstr ""
+
+msgctxt "#32184"
+msgid "75 min"
+msgstr ""
+
+msgctxt "#32185"
+msgid "90 min"
+msgstr ""
+
+msgctxt "#32186"
+msgid "105 min"
+msgstr ""
+
+msgctxt "#32187"
+msgid "120 min"
+msgstr ""
+
+msgctxt "#32188"
+msgid "150 min"
+msgstr ""
+
+msgctxt "#32189"
+msgid "180 min"
+msgstr ""
+
+msgctxt "#32190"
+msgid "210 min"
+msgstr ""
+
+msgctxt "#32191"
+msgid "240 min"
+msgstr ""
+
+msgctxt "#32192"
+msgid "300 min"
+msgstr ""
+
+msgctxt "#32193"
+msgid "360 min"
+msgstr ""
+
+msgctxt "#32194"
+msgid "420 min"
+msgstr ""
+
+msgctxt "#32195"
+msgid "480 min"
+msgstr ""
+
+msgctxt "#32196"
+msgid "540 min"
+msgstr ""
+
+msgctxt "#32197"
+msgid "600 min"
+msgstr ""
+
+msgctxt "#32198"
+msgid "660 min"
+msgstr ""
+
+msgctxt "#32199"
+msgid "720 min"
+msgstr ""
+
+msgctxt "#32200"
+msgid "780 min"
+msgstr ""
+
+msgctxt "#32201"
+msgid "840 min"
+msgstr ""
+
+msgctxt "#32202"
+msgid "900 min"
+msgstr ""
+
 msgctxt "#32210"
 msgid "Reset User idle Time"
 msgstr ""
