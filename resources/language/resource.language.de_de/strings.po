@@ -143,6 +143,10 @@ msgctxt "#32136"
 msgid "Exit Kodi"
 msgstr "Kodi beenden"
 
+msgctxt "#32137"
+msgid "Load Profile"
+msgstr "Profil laden"
+
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
 msgstr "Es wurde kein manueller Idle-Timer gesetzt"
@@ -342,3 +346,7 @@ msgstr "Inaktivitätszeit zurücksetzen"
 msgctxt "#32211"
 msgid "User idle Time canceled"
 msgstr "Inaktivitätszeit zurückgesetzt"
+
+msgctxt "#32212"
+msgid "Profile ID"
+msgstr "Profil ID"

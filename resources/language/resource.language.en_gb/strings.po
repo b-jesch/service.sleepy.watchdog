@@ -144,6 +144,10 @@ msgctxt "#32136"
 msgid "Exit Kodi"
 msgstr ""
 
+msgctxt "#32137"
+msgid "Switch Profile"
+msgstr ""
+
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
 msgstr ""
@@ -342,4 +346,8 @@ msgstr ""
 
 msgctxt "#32211"
 msgid "User idle Time canceled"
+msgstr ""
+
+msgctxt "#32212"
+msgid "Profile ID"
 msgstr ""
