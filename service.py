@@ -86,6 +86,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.jumpMainMenu = self.getAddonSetting('mainmenu', BOOL)
         self.keepAlive = self.getAddonSetting('keepalive', BOOL)
         self.addon_id = self.getAddonSetting('addon_id')
+        self.profile_id = self.getAddonSetting('profile_id')
         self.testConfig = self.getAddonSetting('testConfig', BOOL)
 
         if self.timeframe:
@@ -114,6 +115,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('Jump to main menue:       %s' % (self.jumpMainMenu))
         notifyLog('Keep alive:               %s' % (self.keepAlive))
         notifyLog('Run addon:                %s' % (self.addon_id))
+        notifyLog('Load profile:             %s' % (self.profile_id))
         notifyLog('Test configuration:       %s' % (self.testConfig))
 
         if self.testConfig:
@@ -167,6 +169,10 @@ class SleepyWatchdog(XBMCMonitor):
             xbmc.executebuiltin('RunAddon(%s)' % (self.addon_id))
         else:
             notifyLog('could not run nonexistent addon \'%s\'' % (self.addon_id.split(',')[0]), level=xbmc.LOGERROR)
+
+    def switchProfile(self):
+        notifyLog('switch profile \'%s\'' % (self.profile_id))
+        xbmc.executebuiltin('LoadProfile(%s,prompt)' % (self.profile_id))
 
     def start(self):
 
@@ -231,7 +237,8 @@ class SleepyWatchdog(XBMCMonitor):
                         32133: self.systemHibernate,
                         32134: self.systemSuspend,
                         32135: self.runAddon,
-                        32136: self.quit
+                        32136: self.quit,
+                        32137: self.switchProfile
                         }.get(self.action)()
                         #
                         # ToDo: implement more user defined actions here
