@@ -3,7 +3,9 @@
 import os
 import re
 import datetime
-import xbmc, xbmcgui, xbmcaddon
+import xbmc
+import xbmcgui
+import xbmcaddon
 
 ADDON = xbmcaddon.Addon()
 ADDONNAME = ADDON.getAddonInfo('id')
@@ -21,10 +23,14 @@ NUM = 2
 
 
 def notifyLog(message, level=xbmc.LOGDEBUG):
-    xbmc.log('[%s] %s' % (ADDONNAME, message.encode('utf-8')), level)
+    try:
+        xbmc.log('[%s] %s' % (ADDONNAME, message.encode('utf-8')), level)
+    except UnicodeDecodeError as e:
+        xbmc.log('[%s] %s' % (ADDONNAME, message), level)
 
 def notifyUser(message, icon=ICON_DEFAULT, time=3000):
     xbmcgui.Dialog().notification(LOC(32100), message.encode('utf-8'), icon, time)
+
 
 class XBMCMonitor(xbmc.Monitor):
 
