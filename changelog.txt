@@ -1,5 +1,8 @@
 CHANGELOG
 
+3.0.0.+matrix
+- Matrix ready
+
 0.1.16 - 18
 - Minor bugfixes
 

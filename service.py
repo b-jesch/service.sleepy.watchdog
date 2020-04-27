@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 import re
 import datetime
@@ -23,13 +21,11 @@ NUM = 2
 
 
 def notifyLog(message, level=xbmc.LOGDEBUG):
-    try:
-        xbmc.log('[%s] %s' % (ADDONNAME, message.encode('utf-8')), level)
-    except UnicodeDecodeError as e:
-        xbmc.log('[%s] %s' % (ADDONNAME, message), level)
+    xbmc.log('[%s] %s' % (ADDONNAME, message), level)
+
 
 def notifyUser(message, icon=ICON_DEFAULT, time=3000):
-    xbmcgui.Dialog().notification(LOC(32100), message.encode('utf-8'), icon, time)
+    xbmcgui.Dialog().notification(LOC(32100), message, icon, time)
 
 
 class XBMCMonitor(xbmc.Monitor):
@@ -71,7 +67,7 @@ class SleepyWatchdog(XBMCMonitor):
                 return int(re.findall('([0-9]+)', ADDON.getSetting(setting))[0]) * multiplicator
             except (IndexError, TypeError, AttributeError) as e:
                 notifyLog('Could not get setting type NUM for %s, return with 0' % (setting), xbmc.LOGERROR)
-                notifyLog(str(e.message), xbmc.LOGERROR)
+                notifyLog(str(e), xbmc.LOGERROR)
                 return 0
         else:
             return ADDON.getSetting(setting)
@@ -118,7 +114,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('max. idle time:           %s' % (self.maxIdleTime))
         notifyLog('Idle time set by user:    %s' % (self.userIdleTime))
         notifyLog('Action:                   %s' % (self.action))
-        notifyLog('Jump to main menue:       %s' % (self.jumpMainMenu))
+        notifyLog('Jump to main menu:        %s' % (self.jumpMainMenu))
         notifyLog('Keep alive:               %s' % (self.keepAlive))
         notifyLog('Run addon:                %s' % (self.addon_id))
         notifyLog('Load profile:             %s' % (self.profile_id))
@@ -182,7 +178,7 @@ class SleepyWatchdog(XBMCMonitor):
 
     def start(self):
 
-        _currentIdleTime = 0
+        _currentIdleTime = -1
         _wd_status = False
         _maxIdleTime = self.maxIdleTime
 
@@ -226,7 +222,7 @@ class SleepyWatchdog(XBMCMonitor):
 
                         while (self.notificationTime - count > 0):
                             if self.action > 32130:
-                                notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=7000)
+                                notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=5000)
                             if xbmc.Monitor.waitForAbort(self, 10): break
                             count += 10
                             if _currentIdleTime > xbmc.getGlobalIdleTime():
@@ -268,9 +264,9 @@ class SleepyWatchdog(XBMCMonitor):
                         ADDON.setSetting('testConfig', 'false')
 
             _loop = 0
-            while not xbmc.Monitor.waitForAbort(self, 30):
-                _loop += 30
-                _currentIdleTime += 30
+            while not xbmc.Monitor.waitForAbort(self, 10):
+                _loop += 10
+                _currentIdleTime += 10
 
                 if self.SettingsChanged:
                     notifyLog('settings changed')
@@ -290,8 +286,8 @@ if __name__ == '__main__':
     try:
         notifyLog('Sleepy Watchdog kicks in (mode: %s)' % mode)
         WatchDog.start()
-    except Exception, e:
-        notifyLog(e.message, level=xbmc.LOGERROR)
+    except Exception as e:
+        notifyLog(e, level=xbmc.LOGERROR)
 
     notifyLog('Sleepy Watchdog kicks off from mode: %s' % WatchDog.mode)
     del WatchDog
