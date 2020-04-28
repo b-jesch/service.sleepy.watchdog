@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="service.sleepy.watchdog" name="Sleepy Watchdog" version="3.0.0+matrix" provider-name="Birger Jesch">
+<addon id="service.sleepy.watchdog" name="Sleepy Watchdog" version="3.0.1+matrix" provider-name="Birger Jesch">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
   </requires>
@@ -24,9 +24,7 @@
     <website></website>
     <email>birger.jesch@gmail.com</email>
     <source>https://github.com/b-jesch/service.sleepy.watchdog</source>
-    <news>
-- Matrix ready
-    </news>
+    <news>- Introducing silent mode and choice of alerts in non silent mode[CR]- Matrix ready</news>
     <assets>
       <icon>resources/media/icon.png</icon>
       <fanart>resources/media/fanart.png</fanart>

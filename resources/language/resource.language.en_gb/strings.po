@@ -85,7 +85,7 @@ msgid "Action to execute"
 msgstr ""
 
 msgctxt "#32122"
-msgid "Show notification on WatchDog activation"
+msgid "Silent countdown"
 msgstr ""
 
 msgctxt "#32123"
@@ -150,6 +150,22 @@ msgstr ""
 
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
+msgstr ""
+
+msgctxt "#32140"
+msgid "Display countdown as"
+msgstr ""
+
+msgctxt "#32141"
+msgid "Intermitted notification"
+msgstr ""
+
+msgctxt "#32142"
+msgid "Countdown progress"
+msgstr ""
+
+msgctxt "#32143"
+msgid "Execute '%s' in %s secs. Click cancel to abort this action"
 msgstr ""
 
 msgctxt "#32150"

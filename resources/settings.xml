@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
-    <setting id="showPopup" type="bool" label="32122" default="true" />
-    <setting id="notificationTime" type="labelenum" label="32123" enable="eq(-1,true)"
+    <setting id="silent" type="bool" label="32122" default="false" />
+    <setting id="notificationType" type="enum" label="32140" lvalues="32141|32142" default="0" enable="eq(-1,false)" />
+    <setting id="notificationTime" type="labelenum" label="32123" enable="eq(-2,false)"
              values="30 sec|45 sec|60 sec|75 sec|90 sec|105 sec|120 sec|135 sec|150 sec|165 sec|180 sec" default="60 sec" />
     <setting id="sendCEC" type="bool" label="32125" default="false" />
     <setting type="sep" />
