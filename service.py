@@ -50,6 +50,7 @@ class SleepyWatchdog(XBMCMonitor):
     def __init__(self):
 
         self.currframe = 0
+        self.actionCanceled = False
 
         XBMCMonitor.__init__(self)
         self.getWDSettings()
@@ -76,7 +77,8 @@ class SleepyWatchdog(XBMCMonitor):
     def getWDSettings(self):
 
         self.mode = self.getAddonSetting('mode')
-        self.notifyUser = self.getAddonSetting('showPopup', BOOL)
+        self.silent = self.getAddonSetting('silent', BOOL)
+        self.notificationType = self.getAddonSetting('notificationType', NUM)   # 0:intermitted, 1:progressbar
         self.notificationTime = self.getAddonSetting('notificationTime', NUM)
         self.sendCEC = self.getAddonSetting('sendCEC', BOOL)
         self.timeframe = bool(self.getAddonSetting('timeframe', NUM))
@@ -105,7 +107,8 @@ class SleepyWatchdog(XBMCMonitor):
 
         notifyLog('settings (re)loaded...')
         notifyLog('current mode:             %s' % (self.mode))
-        notifyLog('notify user:              %s' % (self.notifyUser))
+        notifyLog('silent mode:              %s' % (self.silent))
+        notifyLog('message type:             %s' % (self.notificationType))
         notifyLog('Duration of notification: %s' % (self.notificationTime))
         notifyLog('send CEC:                 %s' % (self.sendCEC))
         notifyLog('Time frame:               %s' % (self.timeframe))
@@ -121,7 +124,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('Test configuration:       %s' % (self.testConfig))
 
         if self.testConfig:
-            self.maxIdleTime = 60 + int(self.notifyUser)*self.notificationTime
+            self.maxIdleTime = 60 + int(not self.silent) * self.notificationTime
             notifyLog('running in test mode for %s secs' % (self.maxIdleTime))
 
     # user defined actions
@@ -211,23 +214,34 @@ class SleepyWatchdog(XBMCMonitor):
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
 
             if _wd_status or self.testConfig:
-                if _currentIdleTime > (_maxIdleTime - int(self.notifyUser)*self.notificationTime):
+                if _currentIdleTime > (_maxIdleTime - int(not self.silent) * self.notificationTime):
 
                     notifyLog('max idle time reached, ready to perform some action')
 
-                    # Check if notification is allowed
-                    if self.notifyUser:
+                    # Check silent mode
+                    if not self.silent:
                         count = 0
                         notifyLog('init notification countdown for action no. %s' % (self.action))
-
-                        while (self.notificationTime - count > 0):
-                            if self.action > 32130:
-                                notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=5000)
-                            if xbmc.Monitor.waitForAbort(self, 10): break
-                            count += 10
-                            if _currentIdleTime > xbmc.getGlobalIdleTime():
-                                self.actionCanceled = True
-                                break
+                        if self.notificationType == 0:
+                            while self.notificationTime - count > 0:
+                                if self.action > 32130:
+                                    notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=5000)
+                                if xbmc.Monitor.waitForAbort(self, 10): break
+                                count += 10
+                                if _currentIdleTime > xbmc.getGlobalIdleTime():
+                                    self.actionCanceled = True
+                                    break
+                        else:
+                            progress = xbmcgui.DialogProgress()
+                            progress.create(LOC(32100), LOC(32115) % (LOC(self.action), self.notificationTime - count))
+                            while self.notificationTime - count >= 0:
+                                progress.update(100 - int(count * 100 / self.notificationTime),
+                                                LOC(32143) % (LOC(self.action), self.notificationTime - count))
+                                if progress.iscanceled():
+                                    self.actionCanceled = True
+                                    break
+                                count += 1
+                                xbmc.sleep(1000)
 
                     if not self.actionCanceled:
 

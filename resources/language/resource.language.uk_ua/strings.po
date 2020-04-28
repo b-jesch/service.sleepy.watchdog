@@ -85,8 +85,8 @@ msgid "Action to execute"
 msgstr "Дія до виконання"
 
 msgctxt "#32122"
-msgid "Show notification on WatchDog activation"
-msgstr "Показувати повідомлення, перед виконанням дії"
+msgid "Silent countdown"
+msgstr "Silent countdown"
 
 msgctxt "#32123"
 msgid "Duration of notification"
@@ -148,6 +148,22 @@ msgstr "Вихід Kodi"
 
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
+msgstr ""
+
+msgctxt "#32140"
+msgid "Display countdown as"
+msgstr ""
+
+msgctxt "#32141"
+msgid "Intermitted notification"
+msgstr ""
+
+msgctxt "#32142"
+msgid "Countdown progress"
+msgstr ""
+
+msgctxt "#32143"
+msgid "Execute '%s' in %s secs. Click cancel to abort this action"
 msgstr ""
 
 msgctxt "#32150"

@@ -84,8 +84,8 @@ msgid "Action to execute"
 msgstr "auszuführende Aktion"
 
 msgctxt "#32122"
-msgid "Show notification on WatchDog activation"
-msgstr "Benachrichtige Nutzer, wenn der WatchDog aktiviert wird"
+msgid "Silent countdown"
+msgstr "Stiller Countdown"
 
 msgctxt "#32123"
 msgid "Duration of notification"
@@ -150,6 +150,22 @@ msgstr "Profil laden"
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
 msgstr "Es wurde kein manueller Idle-Timer gesetzt"
+
+msgctxt "#32140"
+msgid "Display countdown as"
+msgstr "Countdown anzeigen als"
+
+msgctxt "#32141"
+msgid "Intermitted notification"
+msgstr "wiederholende Anzeige"
+
+msgctxt "#32142"
+msgid "Countdown progress"
+msgstr "Fortschrittsbalken"
+
+msgctxt "#32143"
+msgid "Execute '%s' in %s secs. Click cancel to abort this action"
+msgstr "Starte Aktion '%s' in %s Sekunden. Klicke auf 'Abbrechen' um diese Aktion nicht auszuführen"
 
 msgctxt "#32150"
 msgid "00:00 o'clock"
