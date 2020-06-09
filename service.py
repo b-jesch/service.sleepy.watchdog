@@ -85,7 +85,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.act_start = int(datetime.timedelta(hours=self.getAddonSetting('start', NUM)).total_seconds())
         self.act_stop = int(datetime.timedelta(hours=self.getAddonSetting('stop', NUM)).total_seconds())
         self.maxIdleTime = self.getAddonSetting('maxIdleTime', NUM, 60)
-        self.userIdleTime = self.getAddonSetting('userIdleTime', NUM)
+        self.userIdleTime = 0 if self.mode == 'SERVICE' else self.getAddonSetting('userIdleTime', NUM)
         self.action = self.getAddonSetting('action', NUM) + LANGOFFSET
         self.jumpMainMenu = self.getAddonSetting('mainmenu', BOOL)
         self.keepAlive = self.getAddonSetting('keepalive', BOOL)
@@ -239,6 +239,7 @@ class SleepyWatchdog(XBMCMonitor):
                                                 LOC(32143) % (LOC(self.action), self.notificationTime - count))
                                 if progress.iscanceled():
                                     self.actionCanceled = True
+                                    progress.close()
                                     break
                                 count += 1
                                 xbmc.sleep(1000)
