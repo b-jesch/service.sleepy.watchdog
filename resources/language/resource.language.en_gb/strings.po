@@ -29,7 +29,6 @@ msgctxt "Addon Disclaimer"
 msgid "Use at your own risk. This service could conflict to other services (e.g recording services)."
 msgstr ""
 
-
 msgctxt "#32100"
 msgid "Sleepy WatchDog"
 msgstr ""
@@ -113,7 +112,7 @@ msgid "Keep WatchDog alive"
 msgstr ""
 
 msgctxt "#32129"
-msgid "Perform '%s' in %s'"
+msgid "Perform '%s' in %s"
 msgstr ""
 
 msgctxt "#32130"

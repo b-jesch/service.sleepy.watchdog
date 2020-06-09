@@ -19,16 +19,15 @@ msgstr ""
 
 msgctxt "Addon Summary"
 msgid "Sleepy Watchdog - he's watching while You sleep"
-msgstr "Sleepy Watchdog - він чатує, поки Ви спите"
+msgstr "Sleepy Watchdog - він чатує поки Ви спите"
 
 msgctxt "Addon Description"
 msgid "This Idle Timer management performs defined actions after an adjusted amount of inactivity time. Those actions are stop playing Audio, Video or TV for example or some actions to execute shutdown variations like suspend, reboot poweroff or hibernate."
-msgstr "Цей Таймер Простою виконує задані дії, після встановленого часу неактивності. Наприклад, зупиняє відтворення Аудіо, Відео, TV-Потоків чи інші дії (як Призупинення, Вимкнення, Перезавантаження або Гібернація) до Системи."
+msgstr "Цей Таймер Простою виконує задані дії після встановленого часу неактивності. Наприклад, зупиняє відтворення аудіо, відео чи TV-каналу, або виконує інші дії, такі як сон, перезавантаження, вимкнення, гібернація чи вихід до системи."
 
 msgctxt "Addon Disclaimer"
 msgid "Use at your own risk. This service could conflict to other services (e.g recording services)."
-msgstr "Використовуйте на власний Ризик. Ця Служба, може вступати в конфлікт з іншими сервісами (н.д. Запису)."
-
+msgstr "Використовуйте на власний ризик. Ця служба може конфліктувати з іншими сервісами, зокрема із записом телепередач."
 
 msgctxt "#32100"
 msgid "Sleepy WatchDog"
@@ -36,7 +35,7 @@ msgstr "Sleepy WatchDog"
 
 msgctxt "#32110"
 msgid "Activity frame"
-msgstr "Активувати"
+msgstr "Інтервал активності"
 
 msgctxt "#32111"
 msgid "always active"
@@ -44,7 +43,7 @@ msgstr "завжди"
 
 msgctxt "#32112"
 msgid "only in time frame"
-msgstr "тільки в проміжках часу"
+msgstr "лише в період доби"
 
 msgctxt "#32113"
 msgid "from"
@@ -56,29 +55,29 @@ msgstr "до"
 
 msgctxt "#32115"
 msgid "Execute '%s' in %s secs"
-msgstr ""
+msgstr "Заплановано '%s' за %s секунд"
 
 # Messages
 
 msgctxt "#32116"
 msgid "The activity settings of time frame and idle time are not suitable. Sleepy Watchdog will probably not activated."
-msgstr ""
+msgstr "За такої комбінації інтервалу активності та часу простою, ймовірніше за все, Sleepy Watchdog не буде активовано."
 
 msgctxt "#32117"
 msgid "The activity settings of time frame and idle time are not suitable. The selected action '%s' may be executed multiple times within the timeframe."
-msgstr ""
+msgstr "За такої комбінації інтервалу активності та часу простою обрана дія '%s' може бути виконана більше ніж один раз."
 
 msgctxt "#32118"
 msgid "Execution of idle actions aborted"
-msgstr ""
+msgstr "Виконання дії скасовано"
 
 msgctxt "#32119"
 msgid "Idle time before an action is triggered"
-msgstr ""
+msgstr "Виконати дію за"
 
 msgctxt "#32120"
 msgid "max. duration of idle time"
-msgstr "Макс. Тривалість часу простою"
+msgstr "Максимальний час простою"
 
 msgctxt "#32121"
 msgid "Action to execute"
@@ -86,15 +85,15 @@ msgstr "Дія до виконання"
 
 msgctxt "#32122"
 msgid "Silent countdown"
-msgstr "Silent countdown"
+msgstr "Безшумний відлік"
 
 msgctxt "#32123"
 msgid "Duration of notification"
-msgstr "Тривалість повідомлення"
+msgstr "Тривалість попередження"
 
 msgctxt "#32124"
 msgid "Test settings of active time frame (wait 1 min)"
-msgstr ""
+msgstr "Тест налаштувань (одноразово, чекати 1 хвилину)"
 
 msgctxt "#32125"
 msgid "Turn off TV (CEC)"
@@ -112,10 +111,9 @@ msgctxt "#32128"
 msgid "Keep WatchDog alive"
 msgstr "Тримати WatchDog активним"
 
-
 msgctxt "#32129"
-msgid "Perform '%s' in %s'"
-msgstr ""
+msgid "Perform '%s' in %s"
+msgstr "'%s' за %s"
 
 msgctxt "#32130"
 msgid "Stop playing media"
@@ -135,7 +133,7 @@ msgstr "Гібернація"
 
 msgctxt "#32134"
 msgid "Suspend"
-msgstr "Призупинення"
+msgstr "Сон"
 
 msgctxt "#32135"
 msgid "Run Addon"
@@ -143,221 +141,228 @@ msgstr "Запустити Надбудову"
 
 msgctxt "#32136"
 msgid "Exit Kodi"
-msgstr "Вихід Kodi"
+msgstr "Вихід з Kodi"
 
+msgctxt "#32137"
+msgid "Switch Profile"
+msgstr "Змінити Профіль"
 
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted"
-msgstr ""
+msgstr "Встановлення скасовано"
 
 msgctxt "#32140"
 msgid "Display countdown as"
-msgstr ""
+msgstr "Показувати відлік як"
 
 msgctxt "#32141"
 msgid "Intermitted notification"
-msgstr ""
+msgstr "низку сповіщень"
 
 msgctxt "#32142"
 msgid "Countdown progress"
-msgstr ""
+msgstr "вікно прогресу"
 
 msgctxt "#32143"
 msgid "Execute '%s' in %s secs. Click cancel to abort this action"
-msgstr ""
+msgstr "'%s' за %s секунд"
 
 msgctxt "#32150"
 msgid "00:00 o'clock"
-msgstr "00:00 годин"
+msgstr "00:00"
 
 msgctxt "#32151"
 msgid "01:00 o'clock"
-msgstr "01:00 годин"
+msgstr "01:00"
 
 msgctxt "#32152"
 msgid "02:00 o'clock"
-msgstr "02:00 годин"
+msgstr "02:00"
 
 msgctxt "#32153"
 msgid "03:00 o'clock"
-msgstr "03:00 годин"
+msgstr "03:00"
 
 msgctxt "#32154"
 msgid "04:00 o'clock"
-msgstr "04:00 годин"
+msgstr "04:00"
 
 msgctxt "#32155"
 msgid "05:00 o'clock"
-msgstr "05:00 годин"
+msgstr "05:00"
 
 msgctxt "#32156"
 msgid "06:00 o'clock"
-msgstr "06:00 годин"
+msgstr "06:00"
 
 msgctxt "#32157"
 msgid "07:00 o'clock"
-msgstr "07:00 годин"
+msgstr "07:00"
 
 msgctxt "#32158"
 msgid "08:00 o'clock"
-msgstr "08:00 годин"
+msgstr "08:00"
 
 msgctxt "#32159"
 msgid "09:00 o'clock"
-msgstr "09:00 годин"
+msgstr "09:00"
 
 msgctxt "#32160"
 msgid "10:00 o'clock"
-msgstr "10:00 годин"
+msgstr "10:00"
 
 msgctxt "#32161"
 msgid "11:00 o'clock"
-msgstr "11:00 годин"
+msgstr "11:00"
 
 msgctxt "#32162"
 msgid "12:00 o'clock"
-msgstr "12:00 годин"
+msgstr "12:00"
 
 msgctxt "#32163"
 msgid "13:00 o'clock"
-msgstr "13:00 годин"
+msgstr "13:00"
 
 msgctxt "#32164"
 msgid "14:00 o'clock"
-msgstr "14:00 годин"
+msgstr "14:00"
 
 msgctxt "#32165"
 msgid "15:00 o'clock"
-msgstr "15:00 годин"
+msgstr "15:00"
 
 msgctxt "#32166"
 msgid "16:00 o'clock"
-msgstr "16:00 годин"
+msgstr "16:00"
 
 msgctxt "#32167"
 msgid "17:00 o'clock"
-msgstr "17:00 годин"
+msgstr "17:00"
 
 msgctxt "#32168"
 msgid "18:00 o'clock"
-msgstr "18:00 годин"
+msgstr "18:00"
 
 msgctxt "#32169"
 msgid "19:00 o'clock"
-msgstr "19:00 годин"
+msgstr "19:00"
 
 msgctxt "#32170"
 msgid "20:00 o'clock"
-msgstr "20:00 годин"
+msgstr "20:00"
 
 msgctxt "#32171"
 msgid "21:00 o'clock"
-msgstr "21:00 годин"
+msgstr "21:00"
 
 msgctxt "#32172"
 msgid "22:00 o'clock"
-msgstr "22:00 годин"
+msgstr "22:00"
 
 msgctxt "#32173"
 msgid "23:00 o'clock"
-msgstr "23:00 годин"
+msgstr "23:00"
 
 msgctxt "#32180"
 msgid "15 min"
-msgstr ""
+msgstr "15 хв"
 
 msgctxt "#32181"
 msgid "30 min"
-msgstr ""
+msgstr "30 хв"
 
 msgctxt "#32182"
 msgid "45 min"
-msgstr ""
+msgstr "45 хв"
 
 msgctxt "#32183"
 msgid "60 min"
-msgstr ""
+msgstr "60 хв"
 
 msgctxt "#32184"
 msgid "75 min"
-msgstr ""
+msgstr "75 хв"
 
 msgctxt "#32185"
 msgid "90 min"
-msgstr ""
+msgstr "90 хв"
 
 msgctxt "#32186"
 msgid "105 min"
-msgstr ""
+msgstr "105 хв"
 
 msgctxt "#32187"
 msgid "120 min"
-msgstr ""
+msgstr "120 хв"
 
 msgctxt "#32188"
 msgid "150 min"
-msgstr ""
+msgstr "150 хв"
 
 msgctxt "#32189"
 msgid "180 min"
-msgstr ""
+msgstr "180 хв"
 
 msgctxt "#32190"
 msgid "210 min"
-msgstr ""
+msgstr "210 хв"
 
 msgctxt "#32191"
 msgid "240 min"
-msgstr ""
+msgstr "240 хв"
 
 msgctxt "#32192"
 msgid "300 min"
-msgstr ""
+msgstr "300 хв"
 
 msgctxt "#32193"
 msgid "360 min"
-msgstr ""
+msgstr "360 хв"
 
 msgctxt "#32194"
 msgid "420 min"
-msgstr ""
+msgstr "420 хв"
 
 msgctxt "#32195"
 msgid "480 min"
-msgstr ""
+msgstr "480 хв"
 
 msgctxt "#32196"
 msgid "540 min"
-msgstr ""
+msgstr "540 хв"
 
 msgctxt "#32197"
 msgid "600 min"
-msgstr ""
+msgstr "600 хв"
 
 msgctxt "#32198"
 msgid "660 min"
-msgstr ""
+msgstr "660 хв"
 
 msgctxt "#32199"
 msgid "720 min"
-msgstr ""
+msgstr "720 хв"
 
 msgctxt "#32200"
 msgid "780 min"
-msgstr ""
+msgstr "780 хв"
 
 msgctxt "#32201"
 msgid "840 min"
-msgstr ""
+msgstr "840 хв"
 
 msgctxt "#32202"
 msgid "900 min"
-msgstr ""
+msgstr "900 хв"
 
 msgctxt "#32210"
 msgid "Reset User idle Time"
-msgstr ""
+msgstr "Скасувати ручний таймер"
 
 msgctxt "#32211"
 msgid "User idle Time canceled"
-msgstr ""
+msgstr "Ручний таймер скасовано"
+
+msgctxt "#32212"
+msgid "Profile ID"
+msgstr "ID Профілю"
