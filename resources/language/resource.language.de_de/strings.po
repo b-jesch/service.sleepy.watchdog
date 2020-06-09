@@ -112,7 +112,7 @@ msgid "Keep WatchDog alive"
 msgstr "WatchDog weiterhin ausführen"
 
 msgctxt "#32129"
-msgid "Perform '%s' in %s'"
+msgid "Perform '%s' in %s"
 msgstr "Aktion '%s' wird in %s ausgelöst"
 
 msgctxt "#32130"
