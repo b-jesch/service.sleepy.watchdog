@@ -1,4 +1,5 @@
 import os
+import sys
 import re
 import datetime
 import xbmc
@@ -21,12 +22,22 @@ NUM = 2
 
 
 def notifyLog(message, level=xbmc.LOGDEBUG):
-    xbmc.log('[%s] %s' % (ADDONNAME, message), level)
-
+    if sys.version_info[0] > 2: # py3
+        xbmc.log('[%s] %s' % (ADDONNAME, message), level)
+    else: # py2
+        try:
+            xbmc.log('[%s] %s' % (ADDONNAME, message.encode('utf-8')), level)
+        except UnicodeDecodeError as e:
+            xbmc.log('[%s] %s' % (ADDONNAME, message), level)
 
 def notifyUser(message, icon=ICON_DEFAULT, time=3000):
-    xbmcgui.Dialog().notification(LOC(32100), message, icon, time)
-
+    if sys.version_info[0] > 2: # py3
+        xbmcgui.Dialog().notification(LOC(32100), message, icon, time)
+    else: # py2
+        try:
+            xbmcgui.Dialog().notification(LOC(32100), message.encode('utf-8'), icon, time)
+        except UnicodeDecodeError as e:
+            xbmcgui.Dialog().notification(LOC(32100), message, icon, time)
 
 class XBMCMonitor(xbmc.Monitor):
 
