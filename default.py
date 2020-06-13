@@ -29,7 +29,7 @@ if __name__ == '__main__':
             notifyUser(LOC(32129) % (LOC(_action), _userIdleTime))
         else:
             ADDON.setSetting('userIdleTime', '0')
-            notifyLog('Sleepy Watchdog set mode to: %s' % (mode))
+            notifyLog('Sleepy Watchdog set mode to: %s' % mode)
             notifyUser(LOC(32211))
     else:
         notifyUser(LOC(32139))
