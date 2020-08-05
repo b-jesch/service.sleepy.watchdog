@@ -34,6 +34,10 @@ msgctxt "#32100"
 msgid "Sleepy WatchDog"
 msgstr ""
 
+msgctxt "#32105"
+msgid "Settings"
+msgstr ""
+
 msgctxt "#32110"
 msgid "Activity frame"
 msgstr ""
