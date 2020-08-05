@@ -152,8 +152,8 @@ msgid "Load Profile"
 msgstr "Profil laden"
 
 msgctxt "#32139"
-msgid "Manual setting of idle timer aborted"
-msgstr "Es wurde kein manueller Idle-Timer gesetzt"
+msgid "Manual setting of idle timer aborted or unchanged"
+msgstr "Es wurde kein manueller Idle-Timer gesetzt oder geändert"
 
 msgctxt "#32140"
 msgid "Display countdown as"

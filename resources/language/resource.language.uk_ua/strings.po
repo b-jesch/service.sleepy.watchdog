@@ -151,7 +151,7 @@ msgstr "Вихід Kodi"
 
 
 msgctxt "#32139"
-msgid "Manual setting of idle timer aborted"
+msgid "Manual setting of idle timer aborted or unchanged"
 msgstr ""
 
 msgctxt "#32140"
