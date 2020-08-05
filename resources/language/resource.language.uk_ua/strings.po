@@ -33,6 +33,10 @@ msgctxt "#32100"
 msgid "Sleepy WatchDog"
 msgstr "Sleepy WatchDog"
 
+msgctxt "#32105"
+msgid "Settings"
+msgstr ""
+
 msgctxt "#32110"
 msgid "Activity frame"
 msgstr "Інтервал активності"
@@ -148,7 +152,7 @@ msgid "Switch Profile"
 msgstr "Змінити Профіль"
 
 msgctxt "#32139"
-msgid "Manual setting of idle timer aborted"
+msgid "Manual setting of idle timer aborted or unchanged"
 msgstr "Встановлення скасовано"
 
 msgctxt "#32140"
