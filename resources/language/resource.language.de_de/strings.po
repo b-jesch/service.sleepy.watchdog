@@ -104,8 +104,8 @@ msgid "Turn off TV (CEC)"
 msgstr "TV ausschalten (CEC)"
 
 msgctxt "#32126"
-msgid "Addon ID [,parameter]"
-msgstr "Addon ID [,Parameter]"
+msgid "Addon ID, Plugin or Script Path"
+msgstr "Addon ID, Plugin oder Script Pfad"
 
 msgctxt "#32127"
 msgid "Jump into Main Menu"
@@ -116,8 +116,8 @@ msgid "Keep WatchDog alive"
 msgstr "WatchDog weiterhin ausführen"
 
 msgctxt "#32129"
-msgid "Perform '%s' in %s'"
-msgstr "Aktion '%s' wird in %s ausgelöst"
+msgid "Perform '%s' in %s secs"
+msgstr "Aktion '%s' wird in %s Sek. ausgelöst"
 
 msgctxt "#32130"
 msgid "Stop playing media"
@@ -140,15 +140,15 @@ msgid "Suspend"
 msgstr "System in Bereitschaft versetzen"
 
 msgctxt "#32135"
-msgid "Run Addon"
-msgstr "Addon starten"
+msgid "Run Addon, Plugin or Script"
+msgstr "Addon, Plugin oder Script starten"
 
 msgctxt "#32136"
 msgid "Exit Kodi"
 msgstr "Kodi beenden"
 
 msgctxt "#32137"
-msgid "Load Profile"
+msgid "Switch Profile"
 msgstr "Profil laden"
 
 msgctxt "#32139"
@@ -170,6 +170,22 @@ msgstr "Fortschrittsbalken"
 msgctxt "#32143"
 msgid "Execute '%s' in %s secs. Click cancel to abort this action"
 msgstr "Starte Aktion '%s' in %s Sekunden. Klicke auf 'Abbrechen' um diese Aktion nicht auszuführen"
+
+msgctxt "#32144"
+msgid "Type"
+msgstr "Typ"
+
+msgctxt "#32145"
+msgid "Kodi Addon"
+msgstr "Kodi Addon"
+
+msgctxt "#32146"
+msgid "Kodi Plugin"
+msgstr "Kodi Plugin"
+
+msgctxt "#32147"
+msgid "Python Script"
+msgstr "Python Skript"
 
 msgctxt "#32150"
 msgid "00:00 o'clock"

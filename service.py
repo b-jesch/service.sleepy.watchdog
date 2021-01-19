@@ -4,10 +4,11 @@ import datetime
 import xbmc
 import xbmcgui
 import xbmcaddon
+import xbmcvfs
 
 ADDON = xbmcaddon.Addon()
 ADDONNAME = ADDON.getAddonInfo('id')
-ADDONPATH = xbmc.translatePath(ADDON.getAddonInfo('path'))
+ADDONPATH = xbmcvfs.translatePath(ADDON.getAddonInfo('path'))
 LOC = ADDON.getLocalizedString
 
 ICON_DEFAULT = os.path.join(ADDONPATH, 'resources', 'media', 'pawprint.png')
@@ -37,13 +38,13 @@ class XBMCMonitor(xbmc.Monitor):
     def onSettingsChanged(self):
         self.SettingsChanged = True
 
-
     @classmethod
     def onNotification(cls, sender, method, data):
         notifyLog('Notification triggered')
-        notifyLog('sender: %s' % (sender))
-        notifyLog('method: %s' % (method))
-        notifyLog('data:   %s' % (data))
+        notifyLog('sender: %s' % sender)
+        notifyLog('method: %s' % method)
+        notifyLog('data:   %s' % data)
+
 
 class SleepyWatchdog(XBMCMonitor):
 
@@ -55,10 +56,8 @@ class SleepyWatchdog(XBMCMonitor):
         XBMCMonitor.__init__(self)
         self.getWDSettings()
 
-
     def __strToBool(self, par):
         return True if par.upper() == 'TRUE' else False
-
 
     def getAddonSetting(self, setting, sType=STRING, multiplicator=1):
         if sType == BOOL:
@@ -67,18 +66,17 @@ class SleepyWatchdog(XBMCMonitor):
             try:
                 return int(re.findall('([0-9]+)', ADDON.getSetting(setting))[0]) * multiplicator
             except (IndexError, TypeError, AttributeError) as e:
-                notifyLog('Could not get setting type NUM for %s, return with 0' % (setting), xbmc.LOGERROR)
+                notifyLog('Could not get setting type NUM for %s, return with 0' % setting, xbmc.LOGERROR)
                 notifyLog(str(e), xbmc.LOGERROR)
                 return 0
         else:
             return ADDON.getSetting(setting)
 
-
     def getWDSettings(self):
 
         self.mode = self.getAddonSetting('mode')
         self.silent = self.getAddonSetting('silent', BOOL)
-        self.notificationType = self.getAddonSetting('notificationType', NUM)   # 0:intermitted, 1:progressbar
+        self.notificationType = self.getAddonSetting('notificationType', NUM)  # 0:intermitted, 1:progressbar
         self.notificationTime = self.getAddonSetting('notificationTime', NUM)
         self.sendCEC = self.getAddonSetting('sendCEC', BOOL)
         self.timeframe = bool(self.getAddonSetting('timeframe', NUM))
@@ -89,6 +87,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.action = self.getAddonSetting('action', NUM) + LANGOFFSET
         self.jumpMainMenu = self.getAddonSetting('mainmenu', BOOL)
         self.keepAlive = self.getAddonSetting('keepalive', BOOL)
+        self.addon_type = self.getAddonSetting('addon_type', NUM)
         self.addon_id = self.getAddonSetting('addon_id')
         self.profile_id = self.getAddonSetting('profile_id')
         self.testConfig = self.getAddonSetting('testConfig', BOOL)
@@ -96,7 +95,7 @@ class SleepyWatchdog(XBMCMonitor):
         if self.timeframe:
             _activity_time = self.act_stop - self.act_start
             if _activity_time < 0: _activity_time += 86400
-            notifyLog('active timeframe: %s secs' % (_activity_time))
+            notifyLog('active timeframe: %s secs' % _activity_time)
 
             if self.action == 32131:
                 if _activity_time > self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
@@ -106,26 +105,27 @@ class SleepyWatchdog(XBMCMonitor):
         self.SettingsChanged = False
 
         notifyLog('settings (re)loaded...')
-        notifyLog('current mode:             %s' % (self.mode))
-        notifyLog('silent mode:              %s' % (self.silent))
-        notifyLog('message type:             %s' % (self.notificationType))
-        notifyLog('Duration of notification: %s' % (self.notificationTime))
-        notifyLog('send CEC:                 %s' % (self.sendCEC))
-        notifyLog('Time frame:               %s' % (self.timeframe))
-        notifyLog('Activity start:           %s' % (self.act_start))
-        notifyLog('Activity stop:            %s' % (self.act_stop))
-        notifyLog('max. idle time:           %s' % (self.maxIdleTime))
-        notifyLog('Idle time set by user:    %s' % (self.userIdleTime))
-        notifyLog('Action:                   %s' % (self.action))
-        notifyLog('Jump to main menu:        %s' % (self.jumpMainMenu))
-        notifyLog('Keep alive:               %s' % (self.keepAlive))
-        notifyLog('Run addon:                %s' % (self.addon_id))
-        notifyLog('Load profile:             %s' % (self.profile_id))
-        notifyLog('Test configuration:       %s' % (self.testConfig))
+        notifyLog('current mode:             %s' % self.mode)
+        notifyLog('silent mode:              %s' % self.silent)
+        notifyLog('message type:             %s' % self.notificationType)
+        notifyLog('Duration of notification: %s' % self.notificationTime)
+        notifyLog('send CEC:                 %s' % self.sendCEC)
+        notifyLog('Time frame:               %s' % self.timeframe)
+        notifyLog('Activity start:           %s' % self.act_start)
+        notifyLog('Activity stop:            %s' % self.act_stop)
+        notifyLog('max. idle time:           %s' % self.maxIdleTime)
+        notifyLog('Idle time set by user:    %s' % self.userIdleTime)
+        notifyLog('Action:                   %s' % self.action)
+        notifyLog('Jump to main menu:        %s' % self.jumpMainMenu)
+        notifyLog('Keep alive:               %s' % self.keepAlive)
+        notifyLog('Run addon:                %s' % self.addon_id)
+        notifyLog('Type:                     %s' % self.addon_type)
+        notifyLog('Load profile:             %s' % self.profile_id)
+        notifyLog('Test configuration:       %s' % self.testConfig)
 
         if self.testConfig:
             self.maxIdleTime = 60 + int(not self.silent) * self.notificationTime
-            notifyLog('running in test mode for %s secs' % (self.maxIdleTime))
+            notifyLog('running in test mode for %s secs' % self.maxIdleTime)
 
     # user defined actions
 
@@ -169,15 +169,32 @@ class SleepyWatchdog(XBMCMonitor):
         xbmc.executebuiltin('CECStandby')
 
     def runAddon(self):
-        if xbmc.getCondVisibility('System.HasAddon(%s)' % (self.addon_id.split(',')[0])):
-            notifyLog('run addon \'%s\'' % (self.addon_id))
-            xbmc.executebuiltin('RunAddon(%s)' % (self.addon_id))
-        else:
-            notifyLog('could not run nonexistent addon \'%s\'' % (self.addon_id.split(',')[0]), level=xbmc.LOGERROR)
+        if self.addon_type == 0:
+            if xbmc.getCondVisibility('System.HasAddon(%s)' % (self.addon_id.split(',', 1)[0])):
+                notifyLog('run Addon \'%s\'' % self.addon_id)
+                xbmc.executebuiltin('RunAddon(%s)' % self.addon_id)
+            else:
+                notifyLog('could not run nonexistent Addon \'%s\'' %
+                          (self.addon_id.split(',', 1)[0]), level=xbmc.LOGERROR)
+        elif self.addon_type == 1:
+            if xbmc.getCondVisibility('System.HasAddon(%s)' %
+                                      (self.addon_id.split('?', 1)[0].replace('plugin://', '').replace('/', ''))):
+                notifyLog('run Plugin \'%s\'' % self.addon_id)
+                xbmc.executebuiltin('RunPlugin(%s)' % self.addon_id)
+            else:
+                notifyLog('could not run nonexistent Plugin \'%s\'' %
+                          (self.addon_id.split('?', 1)[0].replace('plugin://', '').replace('/', '')), level=xbmc.LOGERROR)
+        elif self.addon_type == 2:
+            if os.path.exists(self.addon_id):
+                notifyLog('run Script \'%s\'' % self.addon_id)
+                xbmc.executescript('%s' % self.addon_id)
+            else:
+                notifyLog('could not run nonexistent Script \'%s\'' %
+                          self.addon_id, level=xbmc.LOGERROR)
 
     def switchProfile(self):
-        notifyLog('switch profile \'%s\'' % (self.profile_id))
-        xbmc.executebuiltin('LoadProfile(%s,prompt)' % (self.profile_id))
+        notifyLog('switch profile \'%s\'' % self.profile_id)
+        xbmc.executebuiltin('LoadProfile(%s,prompt)' % self.profile_id)
 
     def start(self):
 
@@ -225,7 +242,8 @@ class SleepyWatchdog(XBMCMonitor):
                         if self.notificationType == 0:
                             while self.notificationTime - count > 0:
                                 if self.action > 32130:
-                                    notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count), time=5000)
+                                    notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count),
+                                               time=5000)
                                 if xbmc.Monitor.waitForAbort(self, 10): break
                                 count += 10
                                 if _currentIdleTime > xbmc.getGlobalIdleTime():
@@ -242,19 +260,20 @@ class SleepyWatchdog(XBMCMonitor):
                                     break
                                 count += 1
                                 xbmc.sleep(1000)
+                            progress.close()
 
                     if not self.actionCanceled:
 
                         self.sendCecCommand()
                         {
-                        32130: self.stopVideoAudioTV,
-                        32131: self.systemReboot,
-                        32132: self.systemShutdown,
-                        32133: self.systemHibernate,
-                        32134: self.systemSuspend,
-                        32135: self.runAddon,
-                        32136: self.quit,
-                        32137: self.switchProfile
+                            32130: self.stopVideoAudioTV,
+                            32131: self.systemReboot,
+                            32132: self.systemShutdown,
+                            32133: self.systemHibernate,
+                            32134: self.systemSuspend,
+                            32135: self.runAddon,
+                            32136: self.quit,
+                            32137: self.switchProfile
                         }.get(self.action)()
                         #
                         # ToDo: implement more user defined actions here
@@ -289,6 +308,7 @@ class SleepyWatchdog(XBMCMonitor):
                     break
 
                 if self.testConfig or _currentIdleTime > xbmc.getGlobalIdleTime() or _loop >= 60: break
+
 
 # MAIN #
 

@@ -105,7 +105,7 @@ msgid "Turn off TV (CEC)"
 msgstr ""
 
 msgctxt "#32126"
-msgid "Addon ID [,parameter]"
+msgid "Addon ID, Plugin or Script Path"
 msgstr ""
 
 msgctxt "#32127"
@@ -117,7 +117,7 @@ msgid "Keep WatchDog alive"
 msgstr ""
 
 msgctxt "#32129"
-msgid "Perform '%s' in %s'"
+msgid "Perform '%s' in %s secs"
 msgstr ""
 
 msgctxt "#32130"
@@ -141,7 +141,7 @@ msgid "Suspend"
 msgstr ""
 
 msgctxt "#32135"
-msgid "Run Addon"
+msgid "Run Addon, Plugin or Script"
 msgstr ""
 
 msgctxt "#32136"
@@ -170,6 +170,22 @@ msgstr ""
 
 msgctxt "#32143"
 msgid "Execute '%s' in %s secs. Click cancel to abort this action"
+msgstr ""
+
+msgctxt "#32144"
+msgid "Type"
+msgstr ""
+
+msgctxt "#32145"
+msgid "Kodi Addon"
+msgstr ""
+
+msgctxt "#32146"
+msgid "Kodi Plugin"
+msgstr ""
+
+msgctxt "#32147"
+msgid "Python Script"
 msgstr ""
 
 msgctxt "#32150"
