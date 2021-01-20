@@ -97,8 +97,8 @@ class SleepyWatchdog(XBMCMonitor):
             if _activity_time < 0: _activity_time += 86400
             notifyLog('active timeframe: %s secs' % _activity_time)
 
-            if self.action == 32131:
-                if _activity_time > self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
+            if self.action in [32131, 32135, 32137]:
+                if _activity_time >= 2 * self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
             else:
                 if _activity_time < self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32116))
 
@@ -133,10 +133,11 @@ class SleepyWatchdog(XBMCMonitor):
         if xbmc.Player().isPlaying():
             notifyLog('media is playing, stopping it')
             xbmc.Player().stop()
-            if self.jumpMainMenu:
-                xbmc.sleep(500)
-                notifyLog('jump to main menu')
-                xbmc.executebuiltin('ActivateWindow(home)')
+
+        if self.jumpMainMenu:
+            xbmc.sleep(500)
+            notifyLog('jump to main menu')
+            xbmc.executebuiltin('ActivateWindow(home)')
 
     @classmethod
     def quit(cls):
