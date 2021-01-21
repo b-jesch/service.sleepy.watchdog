@@ -82,6 +82,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.timeframe = bool(self.getAddonSetting('timeframe', NUM))
         self.act_start = int(datetime.timedelta(hours=self.getAddonSetting('start', NUM)).total_seconds())
         self.act_stop = int(datetime.timedelta(hours=self.getAddonSetting('stop', NUM)).total_seconds())
+        self.resetOnStart = self.getAddonSetting('resetOnStart', BOOL)
         self.maxIdleTime = self.getAddonSetting('maxIdleTime', NUM, 60)
         self.userIdleTime = self.getAddonSetting('userIdleTime', NUM)
         self.action = self.getAddonSetting('action', NUM) + LANGOFFSET
@@ -98,30 +99,35 @@ class SleepyWatchdog(XBMCMonitor):
             notifyLog('active timeframe: %s secs' % _activity_time)
 
             if self.action in [32131, 32135, 32137]:
-                if _activity_time >= 2 * self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
+                if self.resetOnStart:
+                    if _activity_time >= 2 * self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
+                    if _activity_time < self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32116))
+                else:
+                    if _activity_time > self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32117) % LOC(32131))
             else:
                 if _activity_time < self.maxIdleTime: xbmcgui.Dialog().ok(LOC(32100), LOC(32116))
 
         self.SettingsChanged = False
 
         notifyLog('settings (re)loaded...')
-        notifyLog('current mode:             %s' % self.mode)
-        notifyLog('silent mode:              %s' % self.silent)
-        notifyLog('message type:             %s' % self.notificationType)
-        notifyLog('Duration of notification: %s' % self.notificationTime)
-        notifyLog('send CEC:                 %s' % self.sendCEC)
-        notifyLog('Time frame:               %s' % self.timeframe)
-        notifyLog('Activity start:           %s' % self.act_start)
-        notifyLog('Activity stop:            %s' % self.act_stop)
-        notifyLog('max. idle time:           %s' % self.maxIdleTime)
-        notifyLog('Idle time set by user:    %s' % self.userIdleTime)
-        notifyLog('Action:                   %s' % self.action)
-        notifyLog('Jump to main menu:        %s' % self.jumpMainMenu)
-        notifyLog('Keep alive:               %s' % self.keepAlive)
-        notifyLog('Run addon:                %s' % self.addon_id)
-        notifyLog('Type:                     %s' % self.addon_type)
-        notifyLog('Load profile:             %s' % self.profile_id)
-        notifyLog('Test configuration:       %s' % self.testConfig)
+        notifyLog('current mode:                   %s' % self.mode)
+        notifyLog('silent mode:                    %s' % self.silent)
+        notifyLog('message type:                   %s' % self.notificationType)
+        notifyLog('Duration of notification:       %s' % self.notificationTime)
+        notifyLog('send CEC:                       %s' % self.sendCEC)
+        notifyLog('Time frame:                     %s' % self.timeframe)
+        notifyLog('Activity start:                 %s' % self.act_start)
+        notifyLog('Activity stop:                  %s' % self.act_stop)
+        notifyLog('Reset idle time on frame start: %s' % self.resetOnStart)
+        notifyLog('max. idle time:                 %s' % self.maxIdleTime)
+        notifyLog('Idle time set by user:          %s' % self.userIdleTime)
+        notifyLog('Action:                         %s' % self.action)
+        notifyLog('Jump to main menu:              %s' % self.jumpMainMenu)
+        notifyLog('Keep alive:                     %s' % self.keepAlive)
+        notifyLog('Run addon:                      %s' % self.addon_id)
+        notifyLog('Script type:                    %s' % self.addon_type)
+        notifyLog('Load profile:                   %s' % self.profile_id)
+        notifyLog('Test configuration:             %s' % self.testConfig)
 
         if self.testConfig:
             self.maxIdleTime = 60 + int(not self.silent) * self.notificationTime
@@ -220,6 +226,7 @@ class SleepyWatchdog(XBMCMonitor):
             if _wd_status ^ _status:
                 notifyLog('Watchdog status changed: %s' % ('active' if _status else 'inactive'))
                 _wd_status = _status
+                if _status and self.resetOnStart: _currentIdleTime = 0
 
             if _wd_status and _currentIdleTime > 60 and not self.testConfig:
                 notifyLog('idle time: %s' % (str(datetime.timedelta(seconds=_currentIdleTime))))

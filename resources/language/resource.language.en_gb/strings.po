@@ -188,6 +188,10 @@ msgctxt "#32147"
 msgid "Python Script"
 msgstr ""
 
+msgctxt "#32148"
+msgid "Reset Idle Timer when Time Frame starts"
+msgstr ""
+
 msgctxt "#32150"
 msgid "00:00 o'clock"
 msgstr ""
