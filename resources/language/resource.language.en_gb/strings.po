@@ -151,6 +151,10 @@ msgctxt "#32137"
 msgid "Switch Profile"
 msgstr ""
 
+msgctxt "#32138"
+msgid "Logout User"
+msgstr ""
+
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted or unchanged"
 msgstr ""

@@ -14,7 +14,7 @@
                  lvalues="32150|32151|32152|32153|32154|32155|32156|32157|32158|32159|32160|32161|32162|32163|32164|32165|32166|32167|32168|32169|32170|32171|32172|32173" />
         <setting id="maxIdleTime" type="labelenum" label="32120"
                  lvalues="32180|32181|32182|32183|32184|32185|32186|32187|32188|32189|32190|32191|32192|32193|32194|32195|32196|32197|32198|32199|32200|32201|32202|" default="120 min" />
-        <setting id="action" type="enum" label="32121" lvalues="32130|32131|32132|32133|32134|32135|32136|32137" default="0" />
+        <setting id="action" type="enum" label="32121" lvalues="32130|32131|32132|32133|32134|32135|32136|32137|32138" default="0" />
         <setting id="addon_id" type="text" subsetting="true" label="32126" visible="eq(-1,5)" />
         <setting id="mainmenu" type="bool" subsetting="true" label="32127" visible="eq(-2,0)" default="false" />
         <setting id="keepalive" type="bool" subsetting="true" label="32128" visible="eq(-3,0)" default="true" />
