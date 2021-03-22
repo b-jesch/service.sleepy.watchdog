@@ -151,6 +151,10 @@ msgctxt "#32137"
 msgid "Switch Profile"
 msgstr "Profil laden"
 
+msgctxt "#32138"
+msgid "Logout User"
+msgstr "Benutzer abmelden"
+
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted or unchanged"
 msgstr "Es wurde kein manueller Idle-Timer gesetzt oder geändert"
@@ -169,7 +173,7 @@ msgstr "Fortschrittsbalken"
 
 msgctxt "#32143"
 msgid "Execute '%s' in %s secs. Click cancel to abort this action"
-msgstr "Starte Aktion '%s' in %s Sekunden. Klicke auf 'Abbrechen' um diese Aktion nicht auszuführen"
+msgstr "Starte Aktion '%s' in %s Sekunden. Klicke auf 'Abbrechen' um diese Aktion zu stoppen"
 
 msgctxt "#32144"
 msgid "Type"
