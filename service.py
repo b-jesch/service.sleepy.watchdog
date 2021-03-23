@@ -206,7 +206,7 @@ class SleepyWatchdog(XBMCMonitor):
     @classmethod
     def logoff(cls):
         notifyLog('logout user')
-        xbmc.executebuiltin('SystemLogOff')
+        xbmc.executebuiltin('System.LogOff')
 
     def start(self):
 
