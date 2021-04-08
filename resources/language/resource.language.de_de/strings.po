@@ -116,8 +116,8 @@ msgid "Keep WatchDog alive"
 msgstr "WatchDog weiterhin ausführen"
 
 msgctxt "#32129"
-msgid "Perform '%s' in %s secs"
-msgstr "Aktion '%s' wird in %s Sek. ausgelöst"
+msgid "Perform '%s' in %s"
+msgstr "Aktion '%s' wird in %s ausgelöst"
 
 msgctxt "#32130"
 msgid "Stop playing media"
@@ -194,6 +194,10 @@ msgstr "Python Skript"
 msgctxt "#32148"
 msgid "Reset Idle Timer when Time Frame starts"
 msgstr "Setze Inaktivitätszeit zurück, wenn Zeitrahmen beginnt"
+
+msgctxt "#32149"
+msgid "inactive"
+msgstr "inaktiv"
 
 msgctxt "#32150"
 msgid "00:00 o'clock"
@@ -384,12 +388,12 @@ msgid "900 min"
 msgstr "900 min"
 
 msgctxt "#32210"
-msgid "Reset User idle Time"
-msgstr "Inaktivitätszeit zurücksetzen"
+msgid "Reset User idle Timer"
+msgstr "Inaktivitäts-Timer zurücksetzen"
 
 msgctxt "#32211"
-msgid "User idle Time canceled"
-msgstr "Inaktivitätszeit zurückgesetzt"
+msgid "User idle Timer canceled"
+msgstr "Inaktivitäts-Timer zurückgesetzt"
 
 msgctxt "#32212"
 msgid "Profile ID"

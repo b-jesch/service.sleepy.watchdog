@@ -79,7 +79,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.notificationType = self.getAddonSetting('notificationType', NUM)  # 0:intermitted, 1:progressbar
         self.notificationTime = self.getAddonSetting('notificationTime', NUM)
         self.sendCEC = self.getAddonSetting('sendCEC', BOOL)
-        self.timeframe = bool(self.getAddonSetting('timeframe', NUM))
+        self.timeframe = self.getAddonSetting('timeframe', NUM)
         self.act_start = int(datetime.timedelta(hours=self.getAddonSetting('start', NUM)).total_seconds())
         self.act_stop = int(datetime.timedelta(hours=self.getAddonSetting('stop', NUM)).total_seconds())
         self.resetOnStart = self.getAddonSetting('resetOnStart', BOOL)
@@ -93,7 +93,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.profile_id = self.getAddonSetting('profile_id')
         self.testConfig = self.getAddonSetting('testConfig', BOOL)
 
-        if self.timeframe:
+        if self.timeframe == 1:
             _activity_time = self.act_stop - self.act_start
             if _activity_time < 0: _activity_time += 86400
             notifyLog('active timeframe: %s secs' % _activity_time)
@@ -215,12 +215,11 @@ class SleepyWatchdog(XBMCMonitor):
         _maxIdleTime = self.maxIdleTime
 
         while not xbmc.Monitor.abortRequested(self):
-            self.actionCanceled = False
 
             _status = False
-            if not self.timeframe or self.mode == 'USER':
+            if self.timeframe == 0 or self.mode == 'USER':
                 _status = True
-            else:
+            elif self.timeframe == 1:
                 _currframe = (datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0,
                                                                                         microsecond=0)).seconds
                 if self.act_start < self.act_stop:
@@ -247,6 +246,7 @@ class SleepyWatchdog(XBMCMonitor):
                 if _currentIdleTime > (_maxIdleTime - int(not self.silent) * self.notificationTime):
 
                     notifyLog('max idle time reached, ready to perform some action')
+                    self.actionCanceled = False
 
                     # Check silent mode
                     if not self.silent:
@@ -311,9 +311,9 @@ class SleepyWatchdog(XBMCMonitor):
                         ADDON.setSetting('testConfig', 'false')
 
             _loop = 0
-            while not xbmc.Monitor.waitForAbort(self, 10):
-                _loop += 10
-                _currentIdleTime += 10
+            while not xbmc.Monitor.waitForAbort(self, 5):
+                _loop += 5
+                _currentIdleTime += 5
 
                 if self.SettingsChanged:
                     notifyLog('settings changed')

@@ -117,7 +117,7 @@ msgid "Keep WatchDog alive"
 msgstr ""
 
 msgctxt "#32129"
-msgid "Perform '%s' in %s secs"
+msgid "Perform '%s' in %s"
 msgstr ""
 
 msgctxt "#32130"
@@ -194,6 +194,10 @@ msgstr ""
 
 msgctxt "#32148"
 msgid "Reset Idle Timer when Time Frame starts"
+msgstr ""
+
+msgctxt "#32149"
+msgid "inactive"
 msgstr ""
 
 msgctxt "#32150"
@@ -385,11 +389,11 @@ msgid "900 min"
 msgstr ""
 
 msgctxt "#32210"
-msgid "Reset User idle Time"
+msgid "Reset User idle Timer"
 msgstr ""
 
 msgctxt "#32211"
-msgid "User idle Time canceled"
+msgid "User idle Timer canceled"
 msgstr ""
 
 msgctxt "#32212"
