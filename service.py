@@ -237,11 +237,11 @@ class SleepyWatchdog(XBMCMonitor):
 
             if _currentIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
-                _maxIdleTime = self.maxIdleTime if self.mode == 'SERVICE' else self.userIdleTime
                 _currentIdleTime = 0
 
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
 
+            _maxIdleTime = self.maxIdleTime if self.mode == 'SERVICE' else self.userIdleTime
             if _wd_status or self.testConfig:
                 if _currentIdleTime > (_maxIdleTime - int(not self.silent) * self.notificationTime):
 
