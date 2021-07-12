@@ -17,4 +17,6 @@ Actions are:
 
 Note that scripts must have set the executable flag and must be python scripts. It is recommended to use the full script path. No parameters are allowed for pure scripts. Plugins must provide the plugin name with URL scheme. 
 A direct call of the addon via programme menu starts a countdown timer that executes the action set in the setup, after user inactivity selected in the menu has expired.
+
+Optionally, there is the possibility to check an active PVR recorder. If this is the case, the actions that cancel a recording are postponed.
     
