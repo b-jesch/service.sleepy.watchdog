@@ -9,10 +9,3 @@ Actions are:
 * Run a specified addon
 * Change user profile
 * Log off user
-* Run a specified addon, plugin or Python script using
-
-  * Addon:    ```script.myaddon,param=do_this```
-  * Plugin:   ```plugin://plugin.video/?param=do_this```
-  * Script:   ```/home/user/script.py```
-
-Optionally, there is the possibility to check an active PVR recorder. If this is the case, the actions that cancel a recording are postponed.
