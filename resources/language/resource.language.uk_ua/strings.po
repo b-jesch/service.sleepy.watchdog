@@ -404,3 +404,7 @@ msgstr ""
 msgctxt "#32213"
 msgid "max. idle Time, if Kodi itself is idle"
 msgstr ""
+
+msgctxt "#32214"
+msgid "Don't execute actions if PVR recorder is active"
+msgstr ""

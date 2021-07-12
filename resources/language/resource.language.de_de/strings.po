@@ -414,3 +414,7 @@ msgstr "Profil ID"
 msgctxt "#32213"
 msgid "max. idle Time, if Kodi itself is idle"
 msgstr "max. Dauer der Inaktivität, wenn Kodi selbst inaktiv ist"
+
+msgctxt "#32214"
+msgid "Don't execute actions if PVR recorder is active"
+msgstr "Keine Aktionen auslösen, wenn Aufnahmen aktiv sind"

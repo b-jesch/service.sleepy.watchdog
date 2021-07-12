@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import datetime
@@ -27,6 +28,18 @@ def notifyLog(message, level=xbmc.LOGDEBUG):
 
 def notifyUser(message, icon=ICON_DEFAULT, time=3000):
     xbmcgui.Dialog().notification(LOC(32100), message, icon, time)
+
+
+def jsonrpc(query):
+    rpc = {"jsonrpc": "2.0", "id": 1}
+    rpc.update(query)
+    try:
+        response = json.loads(xbmc.executeJSONRPC(json.dumps(rpc)))
+        if 'result' in response:
+            return response['result']
+    except TypeError as e:
+        notifyLog('Error executing JSON RPC: {}'.format(e), xbmc.LOGERROR)
+    return False
 
 
 class XBMCMonitor(xbmc.Monitor):
@@ -94,6 +107,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.maxIdleTime = self.getAddonSetting('maxIdleTime', NUM, 60)
         self.menuIdleTime = self.getAddonSetting('menuIdleTime', NUM, 60)
         self.userIdleTime = self.getAddonSetting('userIdleTime', NUM)
+        self.checkRecActivity = self.getAddonSetting('checkRecActivity', BOOL)
         self.action = self.getAddonSetting('action', NUM) + LANGOFFSET
         self.jumpMainMenu = self.getAddonSetting('mainmenu', BOOL)
         self.keepAlive = self.getAddonSetting('keepalive', BOOL)
@@ -131,6 +145,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('max. idle time:                 %s' % self.maxIdleTime)
         notifyLog('Menu idle time:                 %s' % self.menuIdleTime)
         notifyLog('Idle time set by user:          %s' % self.userIdleTime)
+        notifyLog('Check PVR recording activities: %s' % self.checkRecActivity)
         notifyLog('Action:                         %s' % self.action)
         notifyLog('Jump to main menu:              %s' % self.jumpMainMenu)
         notifyLog('Keep alive:                     %s' % self.keepAlive)
@@ -218,11 +233,25 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('logout user')
         xbmc.executebuiltin('System.LogOff')
 
+    def setMaxIdleTime(self, curIdleTime):
+        if self.mode == 'SERVICE':
+            maxIdleTime = self.maxIdleTime
+            if not self.Player.isPlaying() and self.menuIdleTime > 0:
+                maxIdleTime = self.menuIdleTime
+        else:
+            maxIdleTime = self.userIdleTime
+
+        if self.idleTime != maxIdleTime:
+            curIdleTime = 0
+            notifyLog('Idle Time has changed: %s' % maxIdleTime)
+        self.idleTime = maxIdleTime
+        return maxIdleTime, curIdleTime
+
     def start(self):
 
         _currentIdleTime = -1
         _wd_status = False
-        _maxIdleTime = self.maxIdleTime
+        _maxIdleTime, _currentIdleTime = self.setMaxIdleTime(_currentIdleTime)
 
         while not xbmc.Monitor.abortRequested(self):
 
@@ -247,90 +276,86 @@ class SleepyWatchdog(XBMCMonitor):
 
             if _currentIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
-                _currentIdleTime = 0
+                _maxIdleTime, _currentIdleTime = self.setMaxIdleTime(0)
 
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
-
-            _maxIdleTime = self.maxIdleTime if self.mode == 'SERVICE' else self.userIdleTime
-            if self.mode == 'SERVICE':
-                _maxIdleTime = self.maxIdleTime
-                if not self.Player.isPlaying() and self.menuIdleTime > 0:
-                    _maxIdleTime = self.menuIdleTime
-            else:
-                _maxIdleTime = self.userIdleTime
-
-            if self.idleTime != _maxIdleTime:
-                _currentIdleTime = 0
-                notifyLog('Idle Time has changed: %s' % _maxIdleTime)
-
-            self.idleTime = _maxIdleTime
             if _wd_status or self.testConfig:
                 if _currentIdleTime > (_maxIdleTime - int(not self.silent) * self.notificationTime):
 
-                    notifyLog('max idle time reached, ready to perform some action')
-                    self.actionCanceled = False
+                    # check PVR status, if PVR is recording, abort actions
+                    query = {'method': 'PVR.GetProperties', 'params': {'properties': ['recording']}}
+                    response = jsonrpc(query)
+                    if not self.checkRecActivity or (response and not response.get('recording', False) and
+                                                     self.action not in [32131, 32132, 32133, 32134, 32136]):
 
-                    # Check silent mode
-                    if not self.silent:
-                        count = 0
-                        notifyLog('init notification countdown for action no. %s' % (self.action))
-                        if self.notificationType == 0:
-                            while self.notificationTime - count > 0:
-                                if self.action > 32130:
-                                    notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count),
-                                               time=5000)
-                                if xbmc.Monitor.waitForAbort(self, 10): break
-                                count += 10
-                                if _currentIdleTime > xbmc.getGlobalIdleTime():
-                                    self.actionCanceled = True
-                                    break
-                        else:
-                            progress = xbmcgui.DialogProgress()
-                            progress.create(LOC(32100), LOC(32115) % (LOC(self.action), self.notificationTime - count))
-                            while self.notificationTime - count >= 0:
-                                progress.update(100 - int(count * 100 / self.notificationTime),
-                                                LOC(32143) % (LOC(self.action), self.notificationTime - count))
-                                if progress.iscanceled():
-                                    self.actionCanceled = True
-                                    break
-                                count += 1
-                                xbmc.sleep(1000)
-                            progress.close()
+                        notifyLog('max idle time reached, ready to perform some action')
+                        self.actionCanceled = False
 
-                    if not self.actionCanceled:
-
-                        self.sendCecCommand()
-                        {
-                            32130: self.stopVideoAudioTV,
-                            32131: self.systemReboot,
-                            32132: self.systemShutdown,
-                            32133: self.systemHibernate,
-                            32134: self.systemSuspend,
-                            32135: self.runAddon,
-                            32136: self.quit,
-                            32137: self.switchProfile,
-                            32138: self.logoff
-                        }.get(self.action)()
-                        #
-                        # ToDo: implement more user defined actions here
-                        #       Action numbers are defined in settings.xml/strings.xml
-                        #       also see LANGOFFSET
-                        #
-                        if self.testConfig:
-                            notifyLog('watchdog was running in test mode, keep it alive')
-                        else:
-                            if self.keepAlive:
-                                notifyLog('keep watchdog alive, update idletime for next cycle')
-                                _maxIdleTime += self.maxIdleTime
+                        # Check silent mode
+                        if not self.silent:
+                            count = 0
+                            notifyLog('init notification countdown for action no. %s' % self.action)
+                            if self.notificationType == 0:
+                                while self.notificationTime - count > 0:
+                                    if self.action > 32130:
+                                        notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count),
+                                                   time=5000)
+                                    if xbmc.Monitor.waitForAbort(self, 10): break
+                                    count += 10
+                                    if _currentIdleTime > xbmc.getGlobalIdleTime():
+                                        self.actionCanceled = True
+                                        break
                             else:
-                                break
-                    else:
-                        notifyLog('Countdown canceled by user action')
-                        notifyUser(LOC(32118), icon=ICON_DEFAULT)
+                                progress = xbmcgui.DialogProgress()
+                                progress.create(LOC(32100), LOC(32115) % (LOC(self.action), self.notificationTime - count))
+                                while self.notificationTime - count >= 0:
+                                    progress.update(100 - int(count * 100 / self.notificationTime),
+                                                    LOC(32143) % (LOC(self.action), self.notificationTime - count))
+                                    if progress.iscanceled():
+                                        self.actionCanceled = True
+                                        break
+                                    count += 1
+                                    xbmc.sleep(1000)
+                                progress.close()
 
-                    # Reset test status
-                    if self.testConfig:
-                        ADDON.setSetting('testConfig', 'false')
+                        if not self.actionCanceled:
+
+                            self.sendCecCommand()
+                            {
+                                32130: self.stopVideoAudioTV,
+                                32131: self.systemReboot,
+                                32132: self.systemShutdown,
+                                32133: self.systemHibernate,
+                                32134: self.systemSuspend,
+                                32135: self.runAddon,
+                                32136: self.quit,
+                                32137: self.switchProfile,
+                                32138: self.logoff
+                            }.get(self.action)()
+                            #
+                            # ToDo: implement more user defined actions here
+                            #       Action numbers are defined in settings.xml/strings.xml
+                            #       also see LANGOFFSET
+                            #
+                            if self.testConfig:
+                                notifyLog('watchdog was running in test mode, keep it alive')
+                            else:
+                                if self.keepAlive:
+                                    notifyLog('keep watchdog alive, update idletime for next cycle')
+                                    _maxIdleTime += self.setMaxIdleTime(_currentIdleTime)[0]
+                                else:
+                                    break
+                        else:
+                            notifyLog('Countdown canceled by user action')
+                            notifyUser(LOC(32118), icon=ICON_DEFAULT)
+
+                        # Reset test status
+                        if self.testConfig:
+                            ADDON.setSetting('testConfig', 'false')
+                    else:
+                        # active recording, increase idle time to 5 mins
+                        notifyLog('Watchdog actions canceled due active recordings', xbmc.LOGINFO)
+                        _maxIdleTime += 300
 
             _loop = 0
             while not xbmc.Monitor.waitForAbort(self, 5):
@@ -340,7 +365,7 @@ class SleepyWatchdog(XBMCMonitor):
                 if self.SettingsChanged:
                     notifyLog('settings changed')
                     self.getWDSettings()
-                    _maxIdleTime = self.maxIdleTime
+                    _maxIdleTime, _currentIdleTime = self.setMaxIdleTime(_currentIdleTime)
                     break
 
                 if self.testConfig or _currentIdleTime > xbmc.getGlobalIdleTime() or _loop >= 60: break
