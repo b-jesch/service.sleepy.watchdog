@@ -285,9 +285,13 @@ class SleepyWatchdog(XBMCMonitor):
                     # check PVR status, if PVR is recording, abort actions
                     query = {'method': 'PVR.GetProperties', 'params': {'properties': ['recording']}}
                     response = jsonrpc(query)
-                    if not self.checkRecActivity or (response and not response.get('recording', False) and
-                                                     self.action not in [32131, 32132, 32133, 32134, 32136]):
+                    if self.checkRecActivity and (response.get('recording', False) and
+                                                  self.action in [32131, 32132, 32133, 32134, 32136]):
 
+                        # active recording, increase idle time to 5 mins
+                        notifyLog('Watchdog actions canceled due active recorder', xbmc.LOGINFO)
+                        _maxIdleTime += 300
+                    else:
                         notifyLog('max idle time reached, ready to perform some action')
                         self.actionCanceled = False
 
@@ -352,10 +356,6 @@ class SleepyWatchdog(XBMCMonitor):
                         # Reset test status
                         if self.testConfig:
                             ADDON.setSetting('testConfig', 'false')
-                    else:
-                        # active recording, increase idle time to 5 mins
-                        notifyLog('Watchdog actions canceled due active recordings', xbmc.LOGINFO)
-                        _maxIdleTime += 300
 
             _loop = 0
             while not xbmc.Monitor.waitForAbort(self, 5):
