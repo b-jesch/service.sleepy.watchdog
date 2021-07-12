@@ -289,6 +289,18 @@ msgctxt "#32173"
 msgid "23:00 o'clock"
 msgstr "23:00 годин"
 
+msgctxt "#32177"
+msgid "off"
+msgstr ""
+
+msgctxt "#32178"
+msgid "5 min"
+msgstr ""
+
+msgctxt "#32179"
+msgid "10 min"
+msgstr ""
+
 msgctxt "#32180"
 msgid "15 min"
 msgstr ""
@@ -387,4 +399,8 @@ msgstr ""
 
 msgctxt "#32211"
 msgid "User idle Timer canceled"
+msgstr ""
+
+msgctxt "#32213"
+msgid "max. idle Time, if Kodi itself is idle"
 msgstr ""

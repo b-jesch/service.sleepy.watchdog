@@ -46,15 +46,23 @@ class XBMCMonitor(xbmc.Monitor):
         notifyLog('data:   %s' % data)
 
 
+class Player(xbmc.Player):
+
+    def __init__(self):
+        xbmc.Player.__init__(self)
+
+
 class SleepyWatchdog(XBMCMonitor):
 
     def __init__(self):
 
         self.currframe = 0
         self.actionCanceled = False
+        self.idleTime = 0
 
         XBMCMonitor.__init__(self)
         self.getWDSettings()
+        self.Player = Player()
 
     def __strToBool(self, par):
         return True if par.upper() == 'TRUE' else False
@@ -84,6 +92,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.act_stop = int(datetime.timedelta(hours=self.getAddonSetting('stop', NUM)).total_seconds())
         self.resetOnStart = self.getAddonSetting('resetOnStart', BOOL)
         self.maxIdleTime = self.getAddonSetting('maxIdleTime', NUM, 60)
+        self.menuIdleTime = self.getAddonSetting('menuIdleTime', NUM, 60)
         self.userIdleTime = self.getAddonSetting('userIdleTime', NUM)
         self.action = self.getAddonSetting('action', NUM) + LANGOFFSET
         self.jumpMainMenu = self.getAddonSetting('mainmenu', BOOL)
@@ -120,6 +129,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('Activity stop:                  %s' % self.act_stop)
         notifyLog('Reset idle time on frame start: %s' % self.resetOnStart)
         notifyLog('max. idle time:                 %s' % self.maxIdleTime)
+        notifyLog('Menu idle time:                 %s' % self.menuIdleTime)
         notifyLog('Idle time set by user:          %s' % self.userIdleTime)
         notifyLog('Action:                         %s' % self.action)
         notifyLog('Jump to main menu:              %s' % self.jumpMainMenu)
@@ -242,6 +252,18 @@ class SleepyWatchdog(XBMCMonitor):
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
 
             _maxIdleTime = self.maxIdleTime if self.mode == 'SERVICE' else self.userIdleTime
+            if self.mode == 'SERVICE':
+                _maxIdleTime = self.maxIdleTime
+                if not self.Player.isPlaying() and self.menuIdleTime > 0:
+                    _maxIdleTime = self.menuIdleTime
+            else:
+                _maxIdleTime = self.userIdleTime
+
+            if self.idleTime != _maxIdleTime:
+                _currentIdleTime = 0
+                notifyLog('Idle Time has changed: %s' % _maxIdleTime)
+
+            self.idleTime = _maxIdleTime
             if _wd_status or self.testConfig:
                 if _currentIdleTime > (_maxIdleTime - int(not self.silent) * self.notificationTime):
 

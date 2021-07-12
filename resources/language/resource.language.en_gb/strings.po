@@ -296,6 +296,18 @@ msgctxt "#32173"
 msgid "23:00 o'clock"
 msgstr ""
 
+msgctxt "#32177"
+msgid "off"
+msgstr ""
+
+msgctxt "#32178"
+msgid "5 min"
+msgstr ""
+
+msgctxt "#32179"
+msgid "10 min"
+msgstr ""
+
 msgctxt "#32180"
 msgid "15 min"
 msgstr ""
@@ -398,4 +410,8 @@ msgstr ""
 
 msgctxt "#32212"
 msgid "Profile ID"
+msgstr ""
+
+msgctxt "#32213"
+msgid "max. idle Time, if Kodi itself is idle"
 msgstr ""

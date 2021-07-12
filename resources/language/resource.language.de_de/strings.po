@@ -73,7 +73,7 @@ msgstr "Die Einstellungen für den aktiven Zeitrahmen und der Inaktivitätsdauer
 
 msgctxt "#32118"
 msgid "Execution of idle actions aborted"
-msgstr "Ausführen der Idle Aktionen abgebrochen"
+msgstr "Ausführung der Idle Aktionen abgebrochen"
 
 msgctxt "#32119"
 msgid "Idle time before an action is triggered"
@@ -295,6 +295,18 @@ msgctxt "#32173"
 msgid "23:00 o'clock"
 msgstr "23:00 Uhr"
 
+msgctxt "#32177"
+msgid "off"
+msgstr "aus"
+
+msgctxt "#32178"
+msgid "5 min"
+msgstr "5 min"
+
+msgctxt "#32179"
+msgid "10 min"
+msgstr "10 min"
+
 msgctxt "#32180"
 msgid "15 min"
 msgstr "15 min"
@@ -398,3 +410,7 @@ msgstr "Inaktivitäts-Timer zurückgesetzt"
 msgctxt "#32212"
 msgid "Profile ID"
 msgstr "Profil ID"
+
+msgctxt "#32213"
+msgid "max. idle Time, if Kodi itself is idle"
+msgstr "max. Dauer der Inaktivität, wenn Kodi selbst inaktiv ist"
