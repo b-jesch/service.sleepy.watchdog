@@ -8,3 +8,4 @@ Actions are:
 * Shutdown, hibernate, suspend or reboot
 * Run a specified addon
 * Change user profile
+* Log off user

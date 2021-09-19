@@ -194,6 +194,11 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('switch profile \'%s\'' % (self.profile_id))
         xbmc.executebuiltin('LoadProfile(%s,prompt)' % (self.profile_id))
 
+    @classmethod
+    def logoff(cls):
+        notifyLog('logout user')
+        xbmc.executebuiltin('System.LogOff')
+
     def start(self):
 
         _currentIdleTime = -1
@@ -270,7 +275,8 @@ class SleepyWatchdog(XBMCMonitor):
                         32134: self.systemSuspend,
                         32135: self.runAddon,
                         32136: self.quit,
-                        32137: self.switchProfile
+                        32137: self.switchProfile,
+                        32138: self.logoff
                         }.get(self.action)()
                         #
                         # ToDo: implement more user defined actions here

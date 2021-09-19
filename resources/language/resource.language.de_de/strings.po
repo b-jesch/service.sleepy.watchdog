@@ -151,6 +151,10 @@ msgctxt "#32137"
 msgid "Load Profile"
 msgstr "Profil laden"
 
+msgctxt "#32138"
+msgid "Logout User"
+msgstr "Benutzer abmelden"
+
 msgctxt "#32139"
 msgid "Manual setting of idle timer aborted or unchanged"
 msgstr "Es wurde kein manueller Idle-Timer gesetzt oder geändert"
