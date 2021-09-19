@@ -1,10 +1,14 @@
 import os
-import sys
 import re
 import datetime
 import xbmc
 import xbmcgui
 import xbmcaddon
+import sys
+
+if sys.version_info[0] < 3:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 ADDON = xbmcaddon.Addon()
 ADDONNAME = ADDON.getAddonInfo('id')
