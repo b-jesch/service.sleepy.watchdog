@@ -338,15 +338,15 @@ msgstr "105 perc"
 
 msgctxt "#32187"
 msgid "120 min"
-msgstr ""
+msgstr "120 perc"
 
 msgctxt "#32188"
 msgid "150 min"
-msgstr ""
+msgstr "150 perc"
 
 msgctxt "#32189"
 msgid "180 min"
-msgstr "120 perc"
+msgstr "180 perc"
 
 msgctxt "#32190"
 msgid "210 min"
