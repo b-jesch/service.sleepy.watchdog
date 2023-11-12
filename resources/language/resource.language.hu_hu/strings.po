@@ -1,0 +1,421 @@
+# XBMC Media Center language file
+# Addon Name: Sleepy Watchdog
+# Addon id: service.sleepy.watchdog
+# Addon version: 0.1.26
+# Addon Provider: Birger Jesch, thanks to Martin Schlosser
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2015-09-29 07:42+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Sleepy Watchdog - he's watching while You sleep"
+msgstr "Sleepy Watchdog – figyel, miközben alszol"
+
+msgctxt "Addon Description"
+msgid "This Idle Timer management performs defined actions after an adjusted amount of inactivity time. Those actions are stop playing Audio, Video or TV for example or some actions to execute shutdown variations like suspend, reboot poweroff or hibernate."
+msgstr "Ez az időzítő kezelés meghatározott műveleteket hajt végre egy beállított inaktivitási idő után. Ezek a műveletek például a hang-, videó- ​​vagy TV-lejátszás leállítása, vagy bizonyos műveletek a leállítási változatok végrehajtására, például felfüggesztés, újraindítás, kikapcsolás vagy hibernált állapot."
+
+msgctxt "Addon Disclaimer"
+msgid "Use at your own risk. This service could conflict to other services (e.g recording services)."
+msgstr "Csak saját felelősségre. Ez a szolgáltatás ütközhet más szolgáltatásokkal (például felvételi szolgáltatásokkal)."
+
+
+msgctxt "#32100"
+msgid "Sleepy WatchDog"
+msgstr "Sleepy WatchDog"
+
+msgctxt "#32105"
+msgid "Settings"
+msgstr "Beállítások"
+
+msgctxt "#32110"
+msgid "Activity frame"
+msgstr "Aktivitási időablak"
+
+msgctxt "#32111"
+msgid "always active"
+msgstr "mindig aktív"
+
+msgctxt "#32112"
+msgid "only in time frame"
+msgstr "csak egy időablakban"
+
+msgctxt "#32113"
+msgid "from"
+msgstr "ettől"
+
+msgctxt "#32114"
+msgid "until"
+msgstr "eddig"
+
+msgctxt "#32115"
+msgid "Execute '%s' in %s secs"
+msgstr "Végrehajtás '%s' in %s másodperc"
+
+# Messages
+
+msgctxt "#32116"
+msgid "The activity settings of time frame and idle time are not suitable. Sleepy Watchdog will probably not activated."
+msgstr "Az időkeret és az üresjárati idő tevékenységbeállításai nem megfelelőek. A Sleepy Watchdog valószínűleg nem lesz aktiválva."
+
+msgctxt "#32117"
+msgid "The activity settings of time frame and idle time are not suitable. The selected action '%s' may be executed multiple times within the timeframe."
+msgstr "Az időkeret és az üresjárati idő tevékenységbeállításai nem megfelelőek. A kiválasztott '%s' művelet az időkereten belül többször is végrehajtható."
+
+msgctxt "#32118"
+msgid "Execution of idle actions aborted"
+msgstr "Az üresjárati műveletek végrehajtása megszakadt"
+
+msgctxt "#32119"
+msgid "Idle time before an action is triggered"
+msgstr "A művelet elindítása előtti üresjárati idő"
+
+msgctxt "#32120"
+msgid "max. duration of idle time"
+msgstr "az üresjárat maximális időtartama"
+
+msgctxt "#32121"
+msgid "Action to execute"
+msgstr "Végrehajtandó művelet"
+
+msgctxt "#32122"
+msgid "Silent countdown"
+msgstr "Csendes visszaszámlálás"
+
+msgctxt "#32123"
+msgid "Duration of notification"
+msgstr "Az értesítés időtartama"
+
+msgctxt "#32124"
+msgid "Test settings of active time frame (wait 1 min)"
+msgstr "Az aktív időkeret tesztelése (várjon 1 percet)"
+
+msgctxt "#32125"
+msgid "Turn off TV (CEC)"
+msgstr "TV kikapcsolása (CEC)"
+
+msgctxt "#32126"
+msgid "Addon ID, Plugin or Script Path"
+msgstr "Kiegészítő ID, beépülő modul vagy szkript elérési útja"
+
+msgctxt "#32127"
+msgid "Jump into Main Menu"
+msgstr "Ugrás a Főmenübe"
+
+msgctxt "#32128"
+msgid "Keep WatchDog alive"
+msgstr "Tartsd ébren a WatchDogot"
+
+msgctxt "#32129"
+msgid "Perform '%s' in %s"
+msgstr "Hajtsa végre '%s' in %s"
+
+msgctxt "#32130"
+msgid "Stop playing media"
+msgstr "Állítsa le a médialejátszást"
+
+msgctxt "#32131"
+msgid "Reboot"
+msgstr "Újraindítás"
+
+msgctxt "#32132"
+msgid "Shutdown"
+msgstr "Kikapcsolás"
+
+msgctxt "#32133"
+msgid "Hibernate"
+msgstr "Hibernálás"
+
+msgctxt "#32134"
+msgid "Suspend"
+msgstr "Felfüggesztés"
+
+msgctxt "#32135"
+msgid "Run Addon, Plugin or Script"
+msgstr "Kiegészítő, plugin, vagy szkript futtatása"
+
+msgctxt "#32136"
+msgid "Exit Kodi"
+msgstr "Kilépés a Kodiból"
+
+msgctxt "#32137"
+msgid "Switch Profile"
+msgstr "Profilváltás"
+
+msgctxt "#32138"
+msgid "Logout User"
+msgstr "Kijelentkezés"
+
+msgctxt "#32139"
+msgid "Manual setting of idle timer aborted or unchanged"
+msgstr "Az üresjárati időzítő kézi beállítása megszakadt vagy nem változott"
+
+msgctxt "#32140"
+msgid "Display countdown as"
+msgstr "A visszaszámlálás megjelenítése mint"
+
+msgctxt "#32141"
+msgid "Intermitted notification"
+msgstr "Időszakos értesítés"
+
+msgctxt "#32142"
+msgid "Countdown progress"
+msgstr "Visszaszámláló"
+
+msgctxt "#32143"
+msgid "Execute '%s' in %s secs. Click cancel to abort this action"
+msgstr "A '%s' végrehajtása %s másodpercen belül. A művelet megszakításához kattintson a Mégse gombra"
+
+msgctxt "#32144"
+msgid "Type"
+msgstr "Típus"
+
+msgctxt "#32145"
+msgid "Kodi Addon"
+msgstr "Kodi kiegészítő"
+
+msgctxt "#32146"
+msgid "Kodi Plugin"
+msgstr "Kodi plugin"
+
+msgctxt "#32147"
+msgid "Python Script"
+msgstr "Python Script"
+
+msgctxt "#32148"
+msgid "Reset Idle Timer when Time Frame starts"
+msgstr "A visszaszámláló alaphelyzetbe állítása, amikor az időkeret elindul"
+
+msgctxt "#32149"
+msgid "inactive"
+msgstr "inaktív"
+
+msgctxt "#32150"
+msgid "00:00 o'clock"
+msgstr "00:00 óra"
+
+msgctxt "#32151"
+msgid "01:00 o'clock"
+msgstr "01:00 óra"
+
+msgctxt "#32152"
+msgid "02:00 o'clock"
+msgstr "02:00 óra"
+
+msgctxt "#32153"
+msgid "03:00 o'clock"
+msgstr "03:00 óra"
+
+msgctxt "#32154"
+msgid "04:00 o'clock"
+msgstr "04:00 óra"
+
+msgctxt "#32155"
+msgid "05:00 o'clock"
+msgstr "05:00 óra"
+
+msgctxt "#32156"
+msgid "06:00 o'clock"
+msgstr "06:00 óra"
+
+msgctxt "#32157"
+msgid "07:00 o'clock"
+msgstr "07:00 óra"
+
+msgctxt "#32158"
+msgid "08:00 o'clock"
+msgstr "08:00 óra"
+
+msgctxt "#32159"
+msgid "09:00 o'clock"
+msgstr "09:00 óra"
+
+msgctxt "#32160"
+msgid "10:00 o'clock"
+msgstr "10:00 óra"
+
+msgctxt "#32161"
+msgid "11:00 o'clock"
+msgstr "11:00 óra"
+
+msgctxt "#32162"
+msgid "12:00 o'clock"
+msgstr "12:00 óra"
+
+msgctxt "#32163"
+msgid "13:00 o'clock"
+msgstr "13:00 óra"
+
+msgctxt "#32164"
+msgid "14:00 o'clock"
+msgstr "14:00 óra"
+
+msgctxt "#32165"
+msgid "15:00 o'clock"
+msgstr "15:00 óra"
+
+msgctxt "#32166"
+msgid "16:00 o'clock"
+msgstr "16:00 óra"
+
+msgctxt "#32167"
+msgid "17:00 o'clock"
+msgstr "17:00 óra"
+
+msgctxt "#32168"
+msgid "18:00 o'clock"
+msgstr "18:00 óra"
+
+msgctxt "#32169"
+msgid "19:00 o'clock"
+msgstr "19:00 óra"
+
+msgctxt "#32170"
+msgid "20:00 o'clock"
+msgstr "20:00 óra"
+
+msgctxt "#32171"
+msgid "21:00 o'clock"
+msgstr "21:00 óra"
+
+msgctxt "#32172"
+msgid "22:00 o'clock"
+msgstr "22:00 óra"
+
+msgctxt "#32173"
+msgid "23:00 o'clock"
+msgstr "23:00 óra"
+
+msgctxt "#32177"
+msgid "off"
+msgstr "ki"
+
+msgctxt "#32178"
+msgid "5 min"
+msgstr "5 perc"
+
+msgctxt "#32179"
+msgid "10 min"
+msgstr "10 perc"
+
+msgctxt "#32180"
+msgid "15 min"
+msgstr "15 perc"
+
+msgctxt "#32181"
+msgid "30 min"
+msgstr "30 perc"
+
+msgctxt "#32182"
+msgid "45 min"
+msgstr "45 perc"
+
+msgctxt "#32183"
+msgid "60 min"
+msgstr "60 perc"
+
+msgctxt "#32184"
+msgid "75 min"
+msgstr "75 perc"
+
+msgctxt "#32185"
+msgid "90 min"
+msgstr "90 perc"
+
+msgctxt "#32186"
+msgid "105 min"
+msgstr "105 perc"
+
+msgctxt "#32187"
+msgid "120 min"
+msgstr "120 perc"
+
+msgctxt "#32188"
+msgid "150 min"
+msgstr "150 perc"
+
+msgctxt "#32189"
+msgid "180 min"
+msgstr "180 perc"
+
+msgctxt "#32190"
+msgid "210 min"
+msgstr "210 perc"
+
+msgctxt "#32191"
+msgid "240 min"
+msgstr "240 perc"
+
+msgctxt "#32192"
+msgid "300 min"
+msgstr "300 perc"
+
+msgctxt "#32193"
+msgid "360 min"
+msgstr "360 perc"
+
+msgctxt "#32194"
+msgid "420 min"
+msgstr "420 perc"
+
+msgctxt "#32195"
+msgid "480 min"
+msgstr "480 perc"
+
+msgctxt "#32196"
+msgid "540 min"
+msgstr "540 perc"
+
+msgctxt "#32197"
+msgid "600 min"
+msgstr "600 perc"
+
+msgctxt "#32198"
+msgid "660 min"
+msgstr "660 perc"
+
+msgctxt "#32199"
+msgid "720 min"
+msgstr "720 perc"
+
+msgctxt "#32200"
+msgid "780 min"
+msgstr "780 perc"
+
+msgctxt "#32201"
+msgid "840 min"
+msgstr "840 perc"
+
+msgctxt "#32202"
+msgid "900 min"
+msgstr "900 perc"
+
+msgctxt "#32210"
+msgid "Reset User idle Timer"
+msgstr "Visszaszámláló visszaállítása"
+
+msgctxt "#32211"
+msgid "User idle Timer canceled"
+msgstr "Felhasználói üresjárati idő törölve"
+
+msgctxt "#32212"
+msgid "Profile ID"
+msgstr "Profil azonosító"
+
+msgctxt "#32213"
+msgid "max. idle Time, if Kodi itself is idle"
+msgstr "max. üresjárati idő, ha a Kodi tétlen"
+
+msgctxt "#32214"
+msgid "Don't execute actions if PVR recorder is active"
+msgstr "Ne hajtson végre műveleteket, ha a PVR-felvevő aktív"
