@@ -13,11 +13,14 @@
     <summary lang="en_GB">Sleepy Watchdog - he's watching while You sleep</summary>
     <summary lang="de_DE">Sleepy Watchdog - er passt auf, während Du schläfst</summary>
     <summary lang="uk_UA">Sleepy Watchdog - він чатує, поки Ви спите</summary>
+    <summary lang="hu_HU">Sleepy Watchdog - figyel, miközben alszol</summary>
     <description lang="en_GB">This Idle Timer performs defined actions after an adjusted amount of inactivity time of the user. Those actions are stop playing Audio, Video or TV for example or some actions to execute shutdown variations like suspend, reboot poweroff or hibernate.</description>
     <description lang="de_DE">Dieser Timer führt vorher definierte Aktionen nach einer einstellbaren Inaktivitätszeit des Users aus. Die Aktionen können zum Beispiel das Stoppen von Audio, Video oder TV-Streams sein, aber auch das Herunterfahren des Systems in verschiedenen Modi (Suspend, Reboot, PowerOff, Bereitschaft) wird angeboten.</description>
+    <description lang="hu_HU">Ez az üresjárati időzítő meghatározott műveleteket hajt végre egy beállított inaktivitási idő után. Ezek a műveletek például a hang-, videó- ​​vagy TV-lejátszás leállítása, vagy bizonyos műveletek a leállítási változatok végrehajtására, például felfüggesztés, újraindítás, kikapcsolás vagy hibernált állapot.</description>
     <description lang="uk_UA">Цей Таймер Простою виконує задані дії, після встановленого часу неактивності. Наприклад, зупиняє відтворення Аудіо, Відео, TV-Потоків чи інші дії (як Призупинення, Вимкнення, Перезавантаження або Гібернація) до Системи.</description>
     <disclaimer lang="uk_UA">Використовуйте на власний Ризик. Ця Служба, може вступати в конфлікт з іншими сервісами (н.д. Запису).</disclaimer>
     <disclaimer lang="de_DE">Benutzung auf eigene Gefahr. Dieser Dienst kann mit anderen Diensten (z.B. Aufnahmedienste) kollidieren.</disclaimer>
+    <disclaimer lang="hu_HU">Használata csak saját felelősségre. Ez a szolgáltatás ütközhet más szolgáltatásokkal (például felvételi szolgáltatásokkal).</disclaimer>
     <disclaimer lang="en_GB">Use at your own risk. This service could conflict to other services (e.g recording services).</disclaimer>
     <license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
     <forum>http://www.kodinerds.net/index.php/Thread/43876-RELEASE-Sleepy-WatchDog-Wenn-alles-vor-der-Glotze-schl%C3%A4ft/</forum>
