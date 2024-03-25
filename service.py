@@ -71,7 +71,8 @@ class SleepyWatchdog(XBMCMonitor):
 
         self.currframe = 0
         self.actionCanceled = False
-        self.idleTime = 0
+        self.curMaxIdleTime = 0
+        self.curIdleTime = 0
 
         XBMCMonitor.__init__(self)
         self.getWDSettings()
@@ -233,7 +234,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('logout user')
         xbmc.executebuiltin('System.LogOff')
 
-    def setMaxIdleTime(self, curIdleTime):
+    def updateMaxIdleTime(self):
         if self.mode == 'SERVICE':
             maxIdleTime = self.maxIdleTime
             if not self.Player.isPlaying() and self.menuIdleTime > 0:
@@ -241,17 +242,17 @@ class SleepyWatchdog(XBMCMonitor):
         else:
             maxIdleTime = self.userIdleTime
 
-        if self.idleTime != maxIdleTime:
-            curIdleTime = 0
-            notifyLog('Idle Time has changed: %s' % maxIdleTime)
-        self.idleTime = maxIdleTime
-        return maxIdleTime, curIdleTime
+        if self.curMaxIdleTime != maxIdleTime:
+            self.curIdleTime = 0
+            notifyLog('maximum idle time has changed: %s' % str(datetime.timedelta(seconds=maxIdleTime)))
+            self.curMaxIdleTime = maxIdleTime
 
     def start(self):
 
-        _currentIdleTime = -1
         _wd_status = False
-        _maxIdleTime, _currentIdleTime = self.setMaxIdleTime(_currentIdleTime)
+        _hasTriggered = False
+
+        self.updateMaxIdleTime()
 
         while not xbmc.Monitor.abortRequested(self):
 
@@ -262,25 +263,38 @@ class SleepyWatchdog(XBMCMonitor):
                 _currframe = (datetime.datetime.now() - datetime.datetime.now().replace(hour=0, minute=0, second=0,
                                                                                         microsecond=0)).seconds
                 if self.act_start < self.act_stop:
-                    if self.act_start <= _currframe < self.act_stop: _status = True
+                    if self.act_start <= _currframe < self.act_stop:
+                        _status = True
                 else:
-                    if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop: _status = True
+                    if self.act_start <= _currframe < 86400 or 0 <= _currframe < self.act_stop:
+                        _status = True
 
             if _wd_status ^ _status:
                 notifyLog('Watchdog status changed: %s' % ('active' if _status else 'inactive'))
                 _wd_status = _status
-                if _status and self.resetOnStart: _currentIdleTime = 0
+                if _status and self.resetOnStart:
+                    self.curIdleTime = 0
 
-            if _wd_status and _currentIdleTime > 60 and not self.testConfig:
-                notifyLog('idle time: %s' % (str(datetime.timedelta(seconds=_currentIdleTime))))
+            if _wd_status and self.curIdleTime > 60 and not self.testConfig:
+                notifyLog('idle time: %s' % (str(datetime.timedelta(seconds=self.curIdleTime))))
 
-            if _currentIdleTime > xbmc.getGlobalIdleTime():
+            if self.curIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
-                _maxIdleTime, _currentIdleTime = self.setMaxIdleTime(0)
+                self.curIdleTime = 0
+                _hasTriggered = False
+
+            self.updateMaxIdleTime()
+
+            notifyLog(
+                'maxIdleTime: %s, currentIdleTime: %s' % (
+                    str(datetime.timedelta(seconds=self.curMaxIdleTime)),
+                    str(datetime.timedelta(seconds=self.curIdleTime)),
+               )
+            )
 
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
             if _wd_status or self.testConfig:
-                if _currentIdleTime > (_maxIdleTime - int(not self.silent) * self.notificationTime):
+                if self.curIdleTime > (self.curMaxIdleTime - int(not self.silent) * self.notificationTime) and not _hasTriggered:
 
                     # check PVR status, if PVR is recording, abort actions
                     query = {'method': 'PVR.GetProperties', 'params': {'properties': ['recording']}}
@@ -288,9 +302,9 @@ class SleepyWatchdog(XBMCMonitor):
                     if self.checkRecActivity and (response.get('recording', False) and
                                                   self.action in [32131, 32132, 32133, 32134, 32136]):
 
-                        # active recording, increase idle time to 5 mins
+                        # active recording, decrease idle time by 5 mins
                         notifyLog('Watchdog actions canceled due active recorder', xbmc.LOGINFO)
-                        _maxIdleTime += 300
+                        self.curIdleTime = max(0, self.curIdleTime - 300)
                     else:
                         notifyLog('max idle time reached, ready to perform some action')
                         self.actionCanceled = False
@@ -304,9 +318,10 @@ class SleepyWatchdog(XBMCMonitor):
                                     if self.action > 32130:
                                         notifyUser(LOC(32115) % (LOC(self.action), self.notificationTime - count),
                                                    time=5000)
-                                    if xbmc.Monitor.waitForAbort(self, 10): break
+                                    if xbmc.Monitor.waitForAbort(self, 10):
+                                        break
                                     count += 10
-                                    if _currentIdleTime > xbmc.getGlobalIdleTime():
+                                    if self.curIdleTime > xbmc.getGlobalIdleTime():
                                         self.actionCanceled = True
                                         break
                             else:
@@ -344,10 +359,7 @@ class SleepyWatchdog(XBMCMonitor):
                             if self.testConfig:
                                 notifyLog('watchdog was running in test mode, keep it alive')
                             else:
-                                if self.keepAlive:
-                                    notifyLog('keep watchdog alive, update idletime for next cycle')
-                                    _maxIdleTime += self.setMaxIdleTime(_currentIdleTime)[0]
-                                else:
+                                if not self.keepAlive:
                                     break
                         else:
                             notifyLog('Countdown canceled by user action')
@@ -357,18 +369,21 @@ class SleepyWatchdog(XBMCMonitor):
                         if self.testConfig:
                             ADDON.setSetting('testConfig', 'false')
 
+                        _hasTriggered = True
+
             _loop = 0
             while not xbmc.Monitor.waitForAbort(self, 5):
                 _loop += 5
-                _currentIdleTime += 5
+                self.curIdleTime += 5
 
                 if self.SettingsChanged:
                     notifyLog('settings changed')
                     self.getWDSettings()
-                    _maxIdleTime, _currentIdleTime = self.setMaxIdleTime(_currentIdleTime)
+                    self.updateMaxIdleTime()
                     break
 
-                if self.testConfig or _currentIdleTime > xbmc.getGlobalIdleTime() or _loop >= 60: break
+                if self.testConfig or self.curIdleTime > xbmc.getGlobalIdleTime() or _loop >= 60:
+                    break
 
 
 # MAIN #
