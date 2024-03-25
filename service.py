@@ -106,7 +106,7 @@ class SleepyWatchdog(XBMCMonitor):
         self.resetOnStart = self.getAddonSetting('resetOnStart', BOOL)
         self.maxIdleTime = self.getAddonSetting('maxIdleTime', NUM, 60)
         self.menuIdleTime = self.getAddonSetting('menuIdleTime', NUM, 60)
-        self.userIdleTime = self.getAddonSetting('userIdleTime', NUM)
+        self.userIdleTime = self.getAddonSetting('userIdleTime', NUM) if self.mode == 'USER' else 0
         self.checkRecActivity = self.getAddonSetting('checkRecActivity', BOOL)
         self.action = self.getAddonSetting('action', NUM) + LANGOFFSET
         self.jumpMainMenu = self.getAddonSetting('mainmenu', BOOL)
