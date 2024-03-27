@@ -43,13 +43,22 @@ def jsonrpc(query):
 
 
 class XBMCMonitor(xbmc.Monitor):
+    _instances = []
 
     def __init__(self, *args, **kwargs):
         xbmc.Monitor.__init__(self)
         self.SettingsChanged = False
+        self.activityDetected = False
+        XBMCMonitor._instances.append(self)
 
     def onSettingsChanged(self):
         self.SettingsChanged = True
+
+    def notify(self, method, data):
+        if method in [
+                'GUI.OnScreensaverDeactivated',
+        ]:
+            self.activityDetected = True
 
     @classmethod
     def onNotification(cls, sender, method, data):
@@ -57,6 +66,9 @@ class XBMCMonitor(xbmc.Monitor):
         notifyLog('sender: %s' % sender)
         notifyLog('method: %s' % method)
         notifyLog('data:   %s' % data)
+
+        for i in XBMCMonitor._instances:
+            i.notify(method, data)
 
 
 class Player(xbmc.Player):
@@ -280,6 +292,12 @@ class SleepyWatchdog(XBMCMonitor):
 
             if self.curIdleTime > xbmc.getGlobalIdleTime():
                 notifyLog('user activity detected, reset idle time')
+                self.curIdleTime = 0
+                _hasTriggered = False
+
+            if self.activityDetected:
+                notifyLog('system activity detected, reset idle time')
+                self.activityDetected = False
                 self.curIdleTime = 0
                 _hasTriggered = False
 
