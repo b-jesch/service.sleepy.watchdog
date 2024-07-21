@@ -2,6 +2,7 @@ import json
 import os
 import re
 import datetime
+import subprocess
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -205,7 +206,8 @@ class SleepyWatchdog(XBMCMonitor):
     @classmethod
     def systemBootToNand(cls):
         notifyLog('init system boot to NAND')
-        xbmc.executebuiltin('System.ExecWait(/usr/sbin/rebootfromnand)')
+        sb = subprocess.run(['/usr/sbin/rebootfromnand',], stdout=subprocess.PIPE)
+        notifyLog('/usr/sbin/rebootfromnand returned with exit code %s' % sb.returncode)
         xbmc.restart()
 
     def sendCecCommand(self):
