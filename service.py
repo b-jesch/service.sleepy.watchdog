@@ -127,7 +127,6 @@ class SleepyWatchdog(XBMCMonitor):
         self.addon_type = self.getAddonSetting('addon_type', NUM)
         self.addon_id = self.getAddonSetting('addon_id')
         self.profile_id = self.getAddonSetting('profile_id')
-        self.testConfig = self.getAddonSetting('testConfig', BOOL)
 
         if self.timeframe == 1:
             _activity_time = self.act_stop - self.act_start
@@ -165,11 +164,6 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('Run addon:                      %s' % self.addon_id)
         notifyLog('Script type:                    %s' % self.addon_type)
         notifyLog('Load profile:                   %s' % self.profile_id)
-        notifyLog('Test configuration:             %s' % self.testConfig)
-
-        if self.testConfig:
-            self.maxIdleTime = 60 + int(not self.silent) * self.notificationTime
-            notifyLog('running in test mode for %s secs' % self.maxIdleTime)
 
     # user defined actions
 
@@ -207,6 +201,12 @@ class SleepyWatchdog(XBMCMonitor):
     def systemSuspend(cls):
         notifyLog('init system suspend')
         xbmc.executebuiltin('Suspend')
+
+    @classmethod
+    def systemBootToNand(cls):
+        notifyLog('init system boot to NAND')
+        xbmc.executebuiltin('System.ExecWait(/usr/sbin/rebootfromnand)')
+        xbmc.restart()
 
     def sendCecCommand(self):
         if not self.sendCEC: return
@@ -287,7 +287,7 @@ class SleepyWatchdog(XBMCMonitor):
                 if _status and self.resetOnStart:
                     self.curIdleTime = 0
 
-            if _wd_status and self.curIdleTime > 60 and not self.testConfig:
+            if _wd_status and self.curIdleTime > 60:
                 notifyLog('idle time: %s' % (str(datetime.timedelta(seconds=self.curIdleTime))))
 
             if self.curIdleTime > xbmc.getGlobalIdleTime():
@@ -311,7 +311,7 @@ class SleepyWatchdog(XBMCMonitor):
             )
 
             # Check if GlobalIdle longer than maxIdle and we're in a time frame
-            if _wd_status or self.testConfig:
+            if _wd_status:
                 if self.curIdleTime > (self.curMaxIdleTime - int(not self.silent) * self.notificationTime) and not _hasTriggered:
 
                     # check PVR status, if PVR is recording, abort actions
@@ -367,25 +367,19 @@ class SleepyWatchdog(XBMCMonitor):
                                 32135: self.runAddon,
                                 32136: self.quit,
                                 32137: self.switchProfile,
-                                32138: self.logoff
+                                32138: self.logoff,
+                                32139: self.systemBootToNand
                             }.get(self.action)()
                             #
                             # ToDo: implement more user defined actions here
                             #       Action numbers are defined in settings.xml/strings.xml
                             #       also see LANGOFFSET
                             #
-                            if self.testConfig:
-                                notifyLog('watchdog was running in test mode, keep it alive')
-                            else:
-                                if not self.keepAlive:
-                                    break
+
+                            if not self.keepAlive: break
                         else:
                             notifyLog('Countdown canceled by user action')
                             notifyUser(LOC(32118), icon=ICON_DEFAULT)
-
-                        # Reset test status
-                        if self.testConfig:
-                            ADDON.setSetting('testConfig', 'false')
 
                         _hasTriggered = True
 
@@ -400,9 +394,8 @@ class SleepyWatchdog(XBMCMonitor):
                     self.updateMaxIdleTime()
                     break
 
-                if self.testConfig or self.curIdleTime > xbmc.getGlobalIdleTime() or _loop >= 60:
+                if self.curIdleTime > xbmc.getGlobalIdleTime() or _loop >= 60:
                     break
-
 
 # MAIN #
 

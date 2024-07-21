@@ -156,8 +156,8 @@ msgid "Logout User"
 msgstr "Benutzer abmelden"
 
 msgctxt "#32139"
-msgid "Manual setting of idle timer aborted or unchanged"
-msgstr "Es wurde kein manueller Idle-Timer gesetzt oder geändert"
+msgid "Reboot to NAND (Android)"
+msgstr "Ins NAND booten (Android)"
 
 msgctxt "#32140"
 msgid "Display countdown as"
@@ -418,3 +418,7 @@ msgstr "max. Dauer der Inaktivität, wenn Kodi selbst inaktiv ist"
 msgctxt "#32214"
 msgid "Don't execute actions if PVR recorder is active"
 msgstr "Keine Aktionen auslösen, wenn Aufnahmen aktiv sind"
+
+msgctxt "#32215"
+msgid "Manual setting of idle timer aborted or unchanged"
+msgstr "Es wurde kein manueller Idle-Timer gesetzt oder geändert"
