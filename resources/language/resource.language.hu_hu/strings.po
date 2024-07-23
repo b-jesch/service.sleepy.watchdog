@@ -173,8 +173,8 @@ msgid "Countdown progress"
 msgstr "Visszaszámláló"
 
 msgctxt "#32143"
-msgid "Execute '%s' in %s secs. Click cancel to abort this action"
-msgstr "A '%s' végrehajtása %s másodpercen belül. A művelet megszakításához kattintson a Mégse gombra"
+msgid "Execute '%s' in %s secs. Click cancel to abort this action."
+msgstr "A '%s' végrehajtása %s másodpercen belül. A művelet megszakításához kattintson a Mégse gombra."
 
 msgctxt "#32144"
 msgid "Type"
@@ -423,3 +423,7 @@ msgstr "Ne hajtson végre műveleteket, ha a PVR-felvevő aktív"
 msgctxt "#32215"
 msgid "Manual setting of idle timer aborted or unchanged"
 msgstr "Az üresjárati időzítő kézi beállítása megszakadt vagy nem változott"
+
+msgctxt "#32216"
+msgid "'%s' couldn't performed due System Limitations"
+msgstr ""

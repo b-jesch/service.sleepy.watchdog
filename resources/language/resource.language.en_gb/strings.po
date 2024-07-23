@@ -173,7 +173,7 @@ msgid "Countdown progress"
 msgstr ""
 
 msgctxt "#32143"
-msgid "Execute '%s' in %s secs. Click cancel to abort this action"
+msgid "Execute '%s' in %s secs. Click cancel to abort this action."
 msgstr ""
 
 msgctxt "#32144"
@@ -422,4 +422,8 @@ msgstr ""
 
 msgctxt "#32215"
 msgid "Manual setting of idle timer aborted or unchanged"
+msgstr ""
+
+msgctxt "#32216"
+msgid "'%s' couldn't performed due System Limitations"
 msgstr ""

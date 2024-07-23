@@ -5,9 +5,10 @@ if __name__ == '__main__':
     dialog = xbmcgui.Dialog()
     _offset = 1
 
-    if ADDON.getSetting('mode') == 'USER':
+    if WIN.getProperty('Watchdog') == 'USER':
         _idx = dialog.select(LOC(32119), [LOC(32210), LOC(32178), LOC(32179), LOC(32180), LOC(32181), LOC(32182),
-                                          LOC(32183), LOC(32184), LOC(32185), LOC(32186), LOC(32187), LOC(32188), LOC(32189)])
+                                          LOC(32183), LOC(32184), LOC(32185), LOC(32186), LOC(32187), LOC(32188),
+                                          LOC(32189)])
     else:
         _idx = dialog.select(LOC(32119), [LOC(32178), LOC(32179), LOC(32180), LOC(32181), LOC(32182), LOC(32183),
                                           LOC(32184), LOC(32185), LOC(32186), LOC(32187), LOC(32188), LOC(32189)])
@@ -21,7 +22,7 @@ if __name__ == '__main__':
         else:
             mode = 'USER'
 
-        ADDON.setSetting('mode', mode)
+        WIN.setProperty('Watchdog', mode)
         if mode == 'USER':
             ADDON.setSetting('userIdleTime', str(int((re.match('\d+', _userIdleTime).group())) * 60))
             _action = int(ADDON.getSetting('action')) + LANGOFFSET
@@ -29,7 +30,7 @@ if __name__ == '__main__':
             notifyUser(LOC(32129) % (LOC(_action), _userIdleTime))
         else:
             ADDON.setSetting('userIdleTime', '0')
-            notifyLog('Sleepy Watchdog set mode to: %s' % (mode))
+            notifyLog('Sleepy Watchdog set mode to: %s' % mode)
             notifyUser(LOC(32211))
     else:
         notifyUser(LOC(32215))

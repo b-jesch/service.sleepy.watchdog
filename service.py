@@ -22,6 +22,8 @@ STRING = 0
 BOOL = 1
 NUM = 2
 
+WIN = xbmcgui.Window(10000)
+
 
 def notifyLog(message, level=xbmc.LOGDEBUG):
     xbmc.log('[%s] %s' % (ADDONNAME, message), level)
@@ -109,7 +111,7 @@ class SleepyWatchdog(XBMCMonitor):
 
     def getWDSettings(self):
 
-        self.mode = self.getAddonSetting('mode')
+        self.mode = WIN.getProperty('Watchdog')
         self.silent = self.getAddonSetting('silent', BOOL)
         self.notificationType = self.getAddonSetting('notificationType', NUM)  # 0:intermitted, 1:progressbar
         self.notificationTime = self.getAddonSetting('notificationTime', NUM)
@@ -183,32 +185,47 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('quit kodi')
         xbmc.executebuiltin('Quit')
 
-    @classmethod
-    def systemReboot(cls):
-        notifyLog('init system reboot')
-        xbmc.restart()
+    def systemReboot(self):
+        if xbmc.getCondVisibility('System.CanReboot'):
+            notifyLog('init system reboot')
+            xbmc.restart()
+        else:
+            notifyLog('Can\'t init system reboot')
+            notifyUser(LOC(32216) % LOC(self.action), icon=ICON_ERROR)
 
-    @classmethod
-    def systemShutdown(cls):
-        notifyLog('init system shutdown')
-        xbmc.shutdown()
+    def systemShutdown(self):
+        if xbmc.getCondVisibility('System.CanPowerDown'):
+            notifyLog('init system shutdown')
+            xbmc.shutdown()
+        else:
+            notifyLog('Can\'t init system shutdown')
+            notifyUser(LOC(32216) % LOC(self.action), icon=ICON_ERROR)
 
-    @classmethod
-    def systemHibernate(cls):
-        notifyLog('init system hibernate')
-        xbmc.executebuiltin('Hibernate')
+    def systemHibernate(self):
+        if xbmc.getCondVisibility('System.CanHibernate'):
+            notifyLog('init system hibernate')
+            xbmc.executebuiltin('Hibernate')
+        else:
+            notifyLog('Can\'t init system hibernate')
+            notifyUser(LOC(32216) % LOC(self.action), icon=ICON_ERROR)
 
-    @classmethod
-    def systemSuspend(cls):
-        notifyLog('init system suspend')
-        xbmc.executebuiltin('Suspend')
+    def systemSuspend(self):
+        if xbmc.getCondVisibility('System.CanSuspend'):
+            notifyLog('init system suspend')
+            xbmc.executebuiltin('Suspend')
+        else:
+            notifyLog('Can\'t init system suspend')
+            notifyUser(LOC(32216) % LOC(self.action), icon=ICON_ERROR)
 
-    @classmethod
-    def systemBootToNand(cls):
-        notifyLog('init system boot to NAND')
-        sb = subprocess.run(['/usr/sbin/rebootfromnand',], stdout=subprocess.PIPE)
-        notifyLog('/usr/sbin/rebootfromnand returned with exit code %s' % sb.returncode)
-        xbmc.restart()
+    def systemBootToNand(self):
+        if xbmcvfs.exists('/dev/system/') or xbmcvfs.exists('/dev/userdata/') or xbmcvfs.exists('/dev/super/'):
+            notifyLog('init system boot to NAND')
+            sb = subprocess.run(['/usr/sbin/rebootfromnand',], stdout=subprocess.PIPE)
+            notifyLog('/usr/sbin/rebootfromnand returned with exit code %s' % sb.returncode)
+            xbmc.restart()
+        else:
+            notifyLog('Can\'t init boot to NAND')
+            notifyUser(LOC(32216) % LOC(self.action), icon=ICON_ERROR)
 
     def sendCecCommand(self):
         if not self.sendCEC: return
@@ -243,8 +260,7 @@ class SleepyWatchdog(XBMCMonitor):
         notifyLog('switch profile \'%s\'' % self.profile_id)
         xbmc.executebuiltin('LoadProfile(%s,prompt)' % self.profile_id)
 
-    @classmethod
-    def logoff(cls):
+    def logoff(action):
         notifyLog('logout user')
         xbmc.executebuiltin('System.LogOff')
 
@@ -378,7 +394,7 @@ class SleepyWatchdog(XBMCMonitor):
                             #       also see LANGOFFSET
                             #
 
-                            if not self.keepAlive: break
+                            if not self.keepAlive or WIN.getProperty('Watchdog') == 'USER': break
                         else:
                             notifyLog('Countdown canceled by user action')
                             notifyUser(LOC(32118), icon=ICON_DEFAULT)
@@ -399,11 +415,13 @@ class SleepyWatchdog(XBMCMonitor):
                 if self.curIdleTime > xbmc.getGlobalIdleTime() or _loop >= 60:
                     break
 
+
 # MAIN #
 
 if __name__ == '__main__':
 
     mode = 'SERVICE'
+    WIN.setProperty('Watchdog', mode)
     ADDON.setSetting('mode', mode)
     WatchDog = SleepyWatchdog()
     try:
@@ -414,4 +432,4 @@ if __name__ == '__main__':
 
     notifyLog('Sleepy Watchdog kicks off from mode: %s' % WatchDog.mode)
     del WatchDog
-    ADDON.setSetting('mode', mode)
+    WIN.clearProperty('Watchdog')

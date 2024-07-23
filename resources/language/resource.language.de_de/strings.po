@@ -172,8 +172,8 @@ msgid "Countdown progress"
 msgstr "Fortschrittsbalken"
 
 msgctxt "#32143"
-msgid "Execute '%s' in %s secs. Click cancel to abort this action"
-msgstr "Starte Aktion '%s' in %s Sekunden. Klicke auf 'Abbrechen' um diese Aktion zu stoppen"
+msgid "Execute '%s' in %s secs. Click cancel to abort this action."
+msgstr "Starte Aktion '%s' in %s Sekunden. Klicke auf 'Abbrechen' um diese Aktion zu stoppen."
 
 msgctxt "#32144"
 msgid "Type"
@@ -422,3 +422,7 @@ msgstr "Keine Aktionen auslösen, wenn Aufnahmen aktiv sind"
 msgctxt "#32215"
 msgid "Manual setting of idle timer aborted or unchanged"
 msgstr "Es wurde kein manueller Idle-Timer gesetzt oder geändert"
+
+msgctxt "#32216"
+msgid "'%s' couldn't performed due System Limitations"
+msgstr "'%s' kann aufgrund von Systemeinschränkungen nicht ausgeführt werden"
